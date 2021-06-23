@@ -1,0 +1,11 @@
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\bin\Debug\AuthClient.exe.config
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\bin\Debug\AuthClient.exe
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\bin\Debug\AuthClient.pdb
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.csprojAssemblyReference.cache
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.Form1.resources
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.Properties.Resources.resources
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.csproj.GenerateResource.cache
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.csproj.CoreCompileInputs.cache
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.exe
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.pdb
+C:\Users\bjj73\Desktop\Test Project\AuthClient\AuthClient\obj\Debug\AuthClient.CheckServerDialog.resources
