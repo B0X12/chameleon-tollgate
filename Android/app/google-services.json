@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "51204818699",
+    "project_id": "tollgate-chameleon",
+    "storage_bucket": "tollgate-chameleon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51204818699:android:e963aed5929e628be6c40e",
+        "android_client_info": {
+          "package_name": "com.chameleon.tollgate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51204818699-2nagos04ib4431of1g552msmbq0fbg3h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chameleon.tollgate",
+            "certificate_hash": "3af053bedf875f18e93c705ca614a8d23f66681d"
+          }
+        },
+        {
+          "client_id": "51204818699-h0qjt8d04djddqlvm007d4t5egeckkt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKg2WpRpBYDSChAGtJnMzOItsCg7I8oiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51204818699-h0qjt8d04djddqlvm007d4t5egeckkt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
