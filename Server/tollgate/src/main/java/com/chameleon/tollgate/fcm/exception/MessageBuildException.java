@@ -8,4 +8,9 @@ public class MessageBuildException extends RuntimeException {
 		super(message);
 		this.message = message;
 	}
+	
+	@Override()
+	public String toString() {
+		return message;
+	}
 }

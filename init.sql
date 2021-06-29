@@ -1,4 +1,4 @@
-CREATE TABLE user_account(
+CREATE TABLE account(
 id TEXT NOT NULL PRIMARY KEY,
 pwd TEXT NOT NULL
 );
@@ -8,6 +8,13 @@ id TEXT NOT NULL,
 pc TEXT NOT NULL PRIMARY KEY,
 alias TEXT NOT NULL,
 CONSTRAINT map_pc_fk_id FOREIGN KEY(id)
+REFERENCES account(id));
+
+CREATE TABLE map_android(
+id TEXT NOT NULL,
+token TEXT NOT NULL,
+PRIMARY KEY(id, token),
+CONSTRAINT map_android_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 
 CREATE TABLE auth_factor(
