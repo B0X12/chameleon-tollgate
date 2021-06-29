@@ -8,13 +8,21 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
+    public final String USER_ID;
+
+    public MainActivity(){
+        USER_ID = "tester";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.d("Tollgate_FCM", "App started");
+    }
 
-        Log.d("tollgate", "App started");
-        Log.d("tollgate", "Tocken : " + FirebaseMessaging.getInstance().getToken().getResult());
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Tollgate_FCM", "Tocken : " + FirebaseMessaging.getInstance().getToken().getResult());
     }
 }

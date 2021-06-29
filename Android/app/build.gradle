@@ -42,9 +42,8 @@ dependencies {
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
-    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:20.1.6'
 
-    //PatternLock
+    //PatternLockView
     implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
 }

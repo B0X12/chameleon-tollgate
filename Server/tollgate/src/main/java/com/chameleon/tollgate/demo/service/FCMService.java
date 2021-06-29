@@ -10,7 +10,7 @@ public class FCMService implements IFCMService {
 	}
 	
 	@Override
-	public String send(String title, String body, String token, Map<String, String> data) {
+	public String send(String title, String body, String token, Map<String, String> data, String click_acktion) {
 		try {
 			System.out.println(data.size());
 			System.out.println(data);
@@ -20,6 +20,7 @@ public class FCMService implements IFCMService {
 				.setBody(body)
 				.setToken(token)
 				.setData(data)
+				.setClickAction(click_acktion)
 				.build());
 		}
 		catch(Exception ex) {

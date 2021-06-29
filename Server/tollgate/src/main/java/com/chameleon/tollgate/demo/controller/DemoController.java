@@ -29,9 +29,9 @@ public class DemoController {
 	
 	@PostMapping(path="/fcm")
 	public String fcmTest(String title, String body, String token,
-			@RequestBody Map<String, String> data) {
+			@RequestBody Map<String, String> data, String click_action) {
 		FCMService fcm = new FCMService();
-		return fcm.send(title, body, token, data);
+		return fcm.send(title, body, token, data, click_action);
 	}
 	
 	// @PostMapping, @DeleteMapping 등이 있다
