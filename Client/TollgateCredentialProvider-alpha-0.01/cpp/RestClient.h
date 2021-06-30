@@ -17,7 +17,6 @@ private:
 
     wchar_t _wcPath[2048] = { 0, };
     wchar_t _wcAppName[2048] = { 0, };
-    //wchar_t _wcCommandLine[2048] = { 0, };
 
     // 프로세스 종료 코드 및 반환 문자열
     DWORD _dwRestClientExitCode = 4444;

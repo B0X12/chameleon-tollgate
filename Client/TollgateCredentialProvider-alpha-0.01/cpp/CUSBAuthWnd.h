@@ -12,7 +12,7 @@ class CUSBAuthWnd
 public:
     CUSBAuthWnd(void);
 	~CUSBAuthWnd(void);
-    HRESULT Initialize(CTollgateCredential* pCredential);
+    HRESULT InitUSBAuthWnd(CTollgateCredential* pCredential);
 
 private:
     HRESULT _MyRegisterClass(void);         // 윈도우 클래스 등록

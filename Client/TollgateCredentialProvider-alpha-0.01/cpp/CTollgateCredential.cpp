@@ -16,7 +16,7 @@
 #include "guid.h"
 #include "CTollgateCredential.h"
 #include "CUSBAuthWnd.h"
-#include "CPatternAuthWnd.h"
+#include "CPatternAuthThrd.h"
 
 
 #include "RestClient.h"     // Test
@@ -167,11 +167,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
     }
 
     _pUSBAuthWnd = new CUSBAuthWnd();
-    _pPatternAuthWnd = new CPatternAuthWnd();
-
-    //SetCurrentAuthStage(AUTH_FACTOR_USB);
-
-    
+    _pPatternAuthThrd = new CPatternAuthThrd();
 
     return hr;
 }
@@ -188,7 +184,7 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents *pc
 
     if (SUCCEEDED(hr))
     {
-        SetCurrentAuthStage(AUTH_FACTOR_USB | AUTH_FACTOR_PASSWORD);
+        SetCurrentAuthStage(AUTH_FACTOR_USB | AUTH_FACTOR_PATTERN | AUTH_FACTOR_PASSWORD);
     }
 
     return hr;
@@ -466,72 +462,32 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 {
     HRESULT hr = S_OK;
 
-    CREDENTIAL_PROVIDER_FIELD_STATE cpfsShow = CPFS_HIDDEN;
-    /*
-    TCHAR buf[100];
-    wsprintf(buf, L"%d", dwFieldID);
-    MessageBox(NULL, buf, L"test", MB_OK);
-    */
-
     // Validate parameter.
     if (dwFieldID < ARRAYSIZE(_rgCredProvFieldDescriptors) &&
         (CPFT_COMMAND_LINK == _rgCredProvFieldDescriptors[dwFieldID].cpft))
     {
-        HWND hwndOwner = nullptr;
-        RestClient* rc = nullptr;
-
-
-        wchar_t wcStatusFromServer[30];
-        wchar_t wcMessageFromServer[2048];
-
         switch (dwFieldID)
         {
         
         // --------------- USB 인증 버튼 ---------------
         case SFI_USB_VERIFY:
 
-            // 별도 Window에서 이벤트 처리
             EnableAuthStartButton(SFI_USB_VERIFY, FALSE);
             
             if (_pUSBAuthWnd != nullptr) {
-                _pUSBAuthWnd->Initialize(this);
+                _pUSBAuthWnd->InitUSBAuthWnd(this);
             }
             
             break;
 
+        // --------------- 패턴 정보 요청 버튼 ---------------
         case SFI_PATTERN_REQUEST:
 
-            /*
             EnableAuthStartButton(SFI_PATTERN_REQUEST, FALSE);
 
-            if (_pPatternAuthWnd != nullptr) {
-                _pPatternAuthWnd->Initialize(this);
+            if (_pPatternAuthThrd != nullptr) {
+                _pPatternAuthThrd->StartPatternAuthThread(this);
             }
-            */
-
-            EnableAuthStartButton(SFI_PATTERN_REQUEST, FALSE);
-            SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보를 요청하고 있습니다..");
-            //SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
-            
-            rc = new RestClient();
-            rc->RequestPatternVerification(L"tester");
-            rc->GetRestClientStatusCode(wcStatusFromServer, 30);
-            rc->GetRestClientMessage(wcMessageFromServer, 2048);
-            delete rc;
-
-            if (!wcscmp(wcStatusFromServer, L"OK"))
-            {
-                if (!wcscmp(wcMessageFromServer, L"true"))
-                {
-                    SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
-                }
-                else
-                {
-                    //MessageBox(NULL, L"인증 실패", L"인증 실패", 0);
-                    SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보가 일치하지 않습니다");
-                }
-            }
-            EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
             
             break;
 

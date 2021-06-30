@@ -45,30 +45,20 @@ namespace RestClient
 
         static int Main(string[] args)
         {
-            /*
-            Console.WriteLine("---------- Argument Count ----------");
-            Console.WriteLine(args.Length);
-
-            Console.WriteLine("---------- Argument List ----------");
-            for (int i = 0; i < args.Length; i++)
+            if(!CheckArgumentByOption(args))
             {
-                Console.WriteLine(args[i]);
+                return (int)ReturnCode.STATUS_FAILED;
             }
-            */
-            /*
-            AuthCommunication ac = new AuthCommunication();
-            ac.IsServerAlive();
-            */
-            
+
             string option = args[0];
             AuthCommunication ac = new AuthCommunication();
 
             switch (option)
             {
                 case "--is-server-alive":
-                    if(ac.IsServerAlive())
+                    if (ac.IsServerAlive())
                     {
-                        return (int)ReturnCode.STATUS_OK; 
+                        return (int)ReturnCode.STATUS_OK;
                     }
                     else
                     {
@@ -79,27 +69,11 @@ namespace RestClient
                     break;
 
                 case "--verify-usb":
-                    try
                     {
-                        if (ac.VerifyUSB(args[1], args[2]))
-                        {
-                            return (int)ReturnCode.STATUS_OK;
-                        }
-                        else
-                        {
-                            return (int)ReturnCode.STATUS_FAILED;
-                        }
-                    } 
-                    catch(IndexOutOfRangeException e)
-                    {
-                        Console.WriteLine("IndexOutOfRangeException");
-                        return (int)ReturnCode.STATUS_FAILED;
-                    }
+                        string user = args[1];
+                        string usb_info = args[2];
 
-                case "--request-pattern":
-                    try
-                    {
-                        if (ac.VerifyPattern(args[1]))
+                        if (ac.VerifyUSB(user, usb_info))
                         {
                             return (int)ReturnCode.STATUS_OK;
                         }
@@ -107,13 +81,23 @@ namespace RestClient
                         {
                             return (int)ReturnCode.STATUS_FAILED;
                         }
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                        Console.WriteLine("IndexOutOfRangeException");
-                        return (int)ReturnCode.STATUS_FAILED;
                     }
                     
+                case "--request-pattern":
+                    {
+                        string user = args[1];
+                        
+                        if (ac.VerifyPattern(user))
+                        {
+                            return (int)ReturnCode.STATUS_OK;
+                        }
+                        else
+                        {
+                            return (int)ReturnCode.STATUS_FAILED;
+                        }
+                    }
+                    
+
                 case "--request-otp":
                     break;
 
@@ -125,13 +109,80 @@ namespace RestClient
                 default:
                     break;
             }
-            
+
             return (int)ReturnCode.STATUS_FAILED;
         }
 
-        enum ReturnCode {
+        enum ReturnCode
+        {
             STATUS_FAILED = 4444,
             STATUS_OK = 200,
+        }
+
+        static bool CheckArgumentByOption(string[] parameters)
+        {
+            // --------------- 옵션 검사 ---------------
+            if (parameters.Length == 0)
+            {
+                return false;
+            }
+
+            // --------------- 옵션에 따른 옵션 인자 검사 ---------------
+            string option = parameters[0];
+            switch (option)
+            {
+                case "--is-server-alive":
+                    // 포맷: --is-server-alive
+                    if (parameters.Length == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--get-auth-factor":
+                    // 포맷: --get-auth-factor [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--verify-usb":
+                    // 포맷: --verify-usb [사용자ID] [USB정보]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--request-pattern":
+                    // 포맷: --request-pattern [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--request-otp":
+                    break;
+
+                case "--verify-otp":
+                    break;
+            }
+
+            return false;
         }
     }
 }

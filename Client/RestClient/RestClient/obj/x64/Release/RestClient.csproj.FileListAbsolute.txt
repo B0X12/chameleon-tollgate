@@ -5,3 +5,10 @@ C:\Users\bjj73\Desktop\Tollgate\RestClient\RestClient\obj\x64\Release\RestClient
 C:\Users\bjj73\Desktop\Tollgate\RestClient\RestClient\obj\x64\Release\RestClient.csproj.CoreCompileInputs.cache
 C:\Users\bjj73\Desktop\Tollgate\RestClient\RestClient\obj\x64\Release\RestClient.exe
 C:\Users\bjj73\Desktop\Tollgate\RestClient\RestClient\obj\x64\Release\RestClient.pdb
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\RestClient.exe.config
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\RestClient.exe
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\RestClient.pdb
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csprojAssemblyReference.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csproj.CoreCompileInputs.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.exe
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.pdb

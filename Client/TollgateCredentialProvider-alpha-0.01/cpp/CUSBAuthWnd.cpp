@@ -42,12 +42,10 @@ CUSBAuthWnd::~CUSBAuthWnd(void)
         _pCredential->Release();
         _pCredential = NULL;
     }
-
-    delete g_pUSBAuth;
 }
 
 // Performs the work required to spin off our message so we can listen for events.
-HRESULT CUSBAuthWnd::Initialize(CTollgateCredential* pCredential)
+HRESULT CUSBAuthWnd::InitUSBAuthWnd(CTollgateCredential* pCredential)
 {
     HRESULT hr = S_OK;
 
@@ -112,7 +110,6 @@ HRESULT CUSBAuthWnd::_InitInstance()
 
     // Dialog Test
     ::ShowWindow(_hWnd, SW_HIDE);
-    //::SetWindowPos(_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE);
 
     g_pUSBAuth->RegisterDeviceNotify(_hWnd);
 
@@ -203,7 +200,6 @@ LRESULT CALLBACK CUSBAuthWnd::_WndProc(HWND hWnd, UINT message, WPARAM wParam, L
         {
             if (g_pUSBAuth->RecognizeAndVerifyUSB(wParam, lParam))
             {
-                //MessageBox(NULL, L"verify 성공", L"verify 성공", 0);
                 ::KillTimer(hWnd, 0);
                 ::PostMessage(hWnd, WM_AUTHENTICATION_GRANT, 0, 0);
                 ::PostMessage(hWnd, WM_EXIT_THREAD, 0, 0);
@@ -216,7 +212,6 @@ LRESULT CALLBACK CUSBAuthWnd::_WndProc(HWND hWnd, UINT message, WPARAM wParam, L
             }
         }
 
-        
         break;
 
     default:
@@ -265,6 +260,11 @@ DWORD WINAPI CUSBAuthWnd::_ThreadProc(LPVOID lpParameter)
         {
             pCommandWindow->_hWnd = NULL;
         }
+    }
+
+    if (g_pUSBAuth != nullptr)
+    {
+        delete g_pUSBAuth;
     }
 
     return 0;
