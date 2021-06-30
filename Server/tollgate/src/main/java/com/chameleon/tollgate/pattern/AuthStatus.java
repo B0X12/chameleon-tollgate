@@ -3,12 +3,12 @@ package com.chameleon.tollgate.pattern;
 public class AuthStatus {
 	private String id;
 	private boolean verified;
-	private boolean succes;
+	private boolean success;
 	
 	public AuthStatus(String id) {
 		this.id = id;
 		this.verified = false;
-		this.succes = false;
+		this.success = false;
 	}
 	
 	public void setId(String id) {
@@ -28,10 +28,15 @@ public class AuthStatus {
 	}
 	
 	public void setSuccess(boolean success) {
-		this.succes = success;
+		this.success = success;
 	}
 	
 	public boolean isSuccess() {
-		return this.succes;
+		return this.success;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("{ id = %s, verified = %s, success = %s", this.id, this.verified, this.success);
 	}
 }

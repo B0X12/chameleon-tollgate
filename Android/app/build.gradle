@@ -55,6 +55,9 @@ dependencies {
     //PatternLockView
     implementation 'com.andrognito.patternlockview:patternlockview:1.0.0'
 
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.7'
+
     //fingerprint
     implementation 'androidx.biometric:biometric:1.0.1'
 }
