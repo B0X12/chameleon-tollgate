@@ -9,9 +9,6 @@ import com.chameleon.tollgate.rest.RestConnection;
 import com.chameleon.tollgate.rest.RestResult;
 import com.chameleon.tollgate.rest.define.*;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class RestTask extends AsyncTask<Void, Void, Boolean> {
     private String pattern;
     private Context context;
