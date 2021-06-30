@@ -23,7 +23,7 @@ public class AuthDAO extends SQLiteManager implements IAuthDAO {
 		PreparedStatement state;
 		int count = super.getCountOf(Table.AUTH_PATTERN, "id", id);
 		if(count == 0) {
-			state = super.connection.prepareStatement("insert into " + Table.AUTH_PATTERN + " values(?, ?");
+			state = super.connection.prepareStatement("insert into " + Table.AUTH_PATTERN + " values(?, ?)");
 			state.setString(1, id);
 			state.setString(2, pattern);
 		}
