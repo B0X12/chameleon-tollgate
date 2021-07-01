@@ -35,7 +35,7 @@ BOOL CUSB::IsDeviceTypeUSB(WPARAM wParam, LPARAM lParam)
     if (DBT_DEVICEARRIVAL == wParam)
     {
         PDEV_BROADCAST_HDR pHdr = (PDEV_BROADCAST_HDR)lParam;
-        PDEV_BROADCAST_DEVICEINTERFACE pDevInf; // 멤버 참조후 vid,pid 값 얻기 가능
+        //PDEV_BROADCAST_DEVICEINTERFACE pDevInf; // 멤버 참조후 vid,pid 값 얻기 가능
 
         switch (pHdr->dbch_devicetype)
         {

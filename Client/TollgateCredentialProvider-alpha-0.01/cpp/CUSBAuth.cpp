@@ -1,5 +1,5 @@
 
-#include "CUSBAuthWnd.h"
+#include "CUSBAuth.h"
 #include <strsafe.h>
 #include <atlstr.h>
 #include "USB.h"
@@ -18,17 +18,17 @@
 
 const TCHAR* g_wszUSBClassName = L"USB Auth Window Class";
 
-CUSB* g_pUSBAuth = nullptr;
+CUSB* g_pUSBModule = nullptr;
 
 
-CUSBAuthWnd::CUSBAuthWnd(void)
+CUSBAuth::CUSBAuth(void)
 {
     _hWnd = NULL;
     _hInst = NULL;
     _pCredential = NULL;
 }
 
-CUSBAuthWnd::~CUSBAuthWnd(void)
+CUSBAuth::~CUSBAuth(void)
 {
     // If we have an active window, we want to post it an exit message.
     if (_hWnd != NULL)
@@ -45,7 +45,7 @@ CUSBAuthWnd::~CUSBAuthWnd(void)
 }
 
 // Performs the work required to spin off our message so we can listen for events.
-HRESULT CUSBAuthWnd::InitUSBAuthWnd(CTollgateCredential* pCredential)
+HRESULT CUSBAuth::InitAuthThread(CTollgateCredential* pCredential)
 {
     HRESULT hr = S_OK;
 
@@ -57,7 +57,7 @@ HRESULT CUSBAuthWnd::InitUSBAuthWnd(CTollgateCredential* pCredential)
     _pCredential->AddRef();
 
     // Create and launch the window thread.
-    HANDLE hThread = ::CreateThread(NULL, 0, CUSBAuthWnd::_ThreadProc, (LPVOID)this, 0, NULL);
+    HANDLE hThread = ::CreateThread(NULL, 0, CUSBAuth::_ThreadProc, (LPVOID)this, 0, NULL);
     if (hThread == NULL)
     {
         hr = HRESULT_FROM_WIN32(::GetLastError());
@@ -67,18 +67,18 @@ HRESULT CUSBAuthWnd::InitUSBAuthWnd(CTollgateCredential* pCredential)
         CloseHandle(hThread);
     }
 
-    g_pUSBAuth = new CUSB();
+    g_pUSBModule = new CUSB();
 
     return hr;
 }
 
 
-HRESULT CUSBAuthWnd::_MyRegisterClass(void)
+HRESULT CUSBAuth::_MyRegisterClass(void)
 {
     HRESULT hr = S_OK;
 
     WNDCLASS wc = { 0 };
-    wc.lpfnWndProc = CUSBAuthWnd::_WndProc;  // 윈proc 설정
+    wc.lpfnWndProc = CUSBAuth::_WndProc;  // 윈proc 설정
     wc.hInstance = GetModuleHandle(NULL);   // 인스턴스 널값 설정
     wc.lpszClassName = ::g_wszUSBClassName;    // 클래스 네임명 설정
 
@@ -91,7 +91,7 @@ HRESULT CUSBAuthWnd::_MyRegisterClass(void)
 }
 
 
-HRESULT CUSBAuthWnd::_InitInstance()
+HRESULT CUSBAuth::_InitInstance()
 {
     HRESULT hr = S_OK;
 
@@ -107,17 +107,17 @@ HRESULT CUSBAuthWnd::_InitInstance()
     {
         hr = HRESULT_FROM_WIN32(::GetLastError());
     }
-
-    // Dialog Test
-    ::ShowWindow(_hWnd, SW_HIDE);
-
-    g_pUSBAuth->RegisterDeviceNotify(_hWnd);
-
+    else
+    {
+        ::ShowWindow(_hWnd, SW_HIDE);
+        g_pUSBModule->RegisterDeviceNotify(_hWnd);
+    }
+    
     return hr;
 }
 
 
-BOOL CUSBAuthWnd::_ProcessNextMessage()
+BOOL CUSBAuth::_ProcessNextMessage()
 {
     // Grab, translate, and process the message.
     MSG msg;
@@ -129,7 +129,7 @@ BOOL CUSBAuthWnd::_ProcessNextMessage()
     CString strTimeoutMsg = L"인증 시간이 만료되었습니다";
     CString strInvalidUSBMsg = L"등록되지 않은 USB입니다";
     int nTime;
-    wchar_t szTimeoutMessage[256] = { 0, };
+    wchar_t wszTimeoutMessage[256] = { 0, };
 
     // This section performs some "post-processing" of the message. It's easier to do these
     // things here because we have the handles to the window, its button, and the provider
@@ -138,8 +138,8 @@ BOOL CUSBAuthWnd::_ProcessNextMessage()
     {
     case WM_TIMER_ELAPSE:
         nTime = (unsigned int)msg.wParam;
-        StringCchPrintf(szTimeoutMessage, ARRAYSIZE(szTimeoutMessage), L"USB 인식 중.. %d", nTime);
-        _pCredential->SetAuthMessage(SFI_USB_MESSAGE, szTimeoutMessage);
+        StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"USB 인식 중.. %d", nTime);
+        _pCredential->SetAuthMessage(SFI_USB_MESSAGE, wszTimeoutMessage);
         break;
 
     case WM_TIMER_TIMEOUT:
@@ -149,7 +149,8 @@ BOOL CUSBAuthWnd::_ProcessNextMessage()
 
     case WM_AUTHENTICATION_GRANT:
         //_pCredential->SetCurrentAuthStage(AUTH_FACTOR_OTP | AUTH_FACTOR_PASSWORD);
-        _pCredential->SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
+        //_pCredential->SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
+        _pCredential->GoToNextAuthStage();
         break;
 
     case WM_AUTHENTICATION_DENY:
@@ -167,7 +168,7 @@ BOOL CUSBAuthWnd::_ProcessNextMessage()
 
 
 // Manages window messages on the window thread.
-LRESULT CALLBACK CUSBAuthWnd::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK CUSBAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static unsigned int nTimeout;
 
@@ -196,9 +197,9 @@ LRESULT CALLBACK CUSBAuthWnd::_WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 
     case WM_DEVICECHANGE:
         // 인증 성공
-        if (g_pUSBAuth->IsDeviceTypeUSB(wParam, lParam))
+        if (g_pUSBModule->IsDeviceTypeUSB(wParam, lParam))
         {
-            if (g_pUSBAuth->RecognizeAndVerifyUSB(wParam, lParam))
+            if (g_pUSBModule->RecognizeAndVerifyUSB(wParam, lParam))
             {
                 ::KillTimer(hWnd, 0);
                 ::PostMessage(hWnd, WM_AUTHENTICATION_GRANT, 0, 0);
@@ -223,9 +224,9 @@ LRESULT CALLBACK CUSBAuthWnd::_WndProc(HWND hWnd, UINT message, WPARAM wParam, L
 
 // Our thread procedure. We actually do a lot of work here that could be put back on the 
 // main thread, such as setting up the window, etc.
-DWORD WINAPI CUSBAuthWnd::_ThreadProc(LPVOID lpParameter)
+DWORD WINAPI CUSBAuth::_ThreadProc(LPVOID lpParameter)
 {
-    CUSBAuthWnd* pCommandWindow = static_cast<CUSBAuthWnd*>(lpParameter);
+    CUSBAuth* pCommandWindow = static_cast<CUSBAuth*>(lpParameter);
     if (pCommandWindow == NULL)
     {
         // TODO: What's the best way to raise this error?
@@ -262,9 +263,9 @@ DWORD WINAPI CUSBAuthWnd::_ThreadProc(LPVOID lpParameter)
         }
     }
 
-    if (g_pUSBAuth != nullptr)
+    if (g_pUSBModule != nullptr)
     {
-        delete g_pUSBAuth;
+        delete g_pUSBModule;
     }
 
     return 0;

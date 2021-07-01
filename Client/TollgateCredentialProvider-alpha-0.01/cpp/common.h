@@ -21,6 +21,8 @@ enum SAMPLE_FIELD_ID
     SFI_TILEIMAGE               = 0,
     SFI_LABEL                   ,
 
+    SFI_STAGE_STATUS            ,
+
     /* --------------- USB 인증 관련 --------------- */
     SFI_USB_MESSAGE             ,
     SFI_USB_VERIFY              ,
@@ -64,8 +66,10 @@ struct FIELD_STATE_PAIR
 // The Field interactive state indicates when
 static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
 {
-    { CPFS_DISPLAY_IN_BOTH,            CPFIS_NONE       },      // SFI_TILEIMAGE
-    { CPFS_HIDDEN,                     CPFIS_NONE       },      // SFI_LABEL
+    { CPFS_DISPLAY_IN_BOTH,   CPFIS_NONE       },      // SFI_TILEIMAGE
+    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_LABEL
+
+    { CPFS_DISPLAY_IN_BOTH,   CPFIS_NONE       },      // SFI_STAGE_STATUS
 
     /* --------------- USB 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_USB_MESSAGE
@@ -83,7 +87,7 @@ static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FACE_MESSAGE
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FACE_REQUEST
 
-    /* --------------- 패스워드 인증 및 USB 관련 --------------- */
+    /* --------------- 패스워드 인증 및 OTP 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_OTP_MESSAGE
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PASSWORD_INPUT
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PASSWORD_VERIFY
@@ -97,31 +101,33 @@ static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
 // The third is the name of the field, NOT the value which will appear in the field.
 static const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR s_rgCredProvFieldDescriptors[] =
 {
-    { SFI_TILEIMAGE,         CPFT_TILE_IMAGE,       L"Image",          CPFG_CREDENTIAL_PROVIDER_LOGO  },
-    { SFI_LABEL,             CPFT_SMALL_TEXT,       L"Tooltip",        CPFG_CREDENTIAL_PROVIDER_LABEL },
+    { SFI_TILEIMAGE,            CPFT_TILE_IMAGE,        L"Image",          CPFG_CREDENTIAL_PROVIDER_LOGO  },
+    { SFI_LABEL,                CPFT_SMALL_TEXT,        L"Tooltip",        CPFG_CREDENTIAL_PROVIDER_LABEL },
+
+    { SFI_STAGE_STATUS,         CPFT_LARGE_TEXT,        L"패턴 메시지"                                     },
 
     /* --------------- USB 관련 --------------- */
-    { SFI_USB_MESSAGE,       CPFT_LARGE_TEXT,       L"USB 메시지"                                      },
-    { SFI_USB_VERIFY,        CPFT_COMMAND_LINK,     L"USB 인증",       CPFG_STYLE_LINK_AS_BUTTON       },
+    { SFI_USB_MESSAGE,          CPFT_LARGE_TEXT,        L"USB 메시지"                                     },
+    { SFI_USB_VERIFY,           CPFT_COMMAND_LINK,      L"USB 인증",       CPFG_STYLE_LINK_AS_BUTTON      },
     
     /* --------------- 패턴 인증 관련 --------------- */
-    { SFI_PATTERN_MESSAGE,   CPFT_LARGE_TEXT,       L"패턴 메시지"                                     },
-    { SFI_PATTERN_REQUEST,   CPFT_COMMAND_LINK,     L"패턴 요청",         CPFG_STYLE_LINK_AS_BUTTON   },
+    { SFI_PATTERN_MESSAGE,      CPFT_LARGE_TEXT,        L"패턴 메시지"                                     },
+    { SFI_PATTERN_REQUEST,      CPFT_COMMAND_LINK,      L"패턴 요청",       CPFG_STYLE_LINK_AS_BUTTON      },
 
     /* --------------- 지문 인증 관련 --------------- */
-    { SFI_FINGERPRINT_MESSAGE,  CPFT_LARGE_TEXT,    L"지문 메시지"                                     },
-    { SFI_FINGERPRINT_REQUEST,  CPFT_COMMAND_LINK,  L"지문 요청",        CPFG_STYLE_LINK_AS_BUTTON     },
+    { SFI_FINGERPRINT_MESSAGE,  CPFT_LARGE_TEXT,        L"지문 메시지"                                     },
+    { SFI_FINGERPRINT_REQUEST,  CPFT_COMMAND_LINK,      L"지문 요청",       CPFG_STYLE_LINK_AS_BUTTON     },
 
     /* --------------- 안면 인증 관련 --------------- */
-    { SFI_FACE_MESSAGE,       CPFT_LARGE_TEXT,      L"안면 메시지"                                     },
-    { SFI_FACE_REQUEST,       CPFT_COMMAND_LINK,    L"안면 요청",         CPFG_STYLE_LINK_AS_BUTTON    },
+    { SFI_FACE_MESSAGE,         CPFT_LARGE_TEXT,        L"안면 메시지"                                     },
+    { SFI_FACE_REQUEST,         CPFT_COMMAND_LINK,      L"안면 요청",       CPFG_STYLE_LINK_AS_BUTTON     },
 
     /* --------------- 패스워드 인증 및 OTP 관련 --------------- */
-    { SFI_OTP_MESSAGE,       CPFT_LARGE_TEXT,       L"OTP 메시지"                                      },
-    { SFI_PASSWORD_INPUT,    CPFT_PASSWORD_TEXT,    L"패스워드 입력"                                    },
-    { SFI_PASSWORD_VERIFY,   CPFT_SUBMIT_BUTTON,    L"Submit"                                         },
-    { SFI_OTP_INPUT,         CPFT_EDIT_TEXT,        L"OTP 입력",                                      },
-    { SFI_OTP_REQUEST,       CPFT_COMMAND_LINK,     L"OTP 요청",          CPFG_STYLE_LINK_AS_BUTTON   },
+    { SFI_OTP_MESSAGE,          CPFT_LARGE_TEXT,        L"OTP 메시지"                                     },
+    { SFI_PASSWORD_INPUT,       CPFT_PASSWORD_TEXT,     L"패스워드 입력"                                   },
+    { SFI_PASSWORD_VERIFY,      CPFT_SUBMIT_BUTTON,     L"Submit"                                        },
+    { SFI_OTP_INPUT,            CPFT_EDIT_TEXT,         L"OTP 입력",                                      },
+    { SFI_OTP_REQUEST,          CPFT_COMMAND_LINK,      L"OTP 요청",       CPFG_STYLE_LINK_AS_BUTTON      },
     
 };
 

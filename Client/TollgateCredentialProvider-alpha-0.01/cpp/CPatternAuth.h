@@ -4,12 +4,12 @@
 #include "CTollgateCredential.h"
 
 
-class CPatternAuthThrd
+class CPatternAuth
 {
 public:
-    CPatternAuthThrd(void);
-    ~CPatternAuthThrd(void);
-    HRESULT StartPatternAuthThread(CTollgateCredential* pCredential);
+    CPatternAuth(void);
+    ~CPatternAuth(void);
+    HRESULT InitAuthThread(CTollgateCredential* pCredential);
 
 private:
     static DWORD WINAPI     _ThreadProc(LPVOID lpParameter);

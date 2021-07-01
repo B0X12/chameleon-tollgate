@@ -1,16 +1,16 @@
-#include "CPatternAuthThrd.h"
+#include "CPatternAuth.h"
 #include <strsafe.h>
 #include <atlstr.h>
 #include "RestClient.h"
 
 
 
-CPatternAuthThrd::CPatternAuthThrd(void)
+CPatternAuth::CPatternAuth(void)
 {
     _pCredential = NULL;
 }
 
-CPatternAuthThrd::~CPatternAuthThrd(void)
+CPatternAuth::~CPatternAuth(void)
 {
     if (_pCredential != NULL)
     {
@@ -20,7 +20,7 @@ CPatternAuthThrd::~CPatternAuthThrd(void)
 }
 
 // Performs the work required to spin off our message so we can listen for events.
-HRESULT CPatternAuthThrd::StartPatternAuthThread(CTollgateCredential* pCredential)
+HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
 {
     HRESULT hr = S_OK;
 
@@ -32,7 +32,7 @@ HRESULT CPatternAuthThrd::StartPatternAuthThread(CTollgateCredential* pCredentia
     _pCredential->AddRef();
 
     // Create and launch the window thread.
-    HANDLE hThread = ::CreateThread(NULL, 0, CPatternAuthThrd::_ThreadProc, (LPVOID)this, 0, NULL);
+    HANDLE hThread = ::CreateThread(NULL, 0, CPatternAuth::_ThreadProc, (LPVOID)this, 0, NULL);
     if (hThread == NULL)
     {
         hr = HRESULT_FROM_WIN32(::GetLastError());
@@ -48,9 +48,9 @@ HRESULT CPatternAuthThrd::StartPatternAuthThread(CTollgateCredential* pCredentia
 
 // Our thread procedure. We actually do a lot of work here that could be put back on the 
 // main thread, such as setting up the window, etc.
-DWORD WINAPI CPatternAuthThrd::_ThreadProc(LPVOID lpParameter)
+DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 {
-    CPatternAuthThrd* pThis = static_cast<CPatternAuthThrd*>(lpParameter);
+    CPatternAuth* pThis = static_cast<CPatternAuth*>(lpParameter);
     if (pThis == NULL)
     {
         // TODO: What's the best way to raise this error?
@@ -81,7 +81,8 @@ DWORD WINAPI CPatternAuthThrd::_ThreadProc(LPVOID lpParameter)
     {
         if (!wcscmp(wcMessageFromServer, L"true"))
         {
-            pThis->_pCredential->SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
+            //pThis->_pCredential->SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
+            pThis->_pCredential->GoToNextAuthStage();
         }
         else
         {

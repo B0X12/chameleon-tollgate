@@ -7,12 +7,12 @@
 #include "CUSB.h"
 
 
-class CUSBAuthWnd
+class CUSBAuth
 {
 public:
-    CUSBAuthWnd(void);
-	~CUSBAuthWnd(void);
-    HRESULT InitUSBAuthWnd(CTollgateCredential* pCredential);
+    CUSBAuth(void);
+	~CUSBAuth(void);
+    HRESULT InitAuthThread(CTollgateCredential* pCredential);
 
 private:
     HRESULT _MyRegisterClass(void);         // 윈도우 클래스 등록

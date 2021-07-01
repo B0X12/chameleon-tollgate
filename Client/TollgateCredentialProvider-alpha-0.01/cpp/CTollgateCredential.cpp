@@ -15,8 +15,8 @@
 #include <unknwn.h>
 #include "guid.h"
 #include "CTollgateCredential.h"
-#include "CUSBAuthWnd.h"
-#include "CPatternAuthThrd.h"
+#include "CUSBAuth.h"
+#include "CPatternAuth.h"
 
 
 #include "RestClient.h"     // Test
@@ -82,6 +82,11 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
     if (SUCCEEDED(hr))
     {
         hr = SHStrDupW(L"Tollgate MFA", &_rgFieldStrings[SFI_LABEL]);
+    }
+
+    if (SUCCEEDED(hr))
+    {
+        hr = SHStrDupW(L"인증 요소 0/0 진행 중", &_rgFieldStrings[SFI_STAGE_STATUS]);
     }
 
     /*
@@ -166,8 +171,10 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
         hr = pcpUser->GetSid(&_pszUserSid);
     }
 
-    _pUSBAuthWnd = new CUSBAuthWnd();
-    _pPatternAuthThrd = new CPatternAuthThrd();
+    _pUSBAuth = new CUSBAuth();
+    _pPatternAuth = new CPatternAuth();
+    
+    //Sleep(5000);
 
     return hr;
 }
@@ -184,9 +191,10 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents *pc
 
     if (SUCCEEDED(hr))
     {
-        SetCurrentAuthStage(AUTH_FACTOR_USB | AUTH_FACTOR_PATTERN | AUTH_FACTOR_PASSWORD);
+        //SetCurrentAuthStage(AUTH_FACTOR_USB | AUTH_FACTOR_PATTERN | AUTH_FACTOR_FINGERPRINT | AUTH_FACTOR_FACE | AUTH_FACTOR_OTP | AUTH_FACTOR_PASSWORD);
+        InitializeAuthStage();
     }
-
+    
     return hr;
 }
 
@@ -472,24 +480,41 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
         // --------------- USB 인증 버튼 ---------------
         case SFI_USB_VERIFY:
 
+            /*
             EnableAuthStartButton(SFI_USB_VERIFY, FALSE);
             
-            if (_pUSBAuthWnd != nullptr) {
-                _pUSBAuthWnd->InitUSBAuthWnd(this);
+            if (_pUSBAuth != nullptr) {
+                _pUSBAuth->InitAuthThread(this);
             }
-            
+            */
+            GoToNextAuthStage();
+           
             break;
 
         // --------------- 패턴 정보 요청 버튼 ---------------
         case SFI_PATTERN_REQUEST:
 
+            /*
             EnableAuthStartButton(SFI_PATTERN_REQUEST, FALSE);
 
-            if (_pPatternAuthThrd != nullptr) {
-                _pPatternAuthThrd->StartPatternAuthThread(this);
+            if (_pPatternAuth != nullptr) {
+                _pPatternAuth->InitAuthThread(this);
             }
+            */
+            GoToNextAuthStage();
             
             break;
+
+        // --------------- 지문 정보 요청 버튼 ---------------
+        case SFI_FINGERPRINT_REQUEST:
+            GoToNextAuthStage();
+            break;
+
+        // --------------- 안면 인식 정보 요청 버튼 ---------------
+        case SFI_FACE_REQUEST:
+            GoToNextAuthStage();
+            break;
+
 
         default:
             hr = E_INVALIDARG;
@@ -724,6 +749,179 @@ void CTollgateCredential::EnableAuthStartButton(DWORD dwFieldID, BOOL bEnable)
 }
 
 
+void CTollgateCredential::SetAuthMessage(DWORD dwFieldID, LPCWSTR strMessage)
+{
+    _pCredProvCredentialEvents->BeginFieldUpdates();
+    _pCredProvCredentialEvents->SetFieldString(nullptr, dwFieldID, strMessage);
+    _pCredProvCredentialEvents->EndFieldUpdates();
+}
+
+
+// 인증이 승인되었을 경우 호출됨
+void CTollgateCredential::GoToNextAuthStage()
+{
+    wchar_t wszStageMessage[256] = { 0, };
+
+    switch (_eCurrentAuthStage)
+    {
+        // USB -> Pattern
+    case AUTH_FACTOR_USB:
+
+        _eCurrentAuthStage = AUTH_FACTOR_PATTERN;
+
+        // 사용자가 Pattern 인증 사용 활성화
+        if (_bAuthFactorFlag & AUTH_FACTOR_PATTERN)
+        {
+            _nAuthFactorProcessCount++;
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+            SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
+        }
+        // 사용자가 Pattern 인증 사용 비활성화
+        else
+        {
+            GoToNextAuthStage();
+        }
+        break;
+
+        // Pattern -> Fingerprint
+    case AUTH_FACTOR_PATTERN:
+
+        _eCurrentAuthStage = AUTH_FACTOR_FINGERPRINT;
+
+        // 사용자가 Fingerprint 인증 사용 활성화
+        if (_bAuthFactorFlag & AUTH_FACTOR_FINGERPRINT)
+        {
+            _nAuthFactorProcessCount++;
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+            SetCurrentAuthStage(AUTH_FACTOR_FINGERPRINT);
+        }
+        // 사용자가 Fingerprint 인증 사용 비활성화
+        else
+        {
+            GoToNextAuthStage();
+        }
+        break;
+
+        // Fingerprint -> Face
+    case AUTH_FACTOR_FINGERPRINT:
+
+        _eCurrentAuthStage = AUTH_FACTOR_FACE;
+
+        // 사용자가 Face 인증 사용 활성화
+        if (_bAuthFactorFlag & AUTH_FACTOR_FACE)
+        {
+            _nAuthFactorProcessCount++;
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+            SetCurrentAuthStage(AUTH_FACTOR_FACE);
+        }
+        // 사용자가 Face 인증 사용 비활성화
+        else
+        {
+            GoToNextAuthStage();
+        }
+        break;
+
+        // Face -> OTP or Password
+    case AUTH_FACTOR_FACE:
+
+        _nAuthFactorProcessCount++;
+        StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+        SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+
+        // 사용자가 OTP 인증 사용 활성화 - 비밀번호와 OTP 둘 다 사용
+        if (_bAuthFactorFlag & AUTH_FACTOR_OTP)
+        {
+            _eCurrentAuthStage = AUTH_FACTOR_OTP;
+            SetCurrentAuthStage(AUTH_FACTOR_OTP | AUTH_FACTOR_PASSWORD);
+        }
+        // 사용자가 OTP 인증 사용 비활성화 - 비밀번호만 사용
+        else
+        {
+            _eCurrentAuthStage = AUTH_FACTOR_PASSWORD;
+            SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
+        }
+        break;
+    }
+}
+
+
+// Auth Factor 플래그 변수를 이용하여 첫 번째 스테이지 세팅
+void CTollgateCredential::InitializeAuthStage()
+{
+    BOOL bUseUSBFactor          = _bAuthFactorFlag & AUTH_FACTOR_USB;
+    BOOL bUsePatternFactor      = _bAuthFactorFlag & AUTH_FACTOR_PATTERN;
+    BOOL bUseFingerprintFactor  = _bAuthFactorFlag & AUTH_FACTOR_FINGERPRINT;
+    BOOL bUseFaceFactor         = _bAuthFactorFlag & AUTH_FACTOR_FACE;
+    BOOL bUseOTPFactor          = _bAuthFactorFlag & AUTH_FACTOR_OTP;
+    wchar_t wszStageMessage[256] = { 0, };
+
+    /*
+     *  사용하는 스테이지 개수 카운트
+     */
+    if (bUseUSBFactor)
+    {
+        _nAuthFactorCount++;
+    }
+    if (bUsePatternFactor)
+    {
+        _nAuthFactorCount++;
+    }
+    if (bUseFingerprintFactor)
+    {
+        _nAuthFactorCount++;
+    }
+    if (bUseFaceFactor)
+    {
+        _nAuthFactorCount++;
+    }
+    
+    _nAuthFactorCount++;
+    _nAuthFactorProcessCount++;
+    StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+    SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+
+    /*
+     *  초기 스테이지 세팅
+     *  인증 순서: USB -> Pattern -> Fingerprint -> Face -> OTP & Password
+     */
+    if (bUseUSBFactor)
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_USB;
+        SetCurrentAuthStage(AUTH_FACTOR_USB);
+    } 
+    else if (bUsePatternFactor)
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_PATTERN;
+        SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
+    }
+    else if (bUseFingerprintFactor)
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_FINGERPRINT;
+        SetCurrentAuthStage(AUTH_FACTOR_FINGERPRINT);
+    }
+    else if (bUseFaceFactor)
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_FACE;
+        SetCurrentAuthStage(AUTH_FACTOR_FACE);
+    }
+    else if (bUseOTPFactor)
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_OTP;
+        SetCurrentAuthStage(AUTH_FACTOR_OTP | AUTH_FACTOR_PASSWORD);
+    }
+    else
+    {
+        _eCurrentAuthStage = AUTH_FACTOR_PASSWORD;
+        SetCurrentAuthStage(AUTH_FACTOR_PASSWORD);
+    }
+
+    return;
+}
+
+
 void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 {
     _pCredProvCredentialEvents->BeginFieldUpdates();
@@ -784,14 +982,5 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 
     _pCredProvCredentialEvents->EndFieldUpdates();
 }
-
-
-void CTollgateCredential::SetAuthMessage(DWORD dwFieldID, LPCWSTR strMessage)
-{
-    _pCredProvCredentialEvents->BeginFieldUpdates();
-    _pCredProvCredentialEvents->SetFieldString(nullptr, dwFieldID, strMessage);
-    _pCredProvCredentialEvents->EndFieldUpdates();
-}
-
 
 
