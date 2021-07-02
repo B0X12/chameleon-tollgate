@@ -1,4 +1,4 @@
-package com.chameleon.tollgate.define.url;
+package com.chameleon.tollgate.url;
 
 public class Auth {
 	public static final String USB = "/auth/usb/";

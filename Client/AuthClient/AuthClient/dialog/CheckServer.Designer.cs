@@ -43,11 +43,11 @@ namespace AuthClient
             // 
             // CheckButton
             // 
-            this.CheckButton.Location = new System.Drawing.Point(193, 106);
+            this.CheckButton.Location = new System.Drawing.Point(171, 105);
             this.CheckButton.Name = "CheckButton";
-            this.CheckButton.Size = new System.Drawing.Size(128, 33);
+            this.CheckButton.Size = new System.Drawing.Size(157, 33);
             this.CheckButton.TabIndex = 1;
-            this.CheckButton.Text = "확인";
+            this.CheckButton.Text = "인증 서버에 접속";
             this.CheckButton.UseVisualStyleBackColor = true;
             this.CheckButton.Click += new System.EventHandler(this.CheckButton_Click);
             // 

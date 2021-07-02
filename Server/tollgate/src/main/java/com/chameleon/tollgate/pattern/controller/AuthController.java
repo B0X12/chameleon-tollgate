@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chameleon.tollgate.define.url.Auth;
-import com.chameleon.tollgate.define.url.Register;
 import com.chameleon.tollgate.pattern.AuthStatus;
 import com.chameleon.tollgate.pattern.service.AuthService;
+import com.chameleon.tollgate.url.Auth;
+import com.chameleon.tollgate.url.Register;
 
 @RestController
 public class AuthController {

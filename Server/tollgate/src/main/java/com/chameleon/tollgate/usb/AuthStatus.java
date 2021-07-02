@@ -1,4 +1,4 @@
-package com.chameleon.tollgate.pattern;
+package com.chameleon.tollgate.usb;
 
 public class AuthStatus {
 	private String id;
