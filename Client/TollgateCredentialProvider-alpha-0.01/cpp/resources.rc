@@ -1,6 +1,23 @@
-#include "Resource.h"
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
 
-// Bitmaps:
-IDB_TILE_IMAGE      BITMAP      DISCARDABLE "tileimage.bmp"
-END
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TILE_IMAGE          BITMAP                  "tollgate_logo.bmp"
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

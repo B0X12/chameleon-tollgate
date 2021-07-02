@@ -45,40 +45,19 @@ namespace AuthClient
                 return;
             }
 
-
-            // HTTP Request 설정
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(RestUtility.GetURL() + "accounts");
-            req.ContentType = "application/json";
-            req.Method = "POST";
-
-            // JSON 형식의 데이터 생성: [id, pwd]
-            using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+            // 회원 가입 절차
+            Account ac = new Account(idField.Text, pwdField.Text);
+            
+            string logonResult = HttpCommunication.SendRequestPOST("account/signup", ac);
+            
+            if (logonResult.Equals("true"))
             {
-                string json = JsonConvert.SerializeObject(new UserAccount(idField.Text, pwdField.Text));
-                sw.Write(json);
-            }
-
-            // 서버와 통신 시작
-            try
-            {
-                WebResponse resp = req.GetResponse();
-                /*
-                using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
-                {
-                    MessageBox.Show(sr.ReadToEnd());
-                }
-                */
-                MessageBox.Show("회원 가입이 완료되었습니다");
                 this.DialogResult = DialogResult.OK;
-            }
-            catch (WebException we)
+            } 
+            else
             {
-                MessageBox.Show("이미 존재하는 회원입니다");
+                MessageBox.Show("등록된 회원이 이미 존재합니다");
             }
-
         }
     }
-
-    // 해당 클래스는 RestServer DTO의 UserAccount에 대응됨
-
 }

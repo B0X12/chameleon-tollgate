@@ -19,8 +19,6 @@
 #include "CPatternAuth.h"
 
 
-#include "RestClient.h"     // Test
-
 CTollgateCredential::CTollgateCredential():
     _cRef(1),
     _pCredProvCredentialEvents(nullptr),

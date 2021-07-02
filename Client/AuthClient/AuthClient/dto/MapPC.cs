@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace AuthClient.dto
 {
-    class UserAccount
+    class MapPC
     {
         public string id { get; set; }
-        public string pwd { get; set; }
+        public string pc { get; set; }
+        public string alias { get; set; }
 
-        public UserAccount(string id, string pwd)
+        public MapPC(string id, string pwd, string alias)
         {
             this.id = id;
-            this.pwd = pwd;
+            this.pc = pc;
+            this.alias = alias;
         }
     }
 }

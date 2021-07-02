@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,18 +20,25 @@ namespace AuthClient
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            RestUtility.InitRestClient(serverInfoTextBox.Text, false);
+            HttpCommunication.Initialize(serverInfoTextBox.Text, true);
             statusMsgLabel.Text = "다음 서버에 연결하는 중입니다.. " + serverInfoTextBox.Text;
 
-            // 서버 연결 성공
-            if (RestUtility.IsServerAlive())
+            // Is the server alive?
+            try
             {
-                this.DialogResult = DialogResult.OK;
-            }
-
-            // 서버 연결 실패
-            else
+                string strFromServer = HttpCommunication.SendRequestGET("");
+                if (strFromServer.Equals("Hello"))
+                {
+                    this.DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    statusMsgLabel.Text = "인증 서버의 [IP:포트 번호]를 입력하십시오";
+                }
+            } 
+            catch(WebException we)
             {
+                MessageBox.Show(we.Message);
                 statusMsgLabel.Text = "인증 서버의 [IP:포트 번호]를 입력하십시오";
             }
         }
