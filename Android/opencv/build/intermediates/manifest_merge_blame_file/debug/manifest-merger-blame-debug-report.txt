@@ -6,8 +6,8 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="14"
-8-->D:\github\Chameleon_Tollgate\Android\opencv\java\AndroidManifest.xml
+8-->D:\Tollgate\Android\opencv\java\AndroidManifest.xml
 9        android:targetSdkVersion="21" />
-9-->D:\github\Chameleon_Tollgate\Android\opencv\java\AndroidManifest.xml
+9-->D:\Tollgate\Android\opencv\java\AndroidManifest.xml
 10
 11</manifest>

@@ -1,16 +1,10 @@
 package com.chameleon.tollgate.fcm.exception;
 
+import com.chameleon.tollgate.rest.exception.BaseRuntimeException;
+
 @SuppressWarnings("serial")
-public class MessageBuildException extends RuntimeException {
-	public final String message;
-	
-	public MessageBuildException(String message) {
-		super(message);
-		this.message = message;
-	}
-	
-	@Override()
-	public String toString() {
-		return message;
+public class MessageBuildException extends BaseRuntimeException {
+	public MessageBuildException(FCMError error) {
+		super(error);
 	}
 }

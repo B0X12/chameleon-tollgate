@@ -60,4 +60,9 @@ dependencies {
 
     //fingerprint
     implementation 'androidx.biometric:biometric:1.0.1'
+
+    //lombok
+    //implementation 'org.projectlombok:lombok'
+    compileOnly "org.projectlombok:lombok:1.18.20"
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
