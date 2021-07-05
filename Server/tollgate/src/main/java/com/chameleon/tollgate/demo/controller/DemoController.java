@@ -16,6 +16,7 @@ public class DemoController {
 	@Autowired
 	private DemoService demoSvc;
 
+	
 	// URL /demo에 대한 Get 메소드 매칭
 	@GetMapping(path="/demo/{name}")
 	public DemoResult getTest(@PathVariable("name") String name) { // 매개변수 문자열
@@ -36,26 +37,5 @@ public class DemoController {
 		FCMService fcm = new FCMService();
 		return fcm.send(title, body, token, data, click_action);
 	}
-	
-	// @PostMapping, @DeleteMapping 등이 있다
-	@PostMapping(path="/file")
-	public String test(@RequestPart MultipartFile file) throws IOException {
-		System.out.println(file.getContentType());
-		System.out.println(file.getName());
-		System.out.println(file.getOriginalFilename());
-		System.out.println(file.getSize());
-		
-//		byte[] a = new byte[(int)file.getSize()];
-//		a = file.getBytes();
-//		
-//		System.out.println(a.length);
-//		for(byte i : a) {
-//			System.out.print(i);
-//		}
-		
-		
-		utils.saveFile(file, "D:/");
-		
-		return "succeed";
-	}
+
 }

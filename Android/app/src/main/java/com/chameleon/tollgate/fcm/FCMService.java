@@ -10,24 +10,24 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.chameleon.tollgate.R;
+import com.chameleon.tollgate.define.LogTag;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FCMService extends FirebaseMessagingService {
-    private final String LOG_TAG = "Tollgate_FCM";
     private final String NOTI_ID = "tollgate_fcm";
     private final String NOTI_NAME = "tollgate_fcm";
 
     @Override
     public void onNewToken(String token) {
-        Log.d(LOG_TAG, "Refreshed token: " + token);
+        Log.d(LogTag.FCM, "Refreshed token: " + token);
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMsg) //앱이 포그라운드일 때만 작동
     {
-        Log.d(LOG_TAG, "Message received");
-        Log.d(LOG_TAG, "Data : " + remoteMsg.getData());
+        Log.d(LogTag.FCM, "Message received");
+        Log.d(LogTag.FCM, "Data : " + remoteMsg.getData());
         sendNotification(remoteMsg);
     }
 
