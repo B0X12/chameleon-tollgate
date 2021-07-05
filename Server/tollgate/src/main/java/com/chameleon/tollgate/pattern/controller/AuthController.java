@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chameleon.tollgate.define.url.Auth;
 import com.chameleon.tollgate.define.url.Register;
 import com.chameleon.tollgate.pattern.PatternPack;
-import com.chameleon.tollgate.pattern.dao.exception.PatternError;
-import com.chameleon.tollgate.pattern.dao.exception.PatternResultException;
 import com.chameleon.tollgate.pattern.service.AuthService;
 import com.chameleon.tollgate.rest.AuthList;
 import com.chameleon.tollgate.rest.Response;
@@ -59,40 +57,20 @@ public class AuthController {
 					HttpStatus.BAD_REQUEST);
 	}
 	
-//	@PostMapping(path=Auth.PATTERN+"{id}")
-//	public ResponseEntity<Response<Boolean>> VerifyPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
-//		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
-//			throw new InvalidRequestException(AuthError.NO_SESSION);
-//		
-//		if(service.VerifyPattern(id, entry.getPattern())) {	
-//			this.status.verify(id, true);
-//			return new ResponseEntity<>(
-//					new Response<Boolean>(HttpStatus.OK, true, entry.getTimestamp()),
-//					HttpStatus.OK);
-//		}
-//		this.status.verify(id, false);
-//		return new ResponseEntity<>(
-//				new Response<Boolean>(HttpStatus.BAD_REQUEST, false, entry.getTimestamp()),
-//				HttpStatus.BAD_REQUEST);
-//	}
-	
 	@PostMapping(path=Auth.PATTERN+"{id}")
-	public ResponseEntity<Response<String>> VerifyPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
+	public ResponseEntity<Response<Boolean>> VerifyPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
 		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 		
 		if(service.VerifyPattern(id, entry.getPattern())) {	
 			this.status.verify(id, true);
 			return new ResponseEntity<>(
-					new Response<String>(HttpStatus.OK, "true", entry.getTimestamp()),
+					new Response<Boolean>(HttpStatus.OK, true, entry.getTimestamp()),
 					HttpStatus.OK);
 		}
 		this.status.verify(id, false);
-		throw new PatternResultException(PatternError.MANY_PATTERN);
+		return new ResponseEntity<>(
+				new Response<Boolean>(HttpStatus.BAD_REQUEST, false, entry.getTimestamp()),
+				HttpStatus.BAD_REQUEST);
 	}
-	
-//	@GetMapping(path="/test")
-//	public Response2 test() throws Exception {
-//		return new Response2(false, 1234);
-//	}
 }

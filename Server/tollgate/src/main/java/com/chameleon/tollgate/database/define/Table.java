@@ -13,7 +13,7 @@ public enum Table {
 	
 	private final String value; 
 	
-	Table(String value) {
+	Table(String value){
 		this.value = value;
 	}
 	

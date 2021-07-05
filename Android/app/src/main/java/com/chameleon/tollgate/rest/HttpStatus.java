@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum HttpStatus {
     OK(200),
-    BAT_REQUEST(400),
+    BAD_REQUEST(400),
     NOT_FOUND(404),
     INTERNAL_SERVER_ERROR(500);
 

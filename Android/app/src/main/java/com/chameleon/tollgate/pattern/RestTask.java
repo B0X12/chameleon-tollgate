@@ -39,6 +39,7 @@ public class RestTask extends AsyncTask<Void, Void, Boolean> {
         try {
             RestResult result = rest.request();
             Log.d(LogTag.REST_PATTERN, "Result : " + result.toString());
+
             if(result.responseCode != HttpStatus.OK.value) {
                 ErrorResponse err = new Gson().fromJson(result.result, ErrorResponse.class);
                 Message msg = this.handler.obtainMessage(PatternMsg.TOAST_ERROR, err.getMessage());

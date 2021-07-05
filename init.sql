@@ -46,7 +46,7 @@ REFERENCES account(id));
 
 CREATE TABLE auth_face(
 id TEXT NOT NULL PRIMARY KEY,
-data BLOB NOT NULL,
+hash TEXT NOT NULL,
 CONSTRAINT auth_face_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 

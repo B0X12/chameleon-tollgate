@@ -23,12 +23,13 @@
 #include "dll.h"
 #include "resource.h"
 
-class CUSBAuthWnd;
-class CPatternAuthWnd;
+class CUSBAuth;
+class CPatternAuth;
 
 
 enum AUTH_FACTOR
 {
+    AUTH_FACTOR_INVALID = 0x00,
     AUTH_FACTOR_PASSWORD = 0x01,
     AUTH_FACTOR_USB = 0x02,
     AUTH_FACTOR_OTP = 0x04,
@@ -118,13 +119,14 @@ public:
 
     void EnableAuthStartButton(DWORD dwFieldID, BOOL bEnable);
     void SetAuthMessage(DWORD dwFieldID, LPCWSTR strMessage);
-    void SetCurrentAuthStage(BYTE bFlag);
+    void GoToNextAuthStage();
 
-    
+private:
+    void InitializeAuthStage();
+    void SetCurrentAuthStage(BYTE bFlag);           // for GoToNextAuthStage()
 
 
   private:
-
     virtual ~CTollgateCredential();
     long                                    _cRef;
     CREDENTIAL_PROVIDER_USAGE_SCENARIO      _cpus;                                          // The usage scenario for which we were enumerated.
@@ -145,14 +147,17 @@ public:
     
     //  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
     //  Field : -     -     Face  Fingerprint  Pattern  OTP   USB   Password
-    BYTE _bAuthFactorFlag = 0x3;
+    BYTE _bAuthFactorFlag = 63;
+    int _nAuthFactorCount = 0;
+    AUTH_FACTOR _eCurrentAuthStage = AUTH_FACTOR_INVALID;
+    int _nAuthFactorProcessCount = 0;
 
 
-    CUSBAuthWnd*            _pUSBAuthWnd = NULL;
-    CPatternAuthWnd*        _pPatternAuthWnd = NULL;
-    //CFingerprintAuthWnd*  _pFingerprintAuthWnd = NULL;
-    //CFaceAuthWnd*         _pFaceAuthWnd = NULL;
-    //COTPAuthWnd*          _pOTPAuthWnd = NULL;
+    CUSBAuth*            _pUSBAuth = NULL;
+    CPatternAuth*        _pPatternAuth = NULL;
+    //CFingerprintAuth*  _pFingerprintAuth = NULL;
+    //CFaceAuth*         _pFaceAuth = NULL;
+    //COTPAuth*          _pOTPAuth = NULL;
 };
 
 

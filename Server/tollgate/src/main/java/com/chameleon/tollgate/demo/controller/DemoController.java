@@ -13,6 +13,7 @@ public class DemoController {
 	@Autowired
 	private DemoService demoSvc;
 
+	
 	// URL /demo에 대한 Get 메소드 매칭
 	@GetMapping(path="/demo/{name}")
 	public DemoResult getTest(@PathVariable("name") String name) { // 매개변수 문자열

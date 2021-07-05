@@ -14,7 +14,7 @@ namespace RestClient
 
         public AuthCommunication()
         {
-            authServerURI = "http://192.168.0.15:8080";
+            authServerURI = "https://192.168.7.108:8080";
             
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | 
                 SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -24,33 +24,9 @@ namespace RestClient
 
         public bool IsServerAlive()
         {
-            HttpWebRequest req;
-            HttpWebResponse resp;
             string uri = authServerURI + "/";
 
-            try
-            {
-                req = (HttpWebRequest)WebRequest.Create(uri);
-                req.Method = "GET";
-                req.UserAgent = "Tollgate-client";
-
-                resp = (HttpWebResponse)req.GetResponse();
-                Console.WriteLine(resp.StatusCode);
-
-            }
-            catch (WebException e)
-            {
-                Console.WriteLine("CONNECTION-FAILED:");
-                Console.WriteLine(e.Message);
-                return false;
-            }
-
-            Stream stream = resp.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
-            string strFromServer = reader.ReadToEnd();
-            Console.WriteLine(strFromServer);
-
-            if (strFromServer.Equals("Hello"))
+            if (RequestAuthAndRecordResponse(uri))
             {
                 return true;
             }
@@ -60,38 +36,34 @@ namespace RestClient
 
         public bool VerifyUSB(string user, string usb_info)
         {
-            HttpWebRequest req;
-            HttpWebResponse resp;
-            string uri = authServerURI + "/usb/" + user + "/" + usb_info;
+            string uri = authServerURI + "/auth/usb/" + user + "/" + usb_info;
 
-            try
+            if (RequestAuthAndRecordResponse(uri))
             {
-                req = (HttpWebRequest)WebRequest.Create(uri);
-                req.Method = "GET";
-                req.UserAgent = "Tollgate-client";
-
-                resp = (HttpWebResponse)req.GetResponse();
-                Console.WriteLine(resp.StatusCode);
-            }
-            catch (WebException e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
+                return true;
             }
 
-            Stream stream = resp.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
-            string strFromServer = reader.ReadToEnd();
-            Console.WriteLine(strFromServer);
-
-            return true;
+            return false;
         }
 
         public bool VerifyPattern(string user)
         {
+            string uri = authServerURI + "/auth/pattern/" + user;
+
+            if(RequestAuthAndRecordResponse(uri))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool RequestAuthAndRecordResponse(string uri)
+        {
             HttpWebRequest req;
             HttpWebResponse resp;
-            string uri = "https://192.168.0.72:8080" + "/auth/pattern/" + user;
+            Stream stream;
+            StreamReader reader;
 
             try
             {
@@ -104,12 +76,25 @@ namespace RestClient
             }
             catch (WebException e)
             {
-                Console.WriteLine(e.Message);
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    Console.WriteLine(((HttpWebResponse)e.Response).StatusCode);
+                    Console.WriteLine("Error occured");
+                    /*
+                    stream = e.Response.GetResponseStream();
+                    reader = new StreamReader(stream);
+                    Console.WriteLine(reader.ReadToEnd());
+                    */
+                }
+                else
+                {
+                    Console.WriteLine(e.Message);
+                }
                 return false;
             }
 
-            Stream stream = resp.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
+            stream = resp.GetResponseStream();
+            reader = new StreamReader(stream);
             string strFromServer = reader.ReadToEnd();
             Console.WriteLine(strFromServer);
 

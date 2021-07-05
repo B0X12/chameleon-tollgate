@@ -1,13 +1,18 @@
 package com.chameleon.tollgate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.chameleon.tollgate.faceauth.AuthActivity;
+import com.chameleon.tollgate.faceauth.FaceRestTask;
+import com.chameleon.tollgate.faceauth.TrainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import com.chameleon.tollgate.define.LogTag;
@@ -38,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         btn_tmp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-                startActivity(intent);
+                // 임시 기능 테스트 버튼
+                Intent trainIntent = new Intent(getApplicationContext(), TrainActivity.class);
+                startActivity(trainIntent);
             }
         });
     }
@@ -49,4 +55,5 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Log.d(LogTag.FCM, "Token : " + FirebaseMessaging.getInstance().getToken().getResult());
     }
+
 }

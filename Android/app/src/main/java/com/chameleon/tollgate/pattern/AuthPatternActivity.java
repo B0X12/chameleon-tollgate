@@ -2,6 +2,7 @@ package com.chameleon.tollgate.pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.chameleon.tollgate.define.LogTag;
 import java.util.List;
 
 public class AuthPatternActivity extends AppCompatActivity {
-    protected Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg){
             switch(msg.what){
@@ -59,15 +60,17 @@ public class AuthPatternActivity extends AppCompatActivity {
                     RestTask rest = new RestTask(new PatternPack(PatternLockUtils.patternToString(patternView, pattern), Integer.parseInt(intent.getStringExtra("timestamp"))), context, handler);
                     boolean result = rest.execute().get();
                     Log.d(LogTag.AUTH_PATTERN, "Pattern authentication result : " + result);
-                    if(result) {
-                        Intent homeIntent = new Intent(context, MainActivity.class);
-                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(homeIntent);
-                        finish();
+
+                    if(!result) {
+                        Toast.makeText(getApplicationContext(), "패턴이 잘못되었습니다.", Toast.LENGTH_LONG).show();
                     }
-                }
-                catch (Exception ex){
+
+                    Intent homeIntent = new Intent(context, MainActivity.class);
+                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(homeIntent);
+                    finish();
+                } catch (Exception ex) {
                     Log.d(LogTag.AUTH_PATTERN, "Pattern authentication failed due to an error.");
                 }
             }
