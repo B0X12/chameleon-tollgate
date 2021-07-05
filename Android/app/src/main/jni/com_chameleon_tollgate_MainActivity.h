@@ -7,6 +7,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/*
+ * Class:     com_chameleon_tollgate_MainActivity
+ * Method:    test
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_chameleon_tollgate_MainActivity_test
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

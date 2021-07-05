@@ -1,12 +1,15 @@
 package com.chameleon.tollgate.demo.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chameleon.tollgate.demo.DemoResult;
 import com.chameleon.tollgate.demo.service.*;
+import com.chameleon.tollgate.face.*;
 
 @RestController
 public class DemoController {
@@ -35,4 +38,24 @@ public class DemoController {
 	}
 	
 	// @PostMapping, @DeleteMapping 등이 있다
+	@PostMapping(path="/file")
+	public String test(@RequestPart MultipartFile file) throws IOException {
+		System.out.println(file.getContentType());
+		System.out.println(file.getName());
+		System.out.println(file.getOriginalFilename());
+		System.out.println(file.getSize());
+		
+//		byte[] a = new byte[(int)file.getSize()];
+//		a = file.getBytes();
+//		
+//		System.out.println(a.length);
+//		for(byte i : a) {
+//			System.out.print(i);
+//		}
+		
+		
+		utils.saveFile(file, "D:/");
+		
+		return "succeed";
+	}
 }
