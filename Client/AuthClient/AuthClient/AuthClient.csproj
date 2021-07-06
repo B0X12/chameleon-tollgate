@@ -69,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="URL.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="dto\Account.cs" />
     <Compile Include="dto\MapPC.cs" />
     <Compile Include="dialog\LogIn.cs">
@@ -83,6 +85,7 @@
     <Compile Include="dialog\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="dto\AuthUSB.cs" />
     <Compile Include="HttpCommunication.cs" />
     <Compile Include="dialog\SignUp.cs">
       <SubType>Form</SubType>
@@ -104,6 +107,13 @@
     <Compile Include="dialog\LogInSignUp.Designer.cs">
       <DependentUpon>LogInSignUp.cs</DependentUpon>
     </Compile>
+    <Compile Include="dialog\USBConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dialog\USBConfig.Designer.cs">
+      <DependentUpon>USBConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util.cs" />
     <EmbeddedResource Include="dialog\LogIn.resx">
       <DependentUpon>LogIn.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dialog\CheckServer.resx">
       <DependentUpon>CheckServer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dialog\USBConfig.resx">
+      <DependentUpon>USBConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

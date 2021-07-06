@@ -16,10 +16,22 @@ namespace AuthClient
 {
     public partial class LogOnDialog : Form
     {
+        private string user;
+
         public LogOnDialog()
         {
             InitializeComponent();
+            this.user = "";
         }
+
+        public LogOnDialog(string user)
+        {
+            InitializeComponent();
+            this.user = user;
+            idField.Text = this.user;
+            idField.Enabled = false;
+        }
+
 
         private void logonButton_Click(object sender, EventArgs e)
         {
@@ -39,10 +51,11 @@ namespace AuthClient
 
             Account ua = new Account(idField.Text, pwdField.Text);
 
-            string logonResult = HttpCommunication.SendRequestPOST("account/login", ua);
+            string logonResult = HttpCommunication.SendRequestPOST(AccountURL.LOGIN, ua);
             
             if (logonResult.Equals("true"))
             {
+                Config.SetCurrentUser(idField.Text);
                 this.DialogResult = DialogResult.OK;
             } 
             else

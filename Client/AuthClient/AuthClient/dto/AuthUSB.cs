@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace AuthClient.dto
 {
-    class MapPC
+    class AuthUSB
     {
         public string id { get; set; }
-        public string pc { get; set; }
-        public string alias { get; set; }
+        public string usb_id { get; set; }
 
-        public MapPC(string id, string pc, string alias)
+        public AuthUSB(string id, string usb_id)
         {
             this.id = id;
-            this.pc = pc;
-            this.alias = alias;
+            this.usb_id = usb_id;
         }
     }
 }

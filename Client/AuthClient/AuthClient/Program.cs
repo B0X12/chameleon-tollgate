@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,18 +15,11 @@ namespace AuthClient
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bool bAuthServerExist = false;
-            bool bUserAccountExist = false;
-
             /*
-             *      TODO
-             *      설정 파일/레지스트리 읽어 들여
-             *      인증 서버 등록 여부 / 등록된 사용자 존재 여부 검사 수행하여
-             *      위 bool 타입 플래그 변수 값을 true/false로 초기화 함
+             *      C:\\Tollgate\\tollgate.cfg 파일을 읽어 기본 서버 주소(URL) 초기화
+             *      초기화 성공 시 true, 초기화 실패 시 false 
              */
-
-            // ---------- 등록된 서버가 없을 경우 ----------
-            if (!bAuthServerExist)
+            if (!Config.InitAuthServerByConfigFile())
             {
                 CheckServerDialog dlg_cs = new CheckServerDialog();
 
@@ -36,10 +30,25 @@ namespace AuthClient
                 dlg_cs.Close();
             }
 
+
+            /*
+             *      Server의 데이터베이스에서 map_pc 테이블을 검사하여
+             *      해당 PC와 연동된 유저의 ID 받아 옴
+             */
+
             // ---------- 유저 계정 정보가 존재할 경우 ----------
-            if (bUserAccountExist)
+            string user = Config.GetRegisteredUserIDBySID();
+            if (!user.Equals(""))
             {
-                LogOnDialog dlg_logon = new LogOnDialog();
+                LogOnDialog dlg_logon = new LogOnDialog(user);
+                DialogResult result = dlg_logon.ShowDialog();
+
+                // 로그온 성공
+                if (result == DialogResult.OK)
+                {
+                    MainDialog dlg_main = new MainDialog();
+                    dlg_main.ShowDialog();
+                }
             }
 
             // ---------- 유저 계정 정보가 존재하지 않을 경우 ----------
@@ -73,7 +82,6 @@ namespace AuthClient
                     MainDialog dlg_main = new MainDialog();
                     dlg_main.ShowDialog();
                 }
-
             }
         }
     }

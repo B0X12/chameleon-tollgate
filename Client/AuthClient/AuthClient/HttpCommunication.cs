@@ -12,8 +12,6 @@ using Newtonsoft.Json;
 
 namespace AuthClient
 {
-    // 전역으로 참조되는 클래스 - RestUtility
-    //      인증 서버와 통신하기 위한 메서드 모음
     class HttpCommunication
     {
         // --------------- 멤버 변수 ---------------
@@ -22,7 +20,7 @@ namespace AuthClient
 
         // --------------- 메소드 ----------------
 
-        public static void Initialize(string serverIPPort, bool useHttps = true)
+        internal static void InitializeBaseURL(string serverIPPort, bool useHttps = true)
         {
             // baseURL 초기화
             baseURL = "";
@@ -45,7 +43,7 @@ namespace AuthClient
         }
 
 
-        public static string GetURL()
+        internal static string GetURL()
         {
             return baseURL;
         }
@@ -54,7 +52,7 @@ namespace AuthClient
         /*
          * GET 메소드로 보내기
          */
-        public static string SendRequestGET(string path)
+        internal static string SendRequestGET(string path)
         {
             HttpWebRequest req;
             HttpWebResponse resp;
@@ -82,7 +80,7 @@ namespace AuthClient
          * POST 메소드로 보내기
          * JsonObj : 보낼 데이터 객체
          */
-        public static string SendRequestPOST(string path, object JsonObj)
+        internal static string SendRequestPOST(string path, object JsonObj)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(baseURL + path);
 

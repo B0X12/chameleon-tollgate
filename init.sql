@@ -33,8 +33,8 @@ CONSTRAINT init_factor_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 
 CREATE TABLE auth_usb(
-id TEXT NOT NULL PRIMARY KEY,
-usb_id TEXT NOT NULL,
+id TEXT NOT NULL,
+usb_id TEXT NOT NULL PRIMARY KEY,
 CONSTRAINT auth_usb_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 
