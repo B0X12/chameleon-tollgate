@@ -14,6 +14,9 @@ import com.chameleon.tollgate.define.LogTag;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FCMService extends FirebaseMessagingService {
     private final String NOTI_ID = "tollgate_fcm";
     private final String NOTI_NAME = "tollgate_fcm";
@@ -34,6 +37,9 @@ public class FCMService extends FirebaseMessagingService {
     private void sendNotification(RemoteMessage remoteMsg)
     {
         Intent intent = new Intent(remoteMsg.getNotification().getClickAction());
+        for(Map.Entry<String, String> entry : remoteMsg.getData().entrySet())
+            intent.putExtra(entry.getKey(), entry.getValue());
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationManager notiMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);

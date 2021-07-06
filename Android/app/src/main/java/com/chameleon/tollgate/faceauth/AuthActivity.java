@@ -2,6 +2,7 @@ package com.chameleon.tollgate.faceauth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,11 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +35,7 @@ public class AuthActivity extends AppCompatActivity implements CameraBridgeViewB
     private FaceAuthService m_faceAS;
     private CameraBridgeViewBase m_CameraView;
 
+    private String hashValue;
     private static final int MULTI_PERMISION_CODE = 200;
 
     private BaseLoaderCallback m_LoaderCallback = new BaseLoaderCallback(this) {
@@ -52,12 +58,36 @@ public class AuthActivity extends AppCompatActivity implements CameraBridgeViewB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        m_faceAS = new FaceAuthService(this.getApplicationContext());
+        m_faceAS = new FaceAuthService(this);
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            hashValue = intent.getStringExtra("hash");
+            try {
+                if(hashValue == null) {
+                    Toast.makeText(getApplicationContext(), "서버로부터 데이터를 받아오지 못했습니다.", Toast.LENGTH_SHORT);
+                    finish();
+                }
+                
+                if (hashValue.compareTo(m_faceAS.file2SHA512String(m_faceAS.getModelPath())) == 0) {
+                    Log.d("testtest", "hash value matched");
+                    Toast.makeText(getApplicationContext(), "해시값이 일치합니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "해시값이 일치하지 않습니다. 얼굴을 다시 등록해주세요.", Toast.LENGTH_SHORT);
+                    finish();
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         m_CameraView = (CameraBridgeViewBase)findViewById(R.id.activity_auth_view);
         m_CameraView.setVisibility(SurfaceView.VISIBLE);
         m_CameraView.setCvCameraViewListener(this);
         m_CameraView.setCameraIndex(FaceAuthService.m_frontCam);
+
 
     }
 
@@ -154,9 +184,24 @@ public class AuthActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat matInput = FaceAuthService.getOriginImage(inputFrame.rgba());
-        Mat matFace = m_faceAS.getDetectedFace(matInput, FaceAuthService.m_auth);
+        try {
+            // 얼굴 Rect 구하기
+            Rect rcFace;
+            if((rcFace = m_faceAS.detectFace(matInput)) == null){
+                return matInput;
+            }
+            // Rect로 사각형 그리기
+            Mat matFace = m_faceAS.drawRect(matInput, rcFace, false);
+
+            Mat matConf = m_faceAS.recogFace(matInput, rcFace);
 
 
-        return matFace;
+            return matConf;
+
+        }catch (FaceException | MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return matInput;
     }
 }

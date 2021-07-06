@@ -2,6 +2,10 @@ package com.chameleon.tollgate.faceauth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +20,11 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +41,7 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
     private static final int MULTI_PERMISION_CODE = 200;
 
     private BaseLoaderCallback m_LoaderCallback = new BaseLoaderCallback(this) {
+
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
@@ -53,14 +62,12 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
 
-        m_faceAS = new FaceAuthService(this.getApplicationContext());
-
         m_CameraView = (CameraBridgeViewBase)findViewById(R.id.activity_train_view);
         m_CameraView.setVisibility(SurfaceView.VISIBLE);
         m_CameraView.setCvCameraViewListener(this);
         m_CameraView.setCameraIndex(FaceAuthService.m_frontCam);
 
-        Toast.makeText(this, "얼굴 등록을 시작합니다.", Toast.LENGTH_SHORT);
+        m_faceAS = new FaceAuthService(this);
     }
 
     @Override
@@ -95,6 +102,19 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
         }
     }
 
+    private void checkEqual(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("알림").setMessage("얼굴을 다시 등록해 주세요.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     // 권한 부여
     @Override
     protected void onStart(){
@@ -118,7 +138,7 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
             String[] arr_permissions = (String[]) permissions.toArray(new String[permissions.size()]);
 
             if(permissions.isEmpty()){
-                Toast.makeText(this, "권한이 모두 허용되었습니다.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "권한이 모두 허용되었습니다.", Toast.LENGTH_SHORT).show();
             }
             else{
                 requestPermissions(arr_permissions, MULTI_PERMISION_CODE);
@@ -127,6 +147,7 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
         if(_CamPermission){
             onCameraPermissionGranted();
         }
+        Toast.makeText(this, "얼굴 등록을 시작합니다.", Toast.LENGTH_SHORT).show();
     }
 
     protected void onCameraPermissionGranted(){
@@ -159,8 +180,36 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat matInput = FaceAuthService.getOriginImage(inputFrame.rgba());
-        Mat matFace = m_faceAS.getDetectedFace(matInput, FaceAuthService.m_train);
+        try {
+            // 얼굴 Rect 구하기
+            Rect rcFace;
+            if((rcFace = m_faceAS.detectFace(matInput)) == null){
+                return matInput;
+            }
+            // Rect로 사각형 그리기
+            Mat matFace = m_faceAS.drawRect(matInput, rcFace, true);
 
-        return matFace;
+            // 학습시킬 이미지들이 모이면 학습
+            if(m_faceAS.getM_cnt() == m_faceAS.m_trainCnt) {
+                try {
+                    if(m_faceAS.trainFace()) {
+                        finish();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                m_faceAS.addTrainFaceImage(matInput, rcFace);
+            }
+
+            return matFace;
+
+        }catch (FaceException e){
+            e.printStackTrace();
+        }
+        return matInput;
     }
 }

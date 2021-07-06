@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chameleon.tollgate.url.Auth;
+import com.chameleon.tollgate.define.url.Auth;
 import com.chameleon.tollgate.usb.service.IUSBService;
 
 @RestController

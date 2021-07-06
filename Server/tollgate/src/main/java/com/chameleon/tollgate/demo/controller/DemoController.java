@@ -34,6 +34,5 @@ public class DemoController {
 		FCMService fcm = new FCMService();
 		return fcm.send(title, body, token, data, click_action);
 	}
-	
 	// @PostMapping, @DeleteMapping 등이 있다
 }

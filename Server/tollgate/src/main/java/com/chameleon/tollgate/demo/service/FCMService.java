@@ -16,9 +16,9 @@ public class FCMService implements IFCMService {
 			System.out.println(data);
 			FCMSender fcm = new FCMSender();
 			return fcm.send(FCMSender.msgBuilder()
-				.setTitle(title)
-				.setBody(body)
-				.setToken(token)
+				.setTitle(title) // 제목
+				.setBody(body) // 내용
+				.setToken(token) // 고유값
 				.setData(data)
 				.setClickAction(click_acktion)
 				.build());

@@ -103,11 +103,11 @@ public class FCMSender {
 		
 		public Message build() {
 			if(title == null)
-				throw(new MessageBuildException("Title not set."));
+				throw(new MessageBuildException(FCMError.NO_TITLE));
 			else if(body == null)
-				throw(new MessageBuildException("Body not set."));
+				throw(new MessageBuildException(FCMError.NO_BODY));
 			else if(token == null)
-				throw(new MessageBuildException("Token not set."));
+				throw(new MessageBuildException(FCMError.NO_TOKEN));
 			
 			this.data.put("title", title);
 			this.data.put("body", body);

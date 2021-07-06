@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.sqlite.SQLiteConfig;
 
+import com.chameleon.tollgate.database.exception.DBError;
 import com.chameleon.tollgate.database.exception.DatabaseConnectException;
 import com.chameleon.tollgate.database.exception.DatabaseResultException;
 import com.chameleon.tollgate.util.Util;
@@ -93,19 +94,18 @@ public class SQLiteManager {
 	public void commit() throws Exception {
 		this.connection.commit();
 	}
-
-	public String getToken(String id) throws Exception {
-		if (!this.isOpened)
-			throw new DatabaseConnectException("There is not connected with the database.");
-
+	
+	public String getToken(String id) throws Exception{
+		if(!this.isOpened)
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		
 		int count = getCountOf(Table.MAP_ANDROID, "id", "tester");
-		if (count > 1)
-			throw new DatabaseResultException("Too many tokens.");
-		else if (count == 0)
-			throw new DatabaseResultException("There are no tokens.");
-
-		PreparedStatement state = connection
-				.prepareStatement("select token from " + Table.MAP_ANDROID + " where id = ?");
+		if(count > 1)
+			throw new DatabaseResultException(DBError.MANY_TOKEN);
+		else if(count < 1)
+			throw new DatabaseResultException(DBError.NO_TOKEN);
+		
+		PreparedStatement state = connection.prepareStatement("select token from " + Table.MAP_ANDROID + " where id = ?");
 		state.setString(1, id);
 		ResultSet rs = state.executeQuery();
 
@@ -115,10 +115,9 @@ public class SQLiteManager {
 	}
 
 	public int getCountOf(Table table, String column, String value) throws Exception {
-		if (!this.isOpened)
-			throw new DatabaseConnectException("There is not connected with the database.");
-		PreparedStatement state = connection
-				.prepareStatement("select count(*) from " + table + " where " + column + " = ?");
+		if(!this.isOpened)
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		PreparedStatement state = connection.prepareStatement("select count(*) from " + table + " where " + column + " = ?");
 		state.setString(1, value);
 		ResultSet rs = state.executeQuery();
 
@@ -128,8 +127,8 @@ public class SQLiteManager {
 	}
 
 	public boolean isInitFactor(String id, Factor factor) throws Exception {
-		if (!this.isOpened)
-			throw new DatabaseConnectException("There is not connected with the database.");
+		if(!this.isOpened)
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
 		PreparedStatement state = connection.prepareStatement("select ? from " + Table.INIT_FACTOR + " where id = ?");
 		state.setString(1, factor.toString());
 		state.setString(1, id);

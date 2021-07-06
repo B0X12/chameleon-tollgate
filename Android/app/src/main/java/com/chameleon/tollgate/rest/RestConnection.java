@@ -71,6 +71,13 @@ public class RestConnection {
         this.params.putAll(params);
     }
 
+    public void setBody(Object obj) {
+        if(this.MESTHOD != Method.POST.toString())
+            throw new MethodException("Method is not Post.");
+        String json = new Gson().toJson(obj);
+        this.body = new Gson().fromJson(json, JsonObject.class);
+    }
+
     public void putBody(String key, String value){
         if(this.MESTHOD != Method.POST.toString())
             throw new MethodException("Method is not Post.");
@@ -108,6 +115,8 @@ public class RestConnection {
             connection.setRequestMethod(this.MESTHOD);
             connection.setConnectTimeout(this.TIMEOUT);
             connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
             connection.setHostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
@@ -116,16 +125,19 @@ public class RestConnection {
             });
 
             if(this.MESTHOD == Method.POST.toString()) {
-                //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF_8"));
                 OutputStream output = connection.getOutputStream();
                 byte[] value = this.body.toString().getBytes();
-                Log.d(LogTag.REST, this.body.toString());
+                Log.d(LogTag.REST, "Body : " + this.body.toString());
                 output.write(value, 0, value.length);
                 output.close();
             }
 
             int resCode = connection.getResponseCode();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF_8"));
+            BufferedReader reader;
+            if(resCode == HttpStatus.OK.value)
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF_8"));
+            else
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF_8"));
             StringBuilder result = new StringBuilder();
             String line;
             while((line = reader.readLine()) != null)
