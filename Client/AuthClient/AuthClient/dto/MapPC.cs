@@ -12,7 +12,7 @@ namespace AuthClient.dto
         public string pc { get; set; }
         public string alias { get; set; }
 
-        public MapPC(string id, string pwd, string alias)
+        public MapPC(string id, string pc, string alias)
         {
             this.id = id;
             this.pc = pc;

@@ -2,7 +2,6 @@ package com.chameleon.tollgate.account.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.springframework.stereotype.Component;
 

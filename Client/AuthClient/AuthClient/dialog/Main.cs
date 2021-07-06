@@ -15,6 +15,13 @@ namespace AuthClient
         public MainDialog()
         {
             InitializeComponent();
+            userLabel.Text += Config.GetCurrentUser();
+        }
+
+        private void usbDlgButton_Click(object sender, EventArgs e)
+        {
+            USBConfigDialog usbCfgDlg = new USBConfigDialog();
+            usbCfgDlg.ShowDialog();
         }
     }
 }

@@ -48,7 +48,7 @@ namespace AuthClient
             // 회원 가입 절차
             Account ac = new Account(idField.Text, pwdField.Text);
             
-            string logonResult = HttpCommunication.SendRequestPOST("account/signup", ac);
+            string logonResult = HttpCommunication.SendRequestPOST(AccountURL.SIGNUP, ac);
             
             if (logonResult.Equals("true"))
             {

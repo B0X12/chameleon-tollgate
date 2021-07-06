@@ -65,3 +65,4 @@ C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\Aut
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.csproj.CopyComplete
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.exe
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.pdb
+C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.USBConfigDialog.resources

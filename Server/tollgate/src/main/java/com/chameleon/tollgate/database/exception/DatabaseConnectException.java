@@ -1,16 +1,10 @@
 package com.chameleon.tollgate.database.exception;
 
+import com.chameleon.tollgate.rest.exception.BaseException;
+
 @SuppressWarnings("serial")
-public class DatabaseConnectException extends Exception {
-	public final String message;
-
-	public DatabaseConnectException(String message) {
-		super(message);
-		this.message = message;
-	}
-
-	@Override()
-	public String toString() {
-		return message;
+public class DatabaseConnectException extends BaseException {
+	public DatabaseConnectException(DBError error) {
+		super(error);
 	}
 }

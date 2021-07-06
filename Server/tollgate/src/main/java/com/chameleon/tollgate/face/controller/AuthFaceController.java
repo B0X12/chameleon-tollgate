@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.chameleon.tollgate.define.url.Auth;
+import com.chameleon.tollgate.define.url.Register;
 import com.chameleon.tollgate.face.AuthFaceStatus;
 import com.chameleon.tollgate.face.utils;
 import com.chameleon.tollgate.face.dto.Test;
 import com.chameleon.tollgate.face.service.AuthFaceService;
 import com.chameleon.tollgate.pattern.AuthStatus;
-import com.chameleon.tollgate.url.Auth;
-import com.chameleon.tollgate.url.Register;
 
 
 

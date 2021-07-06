@@ -20,15 +20,17 @@ namespace AuthClient
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            HttpCommunication.Initialize(serverInfoTextBox.Text, true);
+            HttpCommunication.InitializeBaseURL(serverInfoTextBox.Text, true);
             statusMsgLabel.Text = "다음 서버에 연결하는 중입니다.. " + serverInfoTextBox.Text;
 
             // Is the server alive?
             try
             {
-                string strFromServer = HttpCommunication.SendRequestGET("");
+                string strFromServer = HttpCommunication.SendRequestGET(EtcURL.SERVER_HELLO);
                 if (strFromServer.Equals("Hello"))
                 {
+                    // server.cfg 파일 생성
+                    Config.CreateConfigFile(HttpCommunication.GetURL());
                     this.DialogResult = DialogResult.OK;
                 }
                 else
