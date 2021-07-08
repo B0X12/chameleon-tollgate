@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using System.Windows.Forms;
+using AuthClient.tollgate;
+using AuthClient.tollgate.account.dialog;
+using AuthClient.tollgate.account.service;
 
 namespace AuthClient
 {
@@ -19,6 +19,7 @@ namespace AuthClient
              *      C:\\Tollgate\\tollgate.cfg 파일을 읽어 기본 서버 주소(URL) 초기화
              *      초기화 성공 시 true, 초기화 실패 시 false 
              */
+            AuthClientStart:
             if (!Config.InitAuthServerByConfigFile())
             {
                 CheckServerDialog dlg_cs = new CheckServerDialog();
@@ -35,9 +36,21 @@ namespace AuthClient
              *      Server의 데이터베이스에서 map_pc 테이블을 검사하여
              *      해당 PC와 연동된 유저의 ID 받아 옴
              */
+            AccountService accountService = new AccountService();
+            string user = "";
+            try
+            {
+                user = accountService.GetRegisteredUserIDBySID();
+            }
+            catch (WebException we)
+            {
+                Config.DeleteConfigFile();
+                MessageBox.Show("인증 서버와 연결이 실패하였습니다");
+                goto AuthClientStart;
+            }
+            
 
             // ---------- 유저 계정 정보가 존재할 경우 ----------
-            string user = Config.GetRegisteredUserIDBySID();
             if (!user.Equals(""))
             {
                 LogOnDialog dlg_logon = new LogOnDialog(user);
@@ -65,17 +78,26 @@ namespace AuthClient
                 {
                     SignUpDialog dlg_signup = new SignUpDialog();
                     result = dlg_signup.ShowDialog();
-
+                    
                     // ---------- 회원 가입 안 함 ----------
                     if (result == DialogResult.Cancel)
                     {
                         Environment.Exit(0);
-                    } 
+                    }
+
+                    // ---------- 회원 가입한 계정으로 로그인 ----------
+                    LogOnDialog dlg_logon = new LogOnDialog(Config.GetSignupUser());
+                    result = dlg_logon.ShowDialog();
                 }
 
-                LogOnDialog dlg_logon = new LogOnDialog();
-                result = dlg_logon.ShowDialog();
+                // ---------- 로그인 버튼 클릭 시 ----------
+                else
+                {
+                    LogOnDialog dlg_logon = new LogOnDialog();
+                    result = dlg_logon.ShowDialog();
+                }
 
+                
                 // 로그온 성공
                 if (result == DialogResult.OK)
                 {

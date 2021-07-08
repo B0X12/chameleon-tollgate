@@ -8,9 +8,9 @@ import lombok.Getter;
 public class Response <T> {
 	private int httpStatus;
 	private T result;
-	private int timestamp;
+	private long timestamp;
 	
-	public Response(HttpStatus httpStatus, T result, int timestamp) {
+	public Response(HttpStatus httpStatus, T result, long timestamp) {
 		this.httpStatus = httpStatus.value();
 		this.result = result;
 		this.timestamp = timestamp;
