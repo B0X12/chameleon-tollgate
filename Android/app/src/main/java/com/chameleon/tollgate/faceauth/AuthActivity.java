@@ -68,9 +68,9 @@ public class AuthActivity extends AppCompatActivity implements CameraBridgeViewB
                     Toast.makeText(getApplicationContext(), "서버로부터 데이터를 받아오지 못했습니다.", Toast.LENGTH_SHORT);
                     finish();
                 }
-                
-                if (hashValue.compareTo(m_faceAS.file2SHA512String(m_faceAS.getModelPath())) == 0) {
-                    Log.d("testtest", "hash value matched");
+
+                String modelPath = m_faceAS.getModelPath();
+                if (hashValue.compareTo(m_faceAS.file2SHA512String(modelPath)) == 0) {
                     Toast.makeText(getApplicationContext(), "해시값이 일치합니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "해시값이 일치하지 않습니다. 얼굴을 다시 등록해주세요.", Toast.LENGTH_SHORT);
@@ -183,25 +183,16 @@ public class AuthActivity extends AppCompatActivity implements CameraBridgeViewB
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        Mat matInput = FaceAuthService.getOriginImage(inputFrame.rgba());
-        try {
-            // 얼굴 Rect 구하기
-            Rect rcFace;
-            if((rcFace = m_faceAS.detectFace(matInput)) == null){
-                return matInput;
-            }
-            // Rect로 사각형 그리기
-            Mat matFace = m_faceAS.drawRect(matInput, rcFace, false);
+        Mat originImage = m_faceAS.getOriginImage(inputFrame.rgba());
+        m_faceAS.setImage(originImage);
 
-            Mat matConf = m_faceAS.recogFace(matInput, rcFace);
+        if(m_faceAS.preprocessImage()){
 
-
-            return matConf;
-
-        }catch (FaceException | MalformedURLException e){
-            e.printStackTrace();
+            Mat outputImage = m_faceAS.getFaceImage(false);
+            m_faceAS.recogFace();
+            return outputImage;
         }
 
-        return matInput;
+        return originImage;
     }
 }
