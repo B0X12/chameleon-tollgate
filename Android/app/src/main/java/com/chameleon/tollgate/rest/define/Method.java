@@ -1,7 +1,10 @@
 package com.chameleon.tollgate.rest.define;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum Method {
     GET("GET"),
+    PUT("PUT"),
     POST("POST"),
     DELETE("DELETE"),
     PATCH("PATCH");
@@ -13,7 +16,7 @@ public enum Method {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return value;
     }
 }

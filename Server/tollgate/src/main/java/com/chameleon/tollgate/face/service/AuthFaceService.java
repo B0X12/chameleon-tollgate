@@ -7,11 +7,6 @@ import com.chameleon.tollgate.database.define.Table;
 import com.chameleon.tollgate.face.dao.AuthFaceDAO;
 import com.chameleon.tollgate.fcm.FCMSender;
 
-import org.python.*;
-import org.python.core.PyFunction;
-import org.python.core.PyObject;
-import org.python.util.PythonInterpreter;
-
 @Service
 public class AuthFaceService implements IAuthFaceService{
 

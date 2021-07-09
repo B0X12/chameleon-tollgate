@@ -4,7 +4,6 @@
     package="com.chameleon.tollgate">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -30,37 +29,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tollgate">
-
+        <activity android:name=".HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".faceauth.AuthActivity">
             <intent-filter>
-                <action android:name="android.intent.action.AUTH_FACE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".faceauth.TrainActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.TRAIN_FACE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".fingerprint.FingerPrintManager"
-            tools:ignore="Instantiatable"></activity>
-        <activity android:name=".fingerprint.FingerPrintActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".pattern.AuthPatternActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.AUTH_PATTERN" />
+                <action android:name="android.intent.action.AUTH_FACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".faceauth.TrainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.TRAIN_FACE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".fingerprint.FingerPrintManager"
+            tools:ignore="Instantiatable"></activity>
+        <activity android:name=".fingerprint.FingerPrintActivity"></activity>
+        <activity android:name=".pattern.AuthPatternActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTH_PATTERN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".login.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <service
