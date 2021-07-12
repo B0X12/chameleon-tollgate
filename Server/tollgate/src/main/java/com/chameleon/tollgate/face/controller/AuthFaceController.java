@@ -25,7 +25,6 @@ import com.chameleon.tollgate.face.AuthFaceStatus;
 import com.chameleon.tollgate.face.utils;
 import com.chameleon.tollgate.face.dto.Test;
 import com.chameleon.tollgate.face.service.AuthFaceService;
-import com.chameleon.tollgate.pattern.AuthStatus;
 
 
 

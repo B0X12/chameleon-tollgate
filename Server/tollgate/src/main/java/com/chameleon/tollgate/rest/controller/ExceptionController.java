@@ -30,4 +30,5 @@ public class ExceptionController {
 	public ResponseEntity<ErrorResponse> exceptionHandler(HttpServletRequest request, final Exception ex){
 		return new ResponseEntity<>(new ErrorResponse(new CommonError(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
 }

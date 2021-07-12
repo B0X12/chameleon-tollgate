@@ -24,7 +24,7 @@ public class USBDAO extends SQLiteManager implements IUSBDAO {
 	@Override
 	public int IsRegisteredUSB(String user, String usb_info) throws Exception {
 		if (!super.isOpen()) {
-			throw new DatabaseConnectException("There is not connected with the database.");
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
 		}
 		
 		/*

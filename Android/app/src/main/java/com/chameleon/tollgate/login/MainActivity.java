@@ -174,12 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if(!loginService.saveServerIP(this)) {
-                Toast.makeText(this, "서버 주소를 저장할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                loginService.unsetServerIP(this);
-                return;
-            }
-
             loginService.beforeSetID(this);
             String id = loginService.getID(this, this.handler);
             if(id == null)

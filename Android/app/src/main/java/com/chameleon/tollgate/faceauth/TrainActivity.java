@@ -179,37 +179,20 @@ public class TrainActivity extends AppCompatActivity implements CameraBridgeView
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        Mat matInput = FaceAuthService.getOriginImage(inputFrame.rgba());
-        try {
-            // 얼굴 Rect 구하기
-            Rect rcFace;
-            if((rcFace = m_faceAS.detectFace(matInput)) == null){
-                return matInput;
-            }
-            // Rect로 사각형 그리기
-            Mat matFace = m_faceAS.drawRect(matInput, rcFace, true);
+        Mat originImage = m_faceAS.getOriginImage(inputFrame.rgba());
+        m_faceAS.setImage(originImage);
 
-            // 학습시킬 이미지들이 모이면 학습
-            if(m_faceAS.getM_cnt() == m_faceAS.m_trainCnt) {
-                try {
-                    if(m_faceAS.trainFace()) {
-                        finish();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            }
-            else{
-                m_faceAS.addTrainFaceImage(matInput, rcFace);
-            }
+        if(m_faceAS.preprocessImage()){
 
-            return matFace;
+            Mat outputImage = m_faceAS.getFaceImage(true);
+            if(m_faceAS.getM_cnt() < m_faceAS.m_trainCnt)
+                m_faceAS.addCurrnentImage2List();
+            else
+                m_faceAS.trainFace();
 
-        }catch (FaceException e){
-            e.printStackTrace();
+            return outputImage;
         }
-        return matInput;
+
+        return originImage;
     }
 }

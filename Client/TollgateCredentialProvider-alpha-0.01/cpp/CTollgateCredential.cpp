@@ -84,7 +84,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 
     if (SUCCEEDED(hr))
     {
-        hr = SHStrDupW(L"인증 요소 0/0 진행 중", &_rgFieldStrings[SFI_STAGE_STATUS]);
+        hr = SHStrDupW(L"인증 단계 0/0 진행 중", &_rgFieldStrings[SFI_STAGE_STATUS]);
     }
 
     /*
@@ -730,14 +730,17 @@ HRESULT CTollgateCredential::GetFieldOptions(DWORD dwFieldID,
     return S_OK;
 }
 
+
 void CTollgateCredential::EnableAuthStartButton(DWORD dwFieldID, BOOL bEnable)
 {
     _pCredProvCredentialEvents->BeginFieldUpdates();
 
+    // Enable 속성이 True일 경우 버튼 활성화
     if (bEnable)
     {
         _pCredProvCredentialEvents->SetFieldInteractiveState(nullptr, dwFieldID, CPFIS_NONE);
     }
+    // Enable 속성이 False일 경우 버튼 비활성화
     else
     {
         _pCredProvCredentialEvents->SetFieldInteractiveState(nullptr, dwFieldID, CPFIS_DISABLED);
@@ -749,6 +752,7 @@ void CTollgateCredential::EnableAuthStartButton(DWORD dwFieldID, BOOL bEnable)
 
 void CTollgateCredential::SetAuthMessage(DWORD dwFieldID, LPCWSTR strMessage)
 {
+    // 필드의 문자열을 세팅함
     _pCredProvCredentialEvents->BeginFieldUpdates();
     _pCredProvCredentialEvents->SetFieldString(nullptr, dwFieldID, strMessage);
     _pCredProvCredentialEvents->EndFieldUpdates();
@@ -771,7 +775,7 @@ void CTollgateCredential::GoToNextAuthStage()
         if (_bAuthFactorFlag & AUTH_FACTOR_PATTERN)
         {
             _nAuthFactorProcessCount++;
-            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
             SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
             SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
         }
@@ -791,7 +795,7 @@ void CTollgateCredential::GoToNextAuthStage()
         if (_bAuthFactorFlag & AUTH_FACTOR_FINGERPRINT)
         {
             _nAuthFactorProcessCount++;
-            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
             SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
             SetCurrentAuthStage(AUTH_FACTOR_FINGERPRINT);
         }
@@ -811,7 +815,7 @@ void CTollgateCredential::GoToNextAuthStage()
         if (_bAuthFactorFlag & AUTH_FACTOR_FACE)
         {
             _nAuthFactorProcessCount++;
-            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+            StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
             SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
             SetCurrentAuthStage(AUTH_FACTOR_FACE);
         }
@@ -826,7 +830,7 @@ void CTollgateCredential::GoToNextAuthStage()
     case AUTH_FACTOR_FACE:
 
         _nAuthFactorProcessCount++;
-        StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+        StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
         SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
 
         // 사용자가 OTP 인증 사용 활성화 - 비밀번호와 OTP 둘 다 사용
@@ -878,7 +882,7 @@ void CTollgateCredential::InitializeAuthStage()
     
     _nAuthFactorCount++;
     _nAuthFactorProcessCount++;
-    StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 요소 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+    StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
     SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
 
     /*

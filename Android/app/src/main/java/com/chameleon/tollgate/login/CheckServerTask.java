@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;
 import com.chameleon.tollgate.rest.ErrorResponse;
 import com.chameleon.tollgate.rest.HttpStatus;
+import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.RestConnection;
 import com.chameleon.tollgate.rest.RestResult;
 import com.chameleon.tollgate.rest.define.Method;
@@ -32,6 +34,7 @@ public class CheckServerTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         RestConnection rest = new RestConnection(this.context, Path.TOLLGATE, Method.GET, false);
+        rest.putParam("timestamp", Util.getTimestamp());
 
         try {
             RestResult result = rest.request();
@@ -45,7 +48,8 @@ public class CheckServerTask extends AsyncTask<Void, Void, Boolean> {
                 return null;
             }
 
-            return result.result.compareTo("Hello") == 0;
+            Response<String> response = new Gson().fromJson(result.result, Response.class);
+            return response.getResult().compareTo("Hello") == 0;
         } catch (Exception ex) {
             Log.d(LogTag.REST_ACCOUNT, "Exception : " + ex.getMessage());
             return null;

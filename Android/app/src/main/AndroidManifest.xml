@@ -4,8 +4,6 @@
     package="com.chameleon.tollgate">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
@@ -42,22 +40,26 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity android:name=".faceauth.TrainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.TRAIN_FACE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".fingerprint.FingerPrintManager"
+
+        <activity android:name=".fingerprint.FingerPrintManager"
             tools:ignore="Instantiatable"></activity>
+
         <activity android:name=".fingerprint.FingerPrintActivity"></activity>
+
         <activity android:name=".pattern.AuthPatternActivity">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_PATTERN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity android:name=".login.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
