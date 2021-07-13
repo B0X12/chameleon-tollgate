@@ -13,7 +13,9 @@ public enum Path {
     LOGIN("/account/android/login/"),
     LOGOUT("/account/android/logout/"),
     SET_TOKEN("/account/android/map/"),
-    AD_ID("/account/android/id/");
+    AD_ID("/account/android/id/"),
+
+    REGIST_PATTERN("/register/pattern/");
 
     private final String value;
 

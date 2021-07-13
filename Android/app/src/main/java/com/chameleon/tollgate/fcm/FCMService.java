@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FCMService extends FirebaseMessagingService {
-
     @Override
     public void onNewToken(@NotNull String token) {
         Log.d(LogTag.FCM, "Refreshed token: " + token);

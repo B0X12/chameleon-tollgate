@@ -99,7 +99,7 @@ public class LoginService {
     }
 
     public boolean checkServer(Context context, Handler handler) throws ExecutionException, InterruptedException {
-        CheckServerTask checkServer = new CheckServerTask(context, handler);
+        CheckServerTask checkServer = new CheckServerTask(Util.getTimestamp(), context, handler);
         boolean result = checkServer.execute().get();
         return result;
     }
