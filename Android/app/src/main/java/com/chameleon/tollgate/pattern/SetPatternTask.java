@@ -1,4 +1,4 @@
-package com.chameleon.tollgate.login;
+package com.chameleon.tollgate.pattern;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.pattern.dto.PatternPack;
 import com.chameleon.tollgate.rest.ErrorResponse;
 import com.chameleon.tollgate.rest.HttpStatus;
 import com.chameleon.tollgate.rest.Response;
@@ -17,15 +18,15 @@ import com.chameleon.tollgate.rest.define.Method;
 import com.chameleon.tollgate.rest.define.Path;
 import com.google.gson.Gson;
 
-public class CheckServerTask extends AsyncTask<Void, Void, Boolean> {
+public class SetPatternTask extends AsyncTask<Void, Void, Boolean> {
+    PatternPack entry;
     private final Context context;
     private final Handler handler;
-    private long timestamp;
 
-    public CheckServerTask(long timetamp, Context context, Handler handler) {
+    public SetPatternTask(String pattern, long timestamp, Context context, Handler handler) {
+        this.entry = new PatternPack(pattern, timestamp);
         this.context = context;
         this.handler = handler;
-        this.timestamp = timetamp;
     }
 
     @Override
@@ -35,32 +36,32 @@ public class CheckServerTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        RestConnection rest = new RestConnection(this.context, Path.TOLLGATE, Method.GET, false);
-        rest.putParam("timestamp", Util.getTimestamp());
+        RestConnection rest = new RestConnection(this.context, Path.REGIST_PATTERN, Method.POST);
+        rest.setBody(entry);
 
         try {
             RestResult result = rest.request();
-            Log.d(LogTag.REST_ACCOUNT, "Result : " + result);
+            Log.d(LogTag.REST_PATTERN, "Result : " + result);
 
             if(result.responseCode != HttpStatus.OK.value) {
                 ErrorResponse err = new Gson().fromJson(result.result, ErrorResponse.class);
-                Log.d(LogTag.REST_ACCOUNT, "Exception : " + err.getMessage());
-                Message msg = this.handler.obtainMessage(LoginMsg.TOAST_ERROR, err.getMessage());
+                Log.d(LogTag.REST_PATTERN, "Exception : " + err.getMessage());
+                Message msg = this.handler.obtainMessage(PatternMsg.TOAST_ERROR, err.getMessage());
                 this.handler.sendMessage(msg);
-                return null;
+                return false;
             }
 
-            Response<String> response = new Gson().fromJson(result.result, Response.class);
-            if(this.timestamp != response.getTimestamp()) {
-                Log.d(LogTag.REST_ACCOUNT, "Exception : Invalid response");
-                Message msg = this.handler.obtainMessage(LoginMsg.TOAST_ERROR, "Invalid response.");
+            Response<Boolean> response = new Gson().fromJson(result.result, Response.class);
+            if(this.entry.getTimestamp() != response.getTimestamp()) {
+                Log.d(LogTag.REST_PATTERN, "Exception : Invalid response");
+                Message msg = this.handler.obtainMessage(PatternMsg.TOAST_ERROR, "Invalid response.");
                 this.handler.sendMessage(msg);
-                return null;
+                return false;
             }
-            return response.getResult().compareTo("Hello") == 0;
+            return response.getResult();
         } catch (Exception ex) {
-            Log.d(LogTag.REST_ACCOUNT, "Exception : " + ex.getMessage());
-            return null;
+            Log.d(LogTag.REST_PATTERN, "Exception : " + ex.getMessage());
+            return false;
         }
     }
 

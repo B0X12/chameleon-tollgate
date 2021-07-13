@@ -24,6 +24,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.chameleon.tollgate.define.LogTag;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CFGFIlE = "config.cfg";
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LogTag.TOLLGATE, "App started");
-
         MainActivity activity = this;
 
         Button btnLogin = findViewById(R.id.btn_login);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     EditText editID = findViewById(R.id.edit_id);
                     MainActivity.USER_ID = editID.getText().toString();
-                    String pwd = ((TextView) findViewById(R.id.edit_pwd)).getText().toString();
+                    String pwd = Util.getHash(((TextView) findViewById(R.id.edit_pwd)).getText().toString());
                     LoginTask rest = new LoginTask(activity, handler, pwd, Util.getTimestamp());
                     Boolean result = rest.execute().get();
                     if(result == null)

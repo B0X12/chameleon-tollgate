@@ -4,10 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pattern.AuthPatternActivity">
+    tools:context=".pattern.SetPatternActivity">
+
+    <TextView
+        android:id="@+id/text_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/pattern_set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.andrognito.patternlockview.PatternLockView
-        android:id="@+id/pattern_auth"
+        android:id="@+id/pattern_set"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="200dp"

@@ -16,6 +16,7 @@ import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
 import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
+import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;
 import com.chameleon.tollgate.pattern.dto.PatternPack;
 
@@ -53,7 +54,7 @@ public class AuthPatternActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Context context = this;
-        PatternLockView patternView = findViewById(R.id.pattern_lock_view);
+        PatternLockView patternView = findViewById(R.id.pattern_auth);
         PatternLockViewListener patternListener = new PatternLockViewListener() {
             @Override
             public void onStarted() { }
@@ -66,7 +67,8 @@ public class AuthPatternActivity extends AppCompatActivity {
                 Log.d(LogTag.AUTH_PATTERN, "Pattern complete: " +
                         PatternLockUtils.patternToString(patternView, pattern));
                 try {
-                    RestTask rest = new RestTask(new PatternPack(PatternLockUtils.patternToString(patternView, pattern), Integer.parseInt(intent.getStringExtra("timestamp"))), context, handler);
+                    String resultPattern = PatternLockUtils.patternToString(patternView, pattern);
+                    RestTask rest = new RestTask(new PatternPack(Util.getHash(resultPattern), Integer.parseInt(intent.getStringExtra("timestamp"))), context, handler);
                     boolean result = rest.execute().get();
                     Log.d(LogTag.AUTH_PATTERN, "Pattern authentication result : " + result);
 
