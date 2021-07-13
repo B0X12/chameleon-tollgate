@@ -2,20 +2,11 @@ package com.chameleon.tollgate.faceauth;
 
 import android.app.Activity;
 import android.content.Context;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
 import android.util.Log;
 import android.widget.Toast;
 

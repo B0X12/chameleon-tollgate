@@ -109,16 +109,6 @@ public class RestConnection {
     }
 
     public RestResult request() throws Exception {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
         String strUrl = makeURI();
         Log.d(LogTag.REST, "URI : " + this.METHOD + "/" + strUrl);
         URL url = new URL(strUrl);

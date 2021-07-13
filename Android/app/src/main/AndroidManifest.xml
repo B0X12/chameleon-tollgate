@@ -4,16 +4,6 @@
     package="com.chameleon.tollgate">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-    <uses-permission android:name="android.permission.CAMERA" />
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -37,52 +27,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tollgate">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
         <activity android:name=".faceauth.AuthFaceActivity">
-=======
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-        <activity android:name=".HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".faceauth.AuthActivity">
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_FACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.HOME" />
-=======
-        <activity android:name=".faceauth.TrainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.TRAIN_FACE" />
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
-        <activity android:name=".faceauth.TrainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.TRAIN_FACE" />
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
-        <activity android:name=".faceauth.TrainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.TRAIN_FACE" />
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

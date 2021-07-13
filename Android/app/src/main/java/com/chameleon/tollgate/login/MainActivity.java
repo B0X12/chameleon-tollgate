@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
+import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.chameleon.tollgate.pattern.PatternMsg;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -62,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
+    Button btn_tmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LogTag.TOLLGATE, "App started");
+
 
         MainActivity activity = this;
 
