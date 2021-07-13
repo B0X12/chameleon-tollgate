@@ -3,7 +3,7 @@ package com.chameleon.tollgate.rest;
 import android.content.Context;
 import android.util.Log;
 
-import com.chameleon.tollgate.MainActivity;
+import com.chameleon.tollgate.login.MainActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.define.LogTag;
 import com.chameleon.tollgate.rest.define.*;
@@ -20,9 +20,7 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -32,30 +30,36 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class RestConnection {
     private static final int DEFAULT_TIMEOUT = 3000;
+    private static final String USER_AGENT = "Tollgate-client";
 
     private static SSLContext sslContext = null;
 
     private final int TIMEOUT;
-    private final String MESTHOD;
-    private HashMap<String, String> params;
+    private final String METHOD;
+    private ArrayList<String> params;
     private JsonObject body;
     private StringBuilder uri;
-    private Context context;
+    private final Context context;
 
     public RestConnection(Context context, Path path, Method method) {
-        this(context, path, method, RestConnection.DEFAULT_TIMEOUT);
+        this(context, path, method, RestConnection.DEFAULT_TIMEOUT, true);
     }
 
-    public RestConnection(Context context, Path path, Method method, int timeout) {
-        this.MESTHOD = method.toString();
+    public RestConnection(Context context, Path path, Method method, boolean useID) {
+        this(context, path, method, RestConnection.DEFAULT_TIMEOUT, useID);
+    }
+
+    public RestConnection(Context context, Path path, Method method, int timeout, boolean useID) {
+        this.METHOD = method.toString();
         this.TIMEOUT = timeout;
-        this.params = new HashMap<String, String>();
+        this.params = new ArrayList<>();
         this.uri = new StringBuilder();
         uri.append("https://")
                 .append(MainActivity.SERVER_IP)
                 .append(":" + Define.SERVER_PORT)
-                .append(path)
-                .append(MainActivity.USER_ID);
+                .append(path);
+        if(useID)
+            uri.append(MainActivity.USER_ID);
         this.body = new JsonObject();
         this.context = context;
 
@@ -63,103 +67,108 @@ public class RestConnection {
             setSSLContext();
     }
 
-    public void putParam(String key, String value){
-        this.params.put(key, value);
-    }
-
-    public void putAllParam(HashMap<String, String> prarams) {
-        this.params.putAll(params);
+    public void putParam (String key, Object value) {
+        this.params.add(key + "=" + value);
     }
 
     public void setBody(Object obj) {
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         String json = new Gson().toJson(obj);
         this.body = new Gson().fromJson(json, JsonObject.class);
     }
 
-    public void putBody(String key, String value){
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+    public void putBody(String key, String value) {
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         this.body.addProperty(key, value);
     }
 
-    public void putBody(String key, Number value){
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+    public void putBody(String key, Number value) {
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         this.body.addProperty(key, value);
     }
 
-    public void putBody(String key, Boolean value){
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+    public void putBody(String key, Boolean value) {
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         this.body.addProperty(key, value);
     }
 
-    public void putBody(String key, JsonElement value){
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+    public void putBody(String key, JsonElement value) {
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         this.body.add(key, value);
     }
 
-    public void putBody(String key, Object object){
-        if(this.MESTHOD != Method.POST.toString())
-            throw new MethodException("Method is not Post.");
+    public void putBody(String key, Object object) {
+        if(!this.METHOD.equals(Method.POST.toString()) && !this.METHOD.equals(Method.PUT.toString()))
+            throw new MethodException("Method is not Post or Put.");
         this.body.addProperty(key, new Gson().toJson(object));
     }
 
     public RestResult request() throws Exception {
-            URL url = new URL(makeURI());
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setSSLSocketFactory(RestConnection.sslContext.getSocketFactory());
-            connection.setRequestMethod(this.MESTHOD);
-            connection.setConnectTimeout(this.TIMEOUT);
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
-            if(this.MESTHOD == Method.POST.toString()) {
-                OutputStream output = connection.getOutputStream();
-                byte[] value = this.body.toString().getBytes();
-                Log.d(LogTag.REST, "Body : " + this.body.toString());
-                output.write(value, 0, value.length);
-                output.close();
+=======
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+=======
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+=======
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+        String strUrl = makeURI();
+        Log.d(LogTag.REST, "URI : " + this.METHOD + "/" + strUrl);
+        URL url = new URL(strUrl);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setSSLSocketFactory(RestConnection.sslContext.getSocketFactory());
+        connection.setRequestMethod(this.METHOD);
+        connection.setConnectTimeout(this.TIMEOUT);
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+        connection.setRequestProperty("User-Agent", RestConnection.USER_AGENT);
+        connection.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
             }
+        });
 
-            int resCode = connection.getResponseCode();
-            BufferedReader reader;
-            if(resCode == HttpStatus.OK.value)
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF_8"));
-            else
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF_8"));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null)
-                result.append(line);
-            reader.close();
+        if(this.METHOD.equals(Method.POST.toString()) || this.METHOD.equals(Method.PUT.toString())) {
+            OutputStream output = connection.getOutputStream();
+            byte[] value = this.body.toString().getBytes();
+            output.write(value, 0, value.length);
+            output.close();
+        }
 
-            return new RestResult(resCode, result.toString());
+        int resCode = connection.getResponseCode();
+        BufferedReader reader;
+        if(resCode == HttpStatus.OK.value)
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF_8"));
+        else
+            reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF_8"));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while((line = reader.readLine()) != null)
+            result.append(line);
+        reader.close();
+
+        return new RestResult(resCode, result.toString());
     }
 
     private String makeURI(){
         boolean isFirst = true;
-        for(Map.Entry<String, String> entry : this.params.entrySet()) {
+        for(String entry : this.params) {
             if(isFirst) {
                 this.uri.append("?");
                 isFirst = false;
             }
             else
                 this.uri.append("&");
-            this.uri.append(entry.getKey() + "=" + entry.getValue());
+            this.uri.append(entry);
         }
 
-        Log.d(LogTag.REST, this.uri.toString());
         return this.uri.toString();
     }
 
@@ -170,7 +179,6 @@ public class RestConnection {
             Certificate ca;
             try {
                 ca = cf.generateCertificate(input);
-                Log.d(LogTag.REST, "ca = " + ((X509Certificate) ca).getSubjectDN());
             } finally {
                 input.close();
             }

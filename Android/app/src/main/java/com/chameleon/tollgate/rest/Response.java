@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class Response <T> {
-    private int httpStatus;
-    private T result;
-    private long timestamp;
+    private final int httpStatus;
+    private final T result;
+    private final long timestamp;
 
     public Response(T result, int timestamp) {
         this.httpStatus = HttpStatus.OK.value;

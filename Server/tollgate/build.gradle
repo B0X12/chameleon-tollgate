@@ -20,6 +20,23 @@ dependencies {
   	implementation 'com.google.firebase:firebase-admin:7.3.0' //FCM
   	implementation 'org.xerial:sqlite-jdbc:3.34.0' //SQLite
   	implementation 'org.python:jython-standalone:2.7.1' // jPython
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  	implementation 'org.projectlombok:lombok'
+=======
+	implementation 'org.projectlombok:lombok'
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+=======
+	implementation 'org.projectlombok:lombok'
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+=======
+	implementation 'org.projectlombok:lombok'
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
+=======
+	implementation 'org.projectlombok:lombok'
+>>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
 }
 
 test {

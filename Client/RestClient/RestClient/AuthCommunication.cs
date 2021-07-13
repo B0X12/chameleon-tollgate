@@ -24,7 +24,7 @@ namespace RestClient
 
         public bool IsServerAlive()
         {
-            string uri = authServerURI + "/";
+            string uri = authServerURI + "/" + "?timeStamp=123";
 
             if (RequestAuthAndRecordResponse(uri))
             {
@@ -69,27 +69,20 @@ namespace RestClient
             {
                 req = (HttpWebRequest)WebRequest.Create(uri);
                 req.Method = "GET";
-                req.UserAgent = "Tollgate-client";
+                req.UserAgent = "Tollgate-clie";
 
                 resp = (HttpWebResponse)req.GetResponse();
                 Console.WriteLine(resp.StatusCode);
             }
             catch (WebException e)
             {
-                if (e.Status == WebExceptionStatus.ProtocolError)
-                {
-                    Console.WriteLine(((HttpWebResponse)e.Response).StatusCode);
-                    Console.WriteLine("Error occured");
-                    /*
-                    stream = e.Response.GetResponseStream();
-                    reader = new StreamReader(stream);
-                    Console.WriteLine(reader.ReadToEnd());
-                    */
-                }
-                else
-                {
-                    Console.WriteLine(e.Message);
-                }
+               
+                stream = e.Response.GetResponseStream();
+                reader = new StreamReader(stream);
+                Console.WriteLine(reader.ReadToEnd());
+
+
+
                 return false;
             }
 

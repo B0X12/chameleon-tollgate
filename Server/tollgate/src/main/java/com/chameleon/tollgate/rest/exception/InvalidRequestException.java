@@ -6,3 +6,4 @@ public class InvalidRequestException extends BaseException {
 		super(error);
 	}
 }
+ 

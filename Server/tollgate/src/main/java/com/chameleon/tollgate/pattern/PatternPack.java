@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class PatternPack {
-	private int timestamp;
+	private long timestamp;
 	private String pattern;
 }
