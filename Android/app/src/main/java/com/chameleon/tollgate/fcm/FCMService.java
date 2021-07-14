@@ -11,18 +11,18 @@ import androidx.core.app.NotificationCompat;
 
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
+import java.util.Objects;
 
 public class FCMService extends FirebaseMessagingService {
-    private final String NOTI_ID = "tollgate_fcm";
-    private final String NOTI_NAME = "tollgate_fcm";
-
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(@NotNull String token) {
         Log.d(LogTag.FCM, "Refreshed token: " + token);
     }
 
@@ -36,7 +36,10 @@ public class FCMService extends FirebaseMessagingService {
 
     private void sendNotification(RemoteMessage remoteMsg)
     {
-        Intent intent = new Intent(remoteMsg.getNotification().getClickAction());
+        final String NOTI_ID = "tollgate_fcm";
+        final String NOTI_NAME = "tollgate_fcm";
+
+        Intent intent = new Intent(Objects.requireNonNull(remoteMsg.getNotification()).getClickAction());
         for(Map.Entry<String, String> entry : remoteMsg.getData().entrySet())
             intent.putExtra(entry.getKey(), entry.getValue());
 

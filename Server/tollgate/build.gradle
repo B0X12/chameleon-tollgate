@@ -20,7 +20,7 @@ dependencies {
   	implementation 'com.google.firebase:firebase-admin:7.3.0' //FCM
   	implementation 'org.xerial:sqlite-jdbc:3.34.0' //SQLite
   	implementation 'org.python:jython-standalone:2.7.1' // jPython
-	implementation 'org.projectlombok:lombok'
+  	implementation 'org.projectlombok:lombok'
 }
 
 test {

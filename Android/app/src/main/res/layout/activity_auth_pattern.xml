@@ -7,7 +7,7 @@
     tools:context=".pattern.AuthPatternActivity">
 
     <com.andrognito.patternlockview.PatternLockView
-        android:id="@+id/pattern_lock_view"
+        android:id="@+id/pattern_auth"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="200dp"

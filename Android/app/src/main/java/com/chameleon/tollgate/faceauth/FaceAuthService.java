@@ -5,18 +5,16 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.chameleon.tollgate.MainActivity;
 import com.chameleon.tollgate.R;
 
-import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -27,7 +25,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.face.FaceRecognizer;
 import org.opencv.face.LBPHFaceRecognizer;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -43,11 +40,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import static org.opencv.imgproc.Imgproc.COLOR_BGRA2BGR;
-import static org.opencv.imgproc.Imgproc.COLOR_BGRA2GRAY;
-import static org.opencv.imgproc.Imgproc.COLOR_GRAY2BGR;
 import static org.opencv.imgproc.Imgproc.FONT_HERSHEY_COMPLEX;
 import static org.opencv.imgproc.Imgproc.FONT_HERSHEY_SIMPLEX;
-import static org.opencv.imgproc.Imgproc.compareHist;
 import static org.opencv.imgproc.Imgproc.putText;
 import static org.opencv.imgproc.Imgproc.rectangle;
 
@@ -61,96 +55,71 @@ class FaceException extends Exception{
 }
 
 public class FaceAuthService {
+    private FaceVar.ActivationMode mode;
+    private static Context context;
+    private Handler handler;
 
-    public static final String TAG = "OpenCV";
-    public static final int m_backCam = 0; // 0: 후면, 1: 전면
-    public static final int m_frontCam = 1;
-    public static final int m_train = 0;
-    public static final int m_auth = 1;
-
-    public int m_trainCnt = 50;
-
-    private Mat matOrigin, matPortrait, matGray, matGrayResized, matFace, matCropped, matCropResized, matOutput;
+    private int trainNum;
     private Rect rcFace;
+    private Mat OriginImage, PortraitImage, GrayImage, GrayResizedImage, CroppedImage, CropResizedImage;
+    private ArrayList<Mat> trainImages;
 
-    private int m_cnt = 0;
+    private CascadeClassifier cascade;
+    private FaceRecognizer recognizer;
 
-    private Context context;
-    private ArrayList<Mat> m_trainImages = new ArrayList<>();
-    public CascadeClassifier cascade;
-    private final FaceRecognizer recognize = LBPHFaceRecognizer.create();
+    private String faceDir, cascadeName, modelName;
+    private Scalar rectColor;
 
-    public FaceAuthService(Context context){
+    public FaceAuthService(FaceVar.ActivationMode mode, Context context, Handler handler){
+        this.mode = mode;
         this.context = context;
-        rcFace = new Rect();
-        matPortrait = new Mat();
-        matFace = new Mat();
-        matGray = new Mat();
-        matGrayResized = new Mat();
-        matOutput = new Mat();
-        matCropped = new Mat();
-        matCropResized = new Mat();
-        cascade = new CascadeClassifier();
+        this.handler = handler;
+
+        this.trainNum = 50;
+        this.rcFace = new Rect();
+        this.trainImages = new ArrayList<>();
+
+        this.cascade = new CascadeClassifier();
+        this.recognizer = LBPHFaceRecognizer.create();
+
+        this.faceDir = "faceauth";
+        this.cascadeName = "haar_frontalface.xml";
+        this.modelName = "trainedFace.fa";
+
+        this.OriginImage = new Mat();
+        this.PortraitImage = new Mat();
+        this.GrayImage = new Mat();
+        this.GrayResizedImage = new Mat();
+        this.CroppedImage = new Mat();
+        this.CropResizedImage = new Mat();
+
+        this.rectColor = new Scalar(255,0,0);
 
         loadCascade();
     }
 
-    public void showToast(String text){
-        ContextCompat.getMainExecutor(context).execute(()->{
-            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-        });
-    }
-    public void executeFinish(){
-        ContextCompat.getMainExecutor(context).execute(()->{
-            ((Activity)context).finish();
-        });
-    }
-
-    public int getM_cnt() {
-        return m_trainImages.size();
-    }
-    public void setM_trainCnt(@NonNull int m_trainCnt) {
-        this.m_trainCnt = m_trainCnt;
-    }
-
-    public Mat getOriginImage(@NonNull Mat matInput){
+    public static Mat getOriginImage(@NonNull Mat matImage){
         // 뒤집혀 있는 이미지를 flip 한다.
-        Core.flip(matInput, matInput, 0);
-        return matInput;
-    }
-
-    public void setImage(@NonNull Mat matOrigin){
-        this.matOrigin = matOrigin;
-        Core.rotate(matOrigin, matPortrait, Core.ROTATE_90_COUNTERCLOCKWISE);
-        Imgproc.cvtColor(matPortrait, matGray, Imgproc.COLOR_BGRA2GRAY);
-        Imgproc.resize(matGray, matGrayResized, new Size(matPortrait.width()/5, matPortrait.height()/5));
-
+        Core.flip(matImage, matImage, 0);
+        return matImage;
     }
 
     public boolean loadCascade() {
         // 이미 얼굴 검출 모델이 로드되었을 경우
-
         if(!cascade.empty()){
-            Log.d(TAG, "Face Detection Model Already Loaded.");
+            Log.d(FaceVar.TAG, "loadCascade : Face Detection Model Already Loaded.");
             return true;
         }
 
         InputStream is = null;
         FileOutputStream os = null;
 
-        // 얼굴 검출 모델 데이터 읽어오기
         is = context.getResources().openRawResource(R.raw.haarcascade_frontalface_default);
-
-        // 내부 저장소에 폴더 생성
-        File faceauthDir = context.getDir("facauth", Context.MODE_PRIVATE);
-        // 생성한 폴더 아래에 파일  생성
-        File cascadeFile = new File(faceauthDir, "haarcascade_frontalface_default.xml");
-
+        File faceauthDir = context.getDir(faceDir, Context.MODE_PRIVATE);
+        File cascadeFile = new File(faceauthDir, cascadeName);
         try {
-            // 파일에 데이터를 쓰기 위한 OutputStream 객체 생성
             os = new FileOutputStream(cascadeFile);
 
-            // 파일에 데이터 쓰기
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = is.read(buffer)) != -1) {
@@ -178,38 +147,57 @@ public class FaceAuthService {
 
         // 파일을 읽어오지 못했으면 false 반환
         if (cascade.empty()) {
-            Log.d(TAG, "Face Detection Model Load Failed");
+            Log.d(FaceVar.TAG, "loadCascade : Face Detection Model Load Failed");
             cascade = null;
             return false;
         } else
-            Log.d(TAG, "Face Detection Model Loaded");
+            Log.d(FaceVar.TAG, "loadCascade : Face Detection Model Loaded");
 
         if(cascadeFile != null)
             cascadeFile.delete();
-        if(faceauthDir != null)
-            faceauthDir.delete();
 
         // 성공 시 true
         return true;
     }
 
+
+    public void setImage(@NonNull Mat matInput) {
+        this.OriginImage = matInput;
+        Core.rotate(OriginImage, PortraitImage, Core.ROTATE_90_COUNTERCLOCKWISE);
+        Imgproc.cvtColor(PortraitImage, GrayImage, Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.resize(GrayImage, GrayResizedImage, new Size(PortraitImage.width() / 5, PortraitImage.height() / 5));
+    }
+
     public boolean preprocessImage() {
         rcFace = getFaceRect();
 
-        if(rcFace!=null) {
-            matCropped = new Mat(matGray, new Rect(rcFace.x, rcFace.y, rcFace.width, rcFace.height));
-            Imgproc.resize(matCropped, matCropResized, new Size(200, 200));
+        if(rcFace != null) {
+            CroppedImage = new Mat(GrayImage, new Rect(rcFace.x, rcFace.y, rcFace.width, rcFace.height));
+            Imgproc.resize(CroppedImage, CropResizedImage, new Size(200, 200));
+
+            if(mode.equals(FaceVar.ActivationMode.TRAIN))
+                addCurrnentImage2List();
+
             return true;
         }
+        Log.d(FaceVar.TAG, "preprocessImage : Image Preprocessing Failed");
         return false;
+    }
+
+    public boolean isTrainPossible(){
+        if(trainImages.size() == trainNum) return true;
+        else return false;
     }
 
     private Rect getFaceRect(){
         MatOfRect faceRect = new MatOfRect();
-        cascade.detectMultiScale(matGrayResized, faceRect, 1.2, 3, 0, new Size(40, 40));
+        if(cascade.empty())
+            loadCascade();
+
+        cascade.detectMultiScale(GrayResizedImage, faceRect, 1.2, 3, 0, new Size(40, 40));
 
         if(faceRect.empty()){
-            Log.d(TAG, "얼굴을 찾을 수 없습니다.");
+            Log.d(FaceVar.TAG, "getFaceRect : Face Not Found");
             return null;
         }
 
@@ -222,106 +210,85 @@ public class FaceAuthService {
         return rc;
     }
 
-    public Mat getFaceImage(boolean isPercentage){
-        if(matPortrait.empty())
+    public Mat getFaceWithRectImage(){
+        if(PortraitImage.empty()) {
+            Log.d(FaceVar.TAG, "getFaceWithRectImage : PortraitImage is null");
             return null;
-
-        Mat matImage = matPortrait;
-        if(rcFace!=null) {
-            if (isPercentage && rcFace != null)
-                putText(matImage, (String.format("%.2f", (((float) m_trainImages.size() / m_trainCnt) * 100))) + "% ", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_SIMPLEX, 1, new Scalar(255, 0, 0), 4);
-
-            rectangle(matImage, rcFace, new Scalar(255, 0, 0), 5);
         }
-        Imgproc.cvtColor(matImage, matImage, COLOR_BGRA2BGR);
-        Core.rotate(matImage, matOutput, Core.ROTATE_90_CLOCKWISE);
-        return matOutput;
 
+        Mat matOutput = PortraitImage;
+        if(rcFace!=null) {
+            if (mode.equals(FaceVar.ActivationMode.TRAIN))
+                putText(matOutput, (String.format("%.2f", (((float) trainImages.size() / trainNum) * 100))) + "% ", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_SIMPLEX, 1, rectColor, 4);
+
+            rectangle(matOutput, rcFace, rectColor, 5);
+        }
+        Imgproc.cvtColor(matOutput, matOutput, COLOR_BGRA2BGR);
+        Core.rotate(matOutput, matOutput, Core.ROTATE_90_CLOCKWISE);
+        return matOutput;
     }
 
     public boolean addCurrnentImage2List() {
-        if(!(m_trainImages.size() < m_trainCnt)) {
+        if(!(trainImages.size() < trainNum)) {
             return false;
         }
 
-        m_trainImages.add(matCropResized);
+        trainImages.add(CropResizedImage);
         return true;
     }
 
-    public boolean trainFace() {
-        if(m_trainImages.size() != m_trainCnt)
-            return false;
-        else{
-            File faceauthDir = context.getDir("faceauth", Context.MODE_PRIVATE);
-            File mFaceModel = new File(faceauthDir, "trainedFace.fa");
+    public String trainFace() {
+        if(isTrainPossible()){
+            File faceauthDir = context.getDir(faceDir, Context.MODE_PRIVATE);
+            File mFaceModel = new File(faceauthDir, modelName);
 
-            recognize.train(m_trainImages, new Mat().zeros(m_trainImages.size(), 1, CvType.CV_32SC1));
-            recognize.save(mFaceModel.getAbsolutePath());
+            recognizer.train(trainImages, Mat.zeros(trainImages.size(), 1, CvType.CV_32SC1));
+            recognizer.save(mFaceModel.getAbsolutePath());
 
-            String hashValue = null;
-            try {
-                hashValue = file2SHA512String(mFaceModel.getAbsolutePath());
-            }catch (IOException | NoSuchAlgorithmException e){
-                e.printStackTrace();
-                return false;
-            }
+            String hashValue = file2SHA512String(mFaceModel.getAbsolutePath());
 
-            // 서버에 해시 전송
-            FaceRestTask faceRest = null;
-            try {
-                faceRest = new FaceRestTask("https://192.168.0.17:8080/register/face/tester", hashValue, ((Activity)context).getBaseContext());
-                faceRest.execute();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            showToast("얼굴을 성공적으로 등록하였습니다.");
-            executeFinish();
-            return true;
+            if(hashValue != null)
+                return hashValue;
         }
+        return null;
     }
 
-    public Mat recogFace() {
-        if(recognize.empty())
-            recognize.read(getModelPath());
+    public boolean isUser() {
+        if(recognizer.empty())
+            recognizer.read(getModelPath());
 
         int label[] = new int[1];
         double predict[] = new double[1];
-        recognize.predict(matCropResized, label, predict);
+        recognizer.predict(CropResizedImage, label, predict);
 
-        Mat matImage = matPortrait;
-        if(label[0] != -1 && (int)predict[0] < 55){
-            putText(matImage, "you are user", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_COMPLEX, 1, new Scalar(0, 250, 150), 4);
-
-            FaceRestTask faceRest = null;
-            try {
-                faceRest = new FaceRestTask("https://192.168.0.17:8080/auth/face/tester", "true", ((Activity)context).getBaseContext());
-                faceRest.execute();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            showToast("인증되었습니다.");
-            executeFinish();
+        if(label[0] != -1 && (int)predict[0] < 50){
+            Log.d(FaceVar.TAG, "isUser : Face Matched");
+            return true;
         }
-        else{
-            putText(matImage, "who are you?", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_COMPLEX, 1, new Scalar(250, 100,  0), 4);
-        }
-
-        Imgproc.cvtColor(matImage, matImage, COLOR_BGRA2BGR);
-        Core.rotate(matImage, matOutput, Core.ROTATE_90_CLOCKWISE);
-        return matOutput;
+        return false;
     }
 
-    public String file2SHA512String(@NonNull String path) throws NoSuchAlgorithmException, IOException {
-        MessageDigest md = MessageDigest.getInstance("sha-512");
-        FileInputStream fIS = new FileInputStream(path);
+    public static String file2SHA512String(@NonNull String path) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("sha-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        byte[] dataBytes = new byte[4096];
-        int nRead = 0;
-        while((nRead = fIS.read(dataBytes)) != -1)
-            md.update(dataBytes, 0, nRead);
+        try {
+            FileInputStream fIS = new FileInputStream(path);
 
+            byte[] dataBytes = new byte[4096];
+            int nRead;
+            while ((nRead = fIS.read(dataBytes)) != -1)
+                md.update(dataBytes, 0, nRead);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         byte[] mdBytes = md.digest();
 
         StringBuilder strBuilder = new StringBuilder();
@@ -333,12 +300,12 @@ public class FaceAuthService {
     }
 
     public String getModelPath(){
-        // 폴더 생성
-        File cascadeDir = context.getDir("faceauth", Context.MODE_PRIVATE);
-        // 생성한 폴더 아래에 파일  생성
+        File cascadeDir = context.getDir(faceDir, Context.MODE_PRIVATE);
         File mCascadeFile = new File(cascadeDir, "trainedFace.fa");
 
-        return mCascadeFile.getAbsolutePath();
+        if(mCascadeFile.exists())
+            return mCascadeFile.getAbsolutePath();
+        return null;
     }
 
 }

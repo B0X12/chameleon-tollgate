@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.pattern.dto.PatternPack;
 import com.chameleon.tollgate.rest.ErrorResponse;
 import com.chameleon.tollgate.rest.HttpStatus;
 import com.chameleon.tollgate.rest.Response;
@@ -17,8 +18,8 @@ import com.google.gson.Gson;
 
 public class RestTask extends AsyncTask<Void, Void, Boolean> {
     PatternPack entry;
-    private Context context;
-    private Handler handler;
+    private final Context context;
+    private final Handler handler;
 
     public RestTask(PatternPack entry, Context context, Handler handler) {
         this.entry = entry;
@@ -38,22 +39,24 @@ public class RestTask extends AsyncTask<Void, Void, Boolean> {
 
         try {
             RestResult result = rest.request();
-            Log.d(LogTag.REST_PATTERN, "Result : " + result.toString());
+            Log.d(LogTag.REST_PATTERN, "Result : " + result);
 
             if(result.responseCode != HttpStatus.OK.value) {
                 ErrorResponse err = new Gson().fromJson(result.result, ErrorResponse.class);
+                Log.d(LogTag.REST_PATTERN, "Exception : " + err.getMessage());
                 Message msg = this.handler.obtainMessage(PatternMsg.TOAST_ERROR, err.getMessage());
                 this.handler.sendMessage(msg);
                 return false;
             }
 
-            Response<Boolean> respon = new Gson().fromJson(result.result, Response.class);
-            if(this.entry.getTimestamp() != respon.getTimestamp()) {
+            Response<Boolean> response = new Gson().fromJson(result.result, Response.class);
+            if(this.entry.getTimestamp() != response.getTimestamp()) {
+                Log.d(LogTag.REST_PATTERN, "Exception : Invalid response");
                 Message msg = this.handler.obtainMessage(PatternMsg.TOAST_ERROR, "Invalid response.");
                 this.handler.sendMessage(msg);
                 return false;
             }
-            return respon.getResult();
+            return response.getResult();
         } catch (Exception ex) {
             Log.d(LogTag.REST_PATTERN, "Exception : " + ex.getMessage());
             return false;

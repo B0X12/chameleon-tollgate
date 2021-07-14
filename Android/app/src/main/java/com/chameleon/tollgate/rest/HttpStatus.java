@@ -10,7 +10,7 @@ public enum HttpStatus {
 
     public final int value;
 
-    private HttpStatus(int value) {
+    HttpStatus(int value) {
         this.value = value;
     }
 }

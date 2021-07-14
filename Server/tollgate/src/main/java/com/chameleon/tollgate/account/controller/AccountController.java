@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chameleon.tollgate.account.dto.Account;
 import com.chameleon.tollgate.account.dto.MapPC;
-import com.chameleon.tollgate.account.exception.UserAlreadyExistException;
 import com.chameleon.tollgate.account.service.AccountService;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
@@ -25,7 +24,7 @@ import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 public class AccountController {
 	@Autowired
 	private AccountService accountService;
-
+	
 	// --------------- ·Î±×ÀÎ ---------------
 	@PostMapping(path = "/account/login")
 	public ResponseEntity<Response<Boolean>> logIn(@RequestHeader(value = "User-Agent") String userAgent,
@@ -129,5 +128,4 @@ public class AccountController {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 	}
-
 }
