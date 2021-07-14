@@ -167,8 +167,34 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
     if (SUCCEEDED(hr))
     {
         hr = pcpUser->GetSid(&_pszUserSid);
+     
+        /*
+        PWSTR token = NULL;
+        PWSTR context = NULL;
+
+        // SID의 기타 정보 제외
+        token = wcstok_s(_pszUserSid, L"-", &context);
+        for (int i = 0; i < 3; i++)
+        {
+            token = wcstok_s(NULL, L"-", &context);
+        }
+
+        // SID에서 시스템 고유 식별값 추출 및 세팅
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
+        wcscat_s(_wszSystemIdentifier, 50, L"-");
+
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
+        wcscat_s(_wszSystemIdentifier, 50, L"-");
+
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
+        */
     }
 
+
+    // 플래그 초기화
     _pUSBAuth = new CUSBAuth();
     _pPatternAuth = new CPatternAuth();
     
@@ -189,8 +215,29 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents *pc
 
     if (SUCCEEDED(hr))
     {
-        //SetCurrentAuthStage(AUTH_FACTOR_USB | AUTH_FACTOR_PATTERN | AUTH_FACTOR_FINGERPRINT | AUTH_FACTOR_FACE | AUTH_FACTOR_OTP | AUTH_FACTOR_PASSWORD);
         InitializeAuthStage();
+
+        PWSTR token = NULL;
+        PWSTR context = NULL;
+
+        // SID의 기타 정보 제외
+        token = wcstok_s(_pszUserSid, L"-", &context);
+        for (int i = 0; i < 3; i++)
+        {
+            token = wcstok_s(NULL, L"-", &context);
+        }
+
+        // SID에서 시스템 고유 식별값 추출 및 세팅
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
+        wcscat_s(_wszSystemIdentifier, 50, L"-");
+
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
+        wcscat_s(_wszSystemIdentifier, 50, L"-");
+
+        token = wcstok_s(NULL, L"-", &context);
+        wcscat_s(_wszSystemIdentifier, 50, token);
     }
     
     return hr;
@@ -204,6 +251,7 @@ HRESULT CTollgateCredential::UnAdvise()
         _pCredProvCredentialEvents->Release();
     }
     _pCredProvCredentialEvents = nullptr;
+
     return S_OK;
 }
 
@@ -478,14 +526,13 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
         // --------------- USB 인증 버튼 ---------------
         case SFI_USB_VERIFY:
 
-            /*
             EnableAuthStartButton(SFI_USB_VERIFY, FALSE);
             
             if (_pUSBAuth != nullptr) {
                 _pUSBAuth->InitAuthThread(this);
             }
-            */
-            GoToNextAuthStage();
+            
+            //GoToNextAuthStage();
            
             break;
 
@@ -853,6 +900,11 @@ void CTollgateCredential::GoToNextAuthStage()
 // Auth Factor 플래그 변수를 이용하여 첫 번째 스테이지 세팅
 void CTollgateCredential::InitializeAuthStage()
 {
+    if (_bAuthFactorFlag == AUTH_FACTOR_INVALID)
+    {
+
+    }
+
     BOOL bUseUSBFactor          = _bAuthFactorFlag & AUTH_FACTOR_USB;
     BOOL bUsePatternFactor      = _bAuthFactorFlag & AUTH_FACTOR_PATTERN;
     BOOL bUseFingerprintFactor  = _bAuthFactorFlag & AUTH_FACTOR_FINGERPRINT;

@@ -32,6 +32,7 @@ namespace AuthClient.tollgate
             this.usbDlgButton = new System.Windows.Forms.Button();
             this.userLabel = new System.Windows.Forms.Label();
             this.logoutButton = new System.Windows.Forms.Button();
+            this.usbConfigButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // usbDlgButton
@@ -55,19 +56,30 @@ namespace AuthClient.tollgate
             // 
             // logoutButton
             // 
-            this.logoutButton.Location = new System.Drawing.Point(650, 23);
+            this.logoutButton.Location = new System.Drawing.Point(606, 23);
             this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(122, 33);
+            this.logoutButton.Size = new System.Drawing.Size(182, 33);
             this.logoutButton.TabIndex = 2;
-            this.logoutButton.Text = "로그아웃";
+            this.logoutButton.Text = "이 PC와 연동 해제";
             this.logoutButton.UseVisualStyleBackColor = true;
             this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
+            // 
+            // usbConfigButton
+            // 
+            this.usbConfigButton.Location = new System.Drawing.Point(44, 182);
+            this.usbConfigButton.Name = "usbConfigButton";
+            this.usbConfigButton.Size = new System.Drawing.Size(142, 55);
+            this.usbConfigButton.TabIndex = 3;
+            this.usbConfigButton.Text = "USB 설정 창";
+            this.usbConfigButton.UseVisualStyleBackColor = true;
+            this.usbConfigButton.Click += new System.EventHandler(this.usbConfigButton_Click);
             // 
             // MainDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.usbConfigButton);
             this.Controls.Add(this.logoutButton);
             this.Controls.Add(this.userLabel);
             this.Controls.Add(this.usbDlgButton);
@@ -83,5 +95,6 @@ namespace AuthClient.tollgate
         private System.Windows.Forms.Button usbDlgButton;
         private System.Windows.Forms.Label userLabel;
         private System.Windows.Forms.Button logoutButton;
+        private System.Windows.Forms.Button usbConfigButton;
     }
 }

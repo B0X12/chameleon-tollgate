@@ -84,7 +84,13 @@
     <Compile Include="tollgate\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="tollgate\usb\dto\AuthUSB.cs" />
+    <Compile Include="tollgate\usb\dialog\USBConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tollgate\usb\dialog\USBConfig.Designer.cs">
+      <DependentUpon>USBConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\usb\dto\USBInfo.cs" />
     <Compile Include="tollgate\rest\Exception.cs" />
     <Compile Include="tollgate\rest\RestCommunication.cs" />
     <Compile Include="tollgate\account\dialog\SignUp.cs">
@@ -107,11 +113,11 @@
     <Compile Include="tollgate\account\dialog\LogInSignUp.Designer.cs">
       <DependentUpon>LogInSignUp.cs</DependentUpon>
     </Compile>
-    <Compile Include="tollgate\usb\dialog\USBConfig.cs">
+    <Compile Include="tollgate\usb\dialog\USBRegister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="tollgate\usb\dialog\USBConfig.Designer.cs">
-      <DependentUpon>USBConfig.cs</DependentUpon>
+    <Compile Include="tollgate\usb\dialog\USBRegister.Designer.cs">
+      <DependentUpon>USBRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\rest\ResponseDataFormat.cs" />
     <Compile Include="tollgate\account\service\AccountService.cs" />
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\usb\dialog\USBConfig.resx">
       <DependentUpon>USBConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\usb\dialog\USBRegister.resx">
+      <DependentUpon>USBRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

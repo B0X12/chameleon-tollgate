@@ -152,12 +152,13 @@ private:
     AUTH_FACTOR _eCurrentAuthStage = AUTH_FACTOR_INVALID;
     int _nAuthFactorProcessCount = 0;
 
+    WCHAR _wszSystemIdentifier[50] = { 0, };
 
-    CUSBAuth*            _pUSBAuth = NULL;
-    CPatternAuth*        _pPatternAuth = NULL;
-    //CFingerprintAuth*  _pFingerprintAuth = NULL;
-    //CFaceAuth*         _pFaceAuth = NULL;
-    //COTPAuth*          _pOTPAuth = NULL;
+    CUSBAuth*            _pUSBAuth = nullptr;
+    CPatternAuth*        _pPatternAuth = nullptr;
+    //CFingerprintAuth*  _pFingerprintAuth = nullptr;
+    //CFaceAuth*         _pFaceAuth = nullptr;
+    //COTPAuth*          _pOTPAuth = nullptr;
 };
 
 

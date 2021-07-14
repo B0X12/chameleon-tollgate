@@ -47,7 +47,8 @@ namespace AuthClient.tollgate.account.service
         public bool IsLoginSuccess(string id, string pwd)
         {
             // DTO 준비
-            Account ua = new Account(id, pwd);
+            string hashedPwd = Util.EncryptSHA512(pwd);
+            Account ua = new Account(id, hashedPwd);
 
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
@@ -83,7 +84,8 @@ namespace AuthClient.tollgate.account.service
         public bool IsSignupSuccess(string id, string pwd)
         {
             // DTO 준비
-            Account ac = new Account(id, pwd);
+            string hashedPwd = Util.EncryptSHA512(pwd);
+            Account ac = new Account(id, hashedPwd);
 
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
