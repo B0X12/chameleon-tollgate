@@ -3,8 +3,25 @@
 #include <Windows.h>
 
 
+
 class RestClient
 {
+public:
+    enum CLIENT_RETURN_CODE
+    {
+        // 프로그램 리턴 코드 - 성공
+        RESULT_CONNECTION_SUCCESS = 100,
+
+        // 프로그램 리턴 코드 - 실패
+        RESULT_CONNECTION_FAILED,
+        RESULT_CONFIG_FILE_COMPROMISED,
+        RESULT_UNAUTHORIZED_ACCESS,
+        RESULT_TIMESTAMP_MISMATCH,
+        RESULT_UNKNOWN_ERROR,
+
+        RESULT_CLIENT_PROGRAM_COMPROMISED,
+    };
+
 private:
     // 파이프 생성 관련
     HANDLE _hReadPipe = nullptr;
@@ -19,16 +36,13 @@ private:
     wchar_t _wcAppName[2048] = { 0, };
 
     // 프로세스 종료 코드 및 반환 문자열
-    DWORD _dwRestClientExitCode = 4444;
-    wchar_t _wcRestClientStatusCode[30] = { 0, };
+    DWORD _dwRestClientExitCode = RESULT_CLIENT_PROGRAM_COMPROMISED;
     wchar_t _wcRestClientMessage[2048] = { 0, };
 
 public:
     RestClient();
-    RestClient(wchar_t wcPath, wchar_t wcAppName);
     ~RestClient();
     DWORD GetRestClientExitCode();
-    void GetRestClientStatusCode(wchar_t* wcBuffer, rsize_t nBufferSizeInWords);
     void GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords);
 
     BOOL RequestUSBVerification(wchar_t* user, wchar_t* usb_info);

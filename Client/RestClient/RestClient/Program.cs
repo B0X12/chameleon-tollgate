@@ -17,8 +17,8 @@ namespace RestClient
 		 *	                        그 외의 경우 Denied 문자열 반환
          *
          *
-         *   --get-auth-factor	    --get-auth-factor [사용자ID]
-		 *	                        [사용자ID]의 인증 요소(플래그 변수)를 가져옴
+         *   --get-auth-factor	    --get-auth-factor [UID]
+		 *	                        [UID]와 연동된 사용자의 인증 요소(플래그 변수)를 가져옴
 		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
 		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
          *
@@ -39,62 +39,58 @@ namespace RestClient
          *   
          *   --request-fingerprint  
          *   
-         *   
-         *   
+         *
+         *
          */
 
         static int Main(string[] args)
         {
+            // 인자 체크
             if(!CheckArgumentByOption(args))
             {
-                return (int)ReturnCode.STATUS_FAILED;
+                return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
             }
 
+            // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
+            Config cfg = new Config();
+            string baseURL = cfg.InitAuthServerByConfigFile();
+
+            if(baseURL == "")
+            {
+                return (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
+            }
+            
+
+            // 옵션에 따라 동작 수행
             string option = args[0];
-            AuthCommunication ac = new AuthCommunication();
+            Handler handler = new Handler(baseURL);
 
             switch (option)
             {
+                /*
                 case "--is-server-alive":
-                    if (ac.IsServerAlive())
-                    {
-                        return (int)ReturnCode.STATUS_OK;
-                    }
-                    else
-                    {
-                        return (int)ReturnCode.STATUS_FAILED;
-                    }
-
+                    return (int)handler.IsServerAlive();
+                */  
                 case "--get-auth-factor":
-                    break;
-
+                    {
+                        string uid = args[1];
+                        return (int)handler.GetAuthFactor(uid);
+                    }
+                    
                 case "--verify-usb":
                     {
                         string user = args[1];
                         string usb_info = args[2];
 
-                        if (ac.VerifyUSB(user, usb_info))
-                        {
-                            return (int)ReturnCode.STATUS_OK;
-                        }
-                        else
-                        {
-                            return (int)ReturnCode.STATUS_FAILED;
-                        }
+                        return (int)handler.VerifyUSB(user, usb_info);
                     }
                     
                 case "--request-pattern":
                     {
                         string user = args[1];
+
+                        return (int)handler.VerifyPattern(user);
                         
-                        if (ac.VerifyPattern(user))
-                        {
-                            return (int)ReturnCode.STATUS_OK;
-                        }
-                        else
-                        {
-                            return (int)ReturnCode.STATUS_FAILED;
-                        }
                     }
                     
 
@@ -110,13 +106,7 @@ namespace RestClient
                     break;
             }
 
-            return (int)ReturnCode.STATUS_FAILED;
-        }
-
-        enum ReturnCode
-        {
-            STATUS_FAILED = 4444,
-            STATUS_OK = 200,
+            return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
         }
 
         static bool CheckArgumentByOption(string[] parameters)
@@ -143,7 +133,7 @@ namespace RestClient
                     }
 
                 case "--get-auth-factor":
-                    // 포맷: --get-auth-factor [사용자ID]
+                    // 포맷: --get-auth-factor [SID]
                     if (parameters.Length == 2)
                     {
                         return true;

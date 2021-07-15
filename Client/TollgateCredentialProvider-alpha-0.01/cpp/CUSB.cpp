@@ -48,20 +48,12 @@ BOOL CUSB::IsDeviceTypeUSB(WPARAM wParam, LPARAM lParam)
 }
 
 
-BOOL CUSB::RecognizeAndVerifyUSB(WPARAM wParam, LPARAM lParam)
+DWORD CUSB::VerifyUSB(WPARAM wParam, LPARAM lParam)
 {
-    if (IsDeviceTypeUSB(wParam, lParam))
-    {
-        PDEV_BROADCAST_HDR pHdr = (PDEV_BROADCAST_HDR)lParam;
-        PDEV_BROADCAST_DEVICEINTERFACE pDevInf = (PDEV_BROADCAST_DEVICEINTERFACE)pHdr;
-        return _VerifyUSB(pDevInf);
-    }
-    return FALSE;
-}
+    PDEV_BROADCAST_HDR pHdr = (PDEV_BROADCAST_HDR)lParam;
+    PDEV_BROADCAST_DEVICEINTERFACE pDevInf = (PDEV_BROADCAST_DEVICEINTERFACE)pHdr;
 
 
-BOOL CUSB::_VerifyUSB(PDEV_BROADCAST_DEVICEINTERFACE pDevInf)
-{
     // --------------- 추가된 디바이스의 ID 분류 ---------------
     CString szDevId = pDevInf->dbcc_name + 4;   // 앞에 \\\\?\\자름
     int idx = szDevId.ReverseFind(_T('#'));     // 뒤에서 찾은 # 인덱스 찾음.
@@ -77,27 +69,49 @@ BOOL CUSB::_VerifyUSB(PDEV_BROADCAST_DEVICEINTERFACE pDevInf)
     RestClient* rc = new RestClient();
 
     CString user = L"user02";           // Test
-    rc->RequestUSBVerification(user.GetBuffer(), szDevId.GetBuffer());
 
-    // --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
-    wchar_t wcStatusFromServer[30];
-    wchar_t wcMessageFromServer[2048];
-    //wchar_t wcExitCode[10];
-
-    rc->GetRestClientStatusCode(wcStatusFromServer, 30);
-    rc->GetRestClientMessage(wcMessageFromServer, 2048);
-    //wsprintf(wcExitCode, L"%d", rc->GetRestClientExitCode());
-
-    delete rc;
-
-    if (!wcscmp(wcStatusFromServer, L"OK"))
+    if (rc->RequestUSBVerification(user.GetBuffer(), szDevId.GetBuffer()))
     {
-        if (!wcscmp(wcMessageFromServer, L"true"))
+        // --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
+        wchar_t wcMessageFromServer[2048] = { 0, };
+        DWORD retCode = rc->GetRestClientExitCode();
+        
+
+        switch (retCode)
         {
-            return TRUE;
+            // 서버와 연결 성공
+        case rc->RESULT_CONNECTION_SUCCESS:
+            rc->GetRestClientMessage(wcMessageFromServer, 2048);
+
+            if (!wcscmp(wcMessageFromServer, L"Verified"))
+            {
+                return USB_VERIFICATION_SUCCESS;
+            }
+            else
+            {
+                return USB_VERIFICATION_FAILED;
+            }
+            break;
+
+            // 서버와 연결 실패
+        case rc->RESULT_CONNECTION_FAILED:
+            return USB_SERVER_NOT_ALIVE;
+
+            // 설정 파일이 존재하지 않음
+        case rc->RESULT_CONFIG_FILE_COMPROMISED:
+            return USB_CONFIG_FILE_COMPROMISED;
+
+            // 정상적인 클라이언트 프로그램이 아님 / 타임 스탬프 일치하지 않음
+        case rc->RESULT_UNAUTHORIZED_ACCESS:
+        case rc->RESULT_TIMESTAMP_MISMATCH:
+            return USB_ANOMALY_DETECTED;
+
+        case rc->RESULT_UNKNOWN_ERROR:
+            return USB_UNKNOWN_ERROR;
         }
     }
 
-    return FALSE;
-}
+    delete rc;
 
+    return USB_CLIENT_PROGRAM_COMPROMISED;
+}

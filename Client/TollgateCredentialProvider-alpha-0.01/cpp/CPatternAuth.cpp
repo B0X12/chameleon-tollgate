@@ -70,7 +70,6 @@ DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 
     if (rc->RequestPatternVerification(L"user02"))
     {
-        rc->GetRestClientStatusCode(wcStatusFromServer, 30);
         rc->GetRestClientMessage(wcMessageFromServer, 2048);
     }
     

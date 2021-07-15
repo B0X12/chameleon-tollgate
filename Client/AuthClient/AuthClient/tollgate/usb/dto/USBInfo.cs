@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace AuthClient.tollgate.usb.dto
 {
-    class AuthUSB
+    class USBInfo
     {
         public string id { get; set; }
         public string usb_id { get; set; }
 
-        public AuthUSB(string id, string usb_id)
+        public string alias { get; set; }
+
+        public USBInfo(string id, string usb_id, string alias)
         {
             this.id = id;
             this.usb_id = usb_id;
+            this.alias = alias;
         }
     }
 }

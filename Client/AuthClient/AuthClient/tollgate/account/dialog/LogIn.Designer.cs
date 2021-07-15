@@ -68,15 +68,16 @@ namespace AuthClient.tollgate.account.dialog
             // 
             this.pwdField.Location = new System.Drawing.Point(126, 90);
             this.pwdField.Name = "pwdField";
+            this.pwdField.PasswordChar = '●';
             this.pwdField.Size = new System.Drawing.Size(221, 25);
-            this.pwdField.TabIndex = 1;
+            this.pwdField.TabIndex = 2;
             // 
             // logonButton
             // 
             this.logonButton.Location = new System.Drawing.Point(126, 138);
             this.logonButton.Name = "logonButton";
             this.logonButton.Size = new System.Drawing.Size(117, 37);
-            this.logonButton.TabIndex = 2;
+            this.logonButton.TabIndex = 3;
             this.logonButton.Text = "로그인";
             this.logonButton.UseVisualStyleBackColor = true;
             this.logonButton.Click += new System.EventHandler(this.logonButton_Click);

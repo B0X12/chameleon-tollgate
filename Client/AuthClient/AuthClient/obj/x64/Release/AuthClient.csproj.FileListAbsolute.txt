@@ -66,3 +66,4 @@ C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\Aut
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.tollgate.account.dialog.CheckServerDialog.resources
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.tollgate.usb.dialog.USBConfigDialog.resources
 C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.tollgate.account.dialog.LogOnSignUpDialog.resources
+C:\Users\bjj73\Desktop\Tollgate\Client\AuthClient\AuthClient\obj\x64\Release\AuthClient.tollgate.usb.dialog.USBRegisterDialog.resources

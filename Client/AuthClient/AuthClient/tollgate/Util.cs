@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,20 @@ namespace AuthClient.tollgate
         {
             var timeSpan = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
             return (long)timeSpan.TotalSeconds;
+        }
+
+        internal static string EncryptSHA512(string Data)
+        {
+            SHA512 sha = new SHA512Managed();
+            byte[] hash = sha.ComputeHash(Encoding.ASCII.GetBytes(Data));
+            StringBuilder sb = new StringBuilder();
+
+            foreach (byte b in hash)
+            {
+                sb.AppendFormat("{0:x2}", b);
+            }
+
+            return sb.ToString();
         }
     }
 }
