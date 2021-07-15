@@ -261,7 +261,7 @@ public class FaceAuthService {
         double predict[] = new double[1];
         recognizer.predict(CropResizedImage, label, predict);
 
-        if(label[0] != -1 && (int)predict[0] < 50){
+        if(label[0] != -1 && (int)predict[0] < 60){
             Log.d(FaceVar.TAG, "isUser : Face Matched");
             return true;
         }
