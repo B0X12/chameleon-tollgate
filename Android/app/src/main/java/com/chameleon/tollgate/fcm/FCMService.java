@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

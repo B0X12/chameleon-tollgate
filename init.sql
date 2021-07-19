@@ -32,6 +32,7 @@ face INTEGER NOT NULL DEFAULT 0 CHECK(face=0 or face=1),
 CONSTRAINT init_factor_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 
+<<<<<<< HEAD
 CREATE TABLE auth_usb(
 id TEXT NOT NULL,
 usb_id TEXT NOT NULL,
@@ -39,6 +40,15 @@ alias TEXT NOT NULL,
 PRIMARY KEY("id", "usb_id"),
 CONSTRAINT auth_usb_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
+=======
+CREATE TABLE "auth_usb" (
+"id" TEXT NOT NULL,
+"usb_id" TEXT NOT NULL,
+"alias" TEXT NOT NULL,
+PRIMARY KEY("usb_id","id"),
+CONSTRAINT "auth_usb_fk_id" FOREIGN KEY("id")
+REFERENCES "account"("id"));
+>>>>>>> d478927d1a7c7c26ae248c9c09ca33582c186d00
 
 CREATE TABLE auth_pattern(
 id TEXT NOT NULL PRIMARY KEY,

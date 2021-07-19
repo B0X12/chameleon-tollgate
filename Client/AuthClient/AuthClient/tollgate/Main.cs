@@ -1,4 +1,5 @@
 ﻿using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.usb.dialog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,20 +20,17 @@ namespace AuthClient.tollgate
             userLabel.Text += Config.GetCurrentUser();
         }
 
-        private void usbDlgButton_Click(object sender, EventArgs e)
-        {
-            Application.Restart();
-            /*
-            USBConfigDialog usbCfgDlg = new USBConfigDialog();
-            usbCfgDlg.ShowDialog();
-            */
-        }
-
         private void logoutButton_Click(object sender, EventArgs e)
         {
             AccountService accountService = new AccountService();
             accountService.UnmapSIDWithUser(Config.GetCurrentUser());
             Application.Restart();
+        }
+
+        private void usbConfigButton_Click(object sender, EventArgs e)
+        {
+            USBConfigDialog usbConfigDlg = new USBConfigDialog();
+            usbConfigDlg.ShowDialog();
         }
     }
 }

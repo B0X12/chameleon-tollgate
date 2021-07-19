@@ -13,6 +13,7 @@
 #include <new>
 
 #include "CTollgateCredential.h"
+#include <vector>
 
 
 class CTollgateProvider : public ICredentialProvider,
@@ -77,8 +78,8 @@ class CTollgateProvider : public ICredentialProvider,
     HRESULT _EnumerateCredentials();
     HRESULT _EnumerateEmptyTileCredential();
 private:
-    long                                    _cRef;            // Used for reference counting.
-    CTollgateCredential                       *_pCredential;    // SampleV2Credential
+    long                                    _cRef;                      // Used for reference counting.
+    std::vector<CTollgateCredential*>       _pCredential;               // Credential이 계정별로 할당 된 벡터
     bool                                    _fRecreateEnumeratedCredentials;
     CREDENTIAL_PROVIDER_USAGE_SCENARIO      _cpus;
     ICredentialProviderUserArray            *_pCredProviderUserArray;

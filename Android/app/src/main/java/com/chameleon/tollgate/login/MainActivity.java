@@ -24,7 +24,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.chameleon.tollgate.define.LogTag;
 
 import java.io.IOException;
-import java.math.BigInteger;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CFGFIlE = "config.cfg";
@@ -63,11 +62,13 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
+    Button btn_tmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LogTag.TOLLGATE, "App started");
+
         MainActivity activity = this;
 
         Button btnLogin = findViewById(R.id.btn_login);

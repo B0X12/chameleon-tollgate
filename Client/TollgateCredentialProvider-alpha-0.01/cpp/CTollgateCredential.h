@@ -22,6 +22,7 @@
 #include "common.h"
 #include "dll.h"
 #include "resource.h"
+#include "Util.h"
 
 class CUSBAuth;
 class CPatternAuth;
@@ -147,17 +148,18 @@ private:
     
     //  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
     //  Field : -     -     Face  Fingerprint  Pattern  OTP   USB   Password
-    BYTE _bAuthFactorFlag = 63;
+    BYTE _bAuthFactorFlag = 0;
     int _nAuthFactorCount = 0;
     AUTH_FACTOR _eCurrentAuthStage = AUTH_FACTOR_INVALID;
     int _nAuthFactorProcessCount = 0;
 
+    //WCHAR _wszSystemIdentifier[50] = { 0, };
 
-    CUSBAuth*            _pUSBAuth = NULL;
-    CPatternAuth*        _pPatternAuth = NULL;
-    //CFingerprintAuth*  _pFingerprintAuth = NULL;
-    //CFaceAuth*         _pFaceAuth = NULL;
-    //COTPAuth*          _pOTPAuth = NULL;
+    CUSBAuth*            _pUSBAuth = nullptr;
+    CPatternAuth*        _pPatternAuth = nullptr;
+    //CFingerprintAuth*  _pFingerprintAuth = nullptr;
+    //CFaceAuth*         _pFaceAuth = nullptr;
+    //COTPAuth*          _pOTPAuth = nullptr;
 };
 
 

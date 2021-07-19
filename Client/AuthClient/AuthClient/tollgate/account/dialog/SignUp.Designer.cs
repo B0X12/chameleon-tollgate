@@ -43,7 +43,7 @@ namespace AuthClient.tollgate.account.dialog
             this.signUpButton.Location = new System.Drawing.Point(152, 163);
             this.signUpButton.Name = "signUpButton";
             this.signUpButton.Size = new System.Drawing.Size(127, 40);
-            this.signUpButton.TabIndex = 0;
+            this.signUpButton.TabIndex = 4;
             this.signUpButton.Text = "회원 가입";
             this.signUpButton.UseVisualStyleBackColor = true;
             this.signUpButton.Click += new System.EventHandler(this.signUpButton_Click);
@@ -54,7 +54,7 @@ namespace AuthClient.tollgate.account.dialog
             this.label1.Location = new System.Drawing.Point(38, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 15);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "아이디";
             // 
             // label2
@@ -63,7 +63,7 @@ namespace AuthClient.tollgate.account.dialog
             this.label2.Location = new System.Drawing.Point(38, 76);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 15);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 0;
             this.label2.Text = "비밀번호";
             // 
             // label3
@@ -72,7 +72,7 @@ namespace AuthClient.tollgate.account.dialog
             this.label3.Location = new System.Drawing.Point(38, 121);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(102, 15);
-            this.label3.TabIndex = 3;
+            this.label3.TabIndex = 0;
             this.label3.Text = "비밀번호 확인";
             // 
             // idField
@@ -80,7 +80,7 @@ namespace AuthClient.tollgate.account.dialog
             this.idField.Location = new System.Drawing.Point(152, 26);
             this.idField.Name = "idField";
             this.idField.Size = new System.Drawing.Size(240, 25);
-            this.idField.TabIndex = 4;
+            this.idField.TabIndex = 1;
             // 
             // pwdField
             // 
@@ -88,7 +88,7 @@ namespace AuthClient.tollgate.account.dialog
             this.pwdField.Name = "pwdField";
             this.pwdField.PasswordChar = '●';
             this.pwdField.Size = new System.Drawing.Size(240, 25);
-            this.pwdField.TabIndex = 4;
+            this.pwdField.TabIndex = 2;
             // 
             // pwdCheckField
             // 
@@ -96,7 +96,7 @@ namespace AuthClient.tollgate.account.dialog
             this.pwdCheckField.Name = "pwdCheckField";
             this.pwdCheckField.PasswordChar = '●';
             this.pwdCheckField.Size = new System.Drawing.Size(240, 25);
-            this.pwdCheckField.TabIndex = 4;
+            this.pwdCheckField.TabIndex = 3;
             // 
             // SignUpDialog
             // 
