@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="phone"
         android:digits="0123456789."
         android:hint="@string/server_ip"
         tools:layout_editor_absoluteX="100dp"
@@ -68,14 +68,5 @@
         app:layout_constraintStart_toStartOf="@+id/edit_pwd"
         app:layout_constraintTop_toBottomOf="@+id/edit_pwd"
         app:rippleColor="#2DFFFFFF" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Button"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="12dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

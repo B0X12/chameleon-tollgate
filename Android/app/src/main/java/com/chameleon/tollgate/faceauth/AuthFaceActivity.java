@@ -2,7 +2,6 @@ package com.chameleon.tollgate.faceauth;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chameleon.tollgate.R;
@@ -43,7 +41,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
         @Override
         public void run() {
             if(!(mSec < 30)) {
-                FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, 101010), context, handler);
+                FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), context, handler);
                 boolean result = false;
                 try {
                     result = faceRest.execute().get();
@@ -62,6 +60,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                     handler.sendMessage(msg);
                     finish();
                 }
+
             }
             else {
                 mSec++;
@@ -74,6 +73,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
     private CameraBridgeViewBase mCameraView;
 
     private String hashValue;
+    private String timestamp;
     private FaceVar.ActivationMode mode;
 
 
@@ -124,12 +124,16 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 Log.d(FaceVar.TAG, "onCreate : Start With Train Mode");
                 mode = FaceVar.ActivationMode.TRAIN;
                 hashValue = null;
+                timestamp = null;
                 mFaceAS = new FaceAuthService(mode, this, handler);
             }
             else if(activationMode.compareTo("auth") == 0){
                 Log.d(FaceVar.TAG, "onCreate : Start With Authentication Mode");
                 mode = FaceVar.ActivationMode.AUTH;
                 hashValue = parentIntent.getStringExtra("hashValue");
+                timestamp = parentIntent.getStringExtra("timestamp");
+                System.out.println(hashValue);
+                System.out.println(timestamp);
                 mFaceAS = new FaceAuthService(mode, this, handler);
 
                 String modelPath = mFaceAS.getModelPath();
@@ -178,6 +182,24 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
         }
         timer.cancel();
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        FaceRestTask faceRest = null;
+        if(mode.compareTo(FaceVar.ActivationMode.AUTH) == 0)
+            faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+
+        boolean result = false;
+        try {
+            if(faceRest != null)
+                result = faceRest.execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onStart(){
         super.onStart();
@@ -242,7 +264,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 if(mode.equals(FaceVar.ActivationMode.TRAIN)){
                     if(mFaceAS.isTrainPossible()){
                         String hashValue = mFaceAS.trainFace();
-                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, 101010), this, handler);
+                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, 12345), this, handler);
                         boolean result = false;
                         try {
                             result = faceRest.execute().get();
@@ -267,7 +289,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                     if(mFaceAS.isUser()) {
                         FaceRestTask faceRest = null;
 
-                        faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, 101010), this, handler);
+                        faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, Integer.parseInt(timestamp)), this, handler);
                         boolean result = false;
                         try {
                             result = faceRest.execute().get();

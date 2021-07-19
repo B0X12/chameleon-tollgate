@@ -2,10 +2,11 @@ package com.chameleon.tollgate.Utils.Log;
 
 import android.content.Context;
 
-import com.chameleon.tollgate.Utils.Log.define.logMode;
-import com.chameleon.tollgate.Utils.Log.define.logRecord;
-import com.chameleon.tollgate.Utils.Log.define.logType;
-import com.chameleon.tollgate.Utils.Log.define.priority;
+import com.chameleon.tollgate.Utils.Log.dto.logMode;
+import com.chameleon.tollgate.Utils.Log.dto.logRecord;
+import com.chameleon.tollgate.Utils.Log.dto.logResult;
+import com.chameleon.tollgate.Utils.Log.dto.logType;
+import com.chameleon.tollgate.Utils.Log.dto.logPriority;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class tollgateLog {
     private final File logFile;
     private static tollgateLog tollgateLogInstance;
+    private static final String separator = ";";
     
     public tollgateLog(Context context){
         String logDir = "log";
@@ -41,20 +43,19 @@ public class tollgateLog {
         return tollgateLogInstance;
     }
 
-    public void put(priority priority, logMode mode, logType type, String message){
+    public void put(logPriority logPriority, logMode mode, logType type, logResult result, String message){
         if(logFile != null){
-            String separator = ";";
             StringBuilder sb = new StringBuilder();
             FileOutputStream os = null;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String timestamp = sdf.format(new Timestamp(System.currentTimeMillis()));
 
-            sb.append(timestamp)
-                    .append(separator)
-                    .append(priority.getPriority()+separator)
-                    .append(mode.getAuthMode()).append(separator)
-                    .append(type.getAuthType()).append(separator)
-                    .append(message).append(separator)
+            sb.append(timestamp).append(separator)                      // timestamp
+                    .append(logPriority.getPriority()).append(separator)   // priority (alert)
+                    .append(mode.getAuthMode()).append(separator)       // mode (register, authenticate)
+                    .append(type.getAuthType()).append(separator)       // auth type (pattern, face, fingerprint, otp)
+                    .append(result.getAuthResult()).append(separator)   // result
+                    .append(message).append(separator)                  // message
                     .append("\n");
 
             try {
@@ -88,7 +89,7 @@ public class tollgateLog {
 
             String line;
             while ((line = bufReader.readLine()) != null) {
-                logs.add(new logRecord(line));
+                logs.add(new logRecord(line, separator));
             }
             bufReader.close();
             fileReader.close();
@@ -98,6 +99,7 @@ public class tollgateLog {
         }
         return logs;
     }
+
     public ArrayList<logRecord> get(logMode mode){
         ArrayList<logRecord> logs = new ArrayList<>();
         try {
@@ -106,7 +108,72 @@ public class tollgateLog {
 
             String line;
             while ((line = bufReader.readLine()) != null) {
-                logs.add(new logRecord(line));
+                logRecord record = new logRecord(line, separator);
+                if(record.getMode().compareTo(mode.getAuthMode()) == 0)
+                    logs.add(record);
+            }
+            bufReader.close();
+            fileReader.close();
+        }
+        catch (IOException e){
+
+        }
+        return logs;
+    }
+
+    public ArrayList<logRecord> get(logType type){
+        ArrayList<logRecord> logs = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader(logFile);
+            BufferedReader bufReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                logRecord record = new logRecord(line, separator);
+                if(record.getType().compareTo(type.getAuthType()) == 0)
+                    logs.add(record);
+            }
+            bufReader.close();
+            fileReader.close();
+        }
+        catch (IOException e){
+
+        }
+        return logs;
+    }
+
+    public ArrayList<logRecord> get(logPriority priority){
+        ArrayList<logRecord> logs = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader(logFile);
+            BufferedReader bufReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                logRecord record = new logRecord(line, separator);
+                if(record.getPriority().compareTo(priority.getPriority()) == 0)
+                    logs.add(record);
+            }
+            bufReader.close();
+            fileReader.close();
+        }
+        catch (IOException e){
+
+        }
+        return logs;
+    }
+
+    public ArrayList<logRecord> get(logResult result){
+        ArrayList<logRecord> logs = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader(logFile);
+            BufferedReader bufReader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                logRecord record = new logRecord(line, separator);
+                if(record.getResult().compareTo(result.getAuthResult()) == 0)
+                    logs.add(record);
             }
             bufReader.close();
             fileReader.close();

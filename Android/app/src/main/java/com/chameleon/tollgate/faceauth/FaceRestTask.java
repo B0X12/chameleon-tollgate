@@ -33,11 +33,13 @@ public class FaceRestTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
+
         RestConnection rest = null;
         if(entry.getMode().compareTo("train")==0)
             rest = new RestConnection(this.context, Path.FACEID_REG, Method.POST);
         else if(entry.getMode().compareTo("auth")==0)
             rest = new RestConnection(this.context, Path.FACEID, Method.POST);
+
 
         if(rest == null)
             return false;
