@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrognito.patternlockview.PatternLockView;
@@ -54,8 +55,11 @@ public class AuthPatternActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Context context = this;
+        TextView label = findViewById(R.id.text_label_auth);
+        label.setText("패턴을 입력하세요.");
         PatternLockView patternView = findViewById(R.id.pattern_auth);
         PatternLockViewListener patternListener = new PatternLockViewListener() {
+            int count = 0;
             @Override
             public void onStarted() { }
 
@@ -64,22 +68,24 @@ public class AuthPatternActivity extends AppCompatActivity {
 
             @Override
             public void onComplete(List<PatternLockView.Dot> pattern) {
+                this.count++;
                 Log.d(LogTag.AUTH_PATTERN, "Pattern complete: " +
                         PatternLockUtils.patternToString(patternView, pattern));
                 try {
                     String resultPattern = PatternLockUtils.patternToString(patternView, pattern);
-                    RestTask rest = new RestTask(new PatternPack(Util.getHash(resultPattern), Integer.parseInt(intent.getStringExtra("timestamp"))), context, handler);
+                    PatternPack petternPack = new PatternPack(Util.getHash(resultPattern), Long.parseLong(intent.getStringExtra("timestamp")));
+                    RestTask rest = new RestTask(petternPack, context, handler, count >= 3);
                     boolean result = rest.execute().get();
                     Log.d(LogTag.AUTH_PATTERN, "Pattern authentication result : " + result);
 
                     if(!result) {
+                        if(count < 3) {
+                            label.setText("패턴이 잘못되었습니다.\n다시 입력해주세요.");
+                            patternView.clearPattern();
+                            return;
+                        }
                         Toast.makeText(getApplicationContext(), "패턴이 잘못되었습니다.", Toast.LENGTH_LONG).show();
                     }
-
-                    Intent homeIntent = new Intent(context, HomeActivity.class);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(homeIntent);
                     finish();
                 } catch (Exception ex) {
                     Log.d(LogTag.AUTH_PATTERN, "Exception : " + ex.getMessage());

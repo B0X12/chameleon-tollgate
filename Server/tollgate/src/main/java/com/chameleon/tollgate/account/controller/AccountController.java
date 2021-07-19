@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chameleon.tollgate.account.dto.Account;
 import com.chameleon.tollgate.account.dto.MapPC;
 import com.chameleon.tollgate.account.service.AccountService;
+import com.chameleon.tollgate.define.Path;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
@@ -26,7 +27,7 @@ public class AccountController {
 	private AccountService accountService;
 	
 	// --------------- 로그인 ---------------
-	@PostMapping(path = "/account/login")
+	@PostMapping(path = Path.LOGIN)
 	public ResponseEntity<Response<Boolean>> logIn(@RequestHeader(value = "User-Agent") String userAgent,
 			@RequestBody Account account, long timestamp) throws UnauthorizedUserAgentException, SQLException {
 
@@ -43,7 +44,7 @@ public class AccountController {
 	}
 
 	// --------------- 회원 가입 ---------------
-	@PostMapping(path = "/account/signup")
+	@PostMapping(path = Path.SIGNUP)
 	public ResponseEntity<Response<Boolean>> signUp(@RequestHeader(value = "User-Agent") String userAgent,
 			@RequestBody Account account, long timestamp) throws UnauthorizedUserAgentException, SQLException {
 
@@ -68,7 +69,7 @@ public class AccountController {
 	}
 
 	// --------------- 사용자와 컴퓨터(UID) 연동 ---------------
-	@PostMapping(path = "/account/map/pc/")
+	@PostMapping(path = Path.MAP_PC)
 	public ResponseEntity<Response<Boolean>> mappingSIDWithUser(@RequestHeader(value = "User-Agent") String userAgent,
 			@RequestBody MapPC map_pc, long timestamp) throws UnauthorizedUserAgentException {
 
@@ -90,7 +91,7 @@ public class AccountController {
 	}
 
 	// --------------- UID와 연동된 사용자 검색 ---------------
-	@GetMapping(path = "/account/map/pc/" + "{uid}")
+	@GetMapping(path = Path.MAP_PC + "{uid}")
 	public ResponseEntity<Response<String>> getUserByUID(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("uid") String uid, long timestamp) throws UnauthorizedUserAgentException, SQLException {
 
@@ -107,7 +108,7 @@ public class AccountController {
 	}
 
 	// --------------- UID와 사용자 간 연동 해제 ---------------
-	@DeleteMapping(path = "/account/map/pc/" + "{uid}")
+	@DeleteMapping(path = Path.MAP_PC + "{uid}")
 	public ResponseEntity<Response<Boolean>> unmapUserByUID(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("uid") String uid, long timestamp) throws UnauthorizedUserAgentException, SQLException {
 

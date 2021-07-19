@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chameleon.tollgate.define.Property;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
@@ -20,7 +21,7 @@ public class HomeController {
 	public ResponseEntity<Response<String>> sendHello(@RequestHeader(value = "User-Agent") String userAgent,
 			long timestamp) throws UnauthorizedUserAgentException {
 
-		if (userAgent.equals("Tollgate-client")) {
+		if (userAgent.equals(Property.USER_AGENT)) {
 			Response<String> resp = new Response<String>(HttpStatus.OK, "Hello", timestamp);
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} else {

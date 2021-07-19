@@ -1,14 +1,23 @@
 package com.chameleon.tollgate.rest;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.chameleon.tollgate.define.Property;
+
 public class AuthStatus {
 	private String id;
 	private boolean verified;
-	private boolean success;
+	private Boolean success;
+	private Timer timer;
+	private TimerTask task;
 	
 	public AuthStatus(String id) {
 		this.id = id;
 		this.verified = false;
 		this.success = false;
+		this.timer = null;
+		this.task = null;
 	}
 	
 	public void setId(String id) {
@@ -31,14 +40,30 @@ public class AuthStatus {
 		this.success = success;
 	}
 	
-	public boolean isSuccess() {
+	public Boolean isSuccess() {
 		return this.success;
 	}
 	
-	public boolean waitVerify() throws InterruptedException {
+	public Boolean waitVerify() throws InterruptedException {
+		this.task = new TimerTask() {
+			@Override
+			public void run() {
+				verify(null);
+			}
+		};
+		this.timer = new Timer(true);
+		this.timer.schedule(task, Property.LIMIT_TIME);
+		
 		while(!this.verified)
 			Thread.sleep(100);
 		return this.success;
+	}
+	
+	public void verify(Boolean success) {
+		this.verified = true;
+		this.success = success;
+		this.task.cancel();
+		this.timer.cancel();
 	}
 	
 	@Override
