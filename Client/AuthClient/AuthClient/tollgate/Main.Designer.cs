@@ -29,21 +29,10 @@ namespace AuthClient.tollgate
         /// </summary>
         private void InitializeComponent()
         {
-            this.usbDlgButton = new System.Windows.Forms.Button();
             this.userLabel = new System.Windows.Forms.Label();
             this.logoutButton = new System.Windows.Forms.Button();
             this.usbConfigButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // usbDlgButton
-            // 
-            this.usbDlgButton.Location = new System.Drawing.Point(41, 101);
-            this.usbDlgButton.Name = "usbDlgButton";
-            this.usbDlgButton.Size = new System.Drawing.Size(145, 55);
-            this.usbDlgButton.TabIndex = 0;
-            this.usbDlgButton.Text = "USB 등록";
-            this.usbDlgButton.UseVisualStyleBackColor = true;
-            this.usbDlgButton.Click += new System.EventHandler(this.usbDlgButton_Click);
             // 
             // userLabel
             // 
@@ -66,9 +55,9 @@ namespace AuthClient.tollgate
             // 
             // usbConfigButton
             // 
-            this.usbConfigButton.Location = new System.Drawing.Point(44, 182);
+            this.usbConfigButton.Location = new System.Drawing.Point(556, 117);
             this.usbConfigButton.Name = "usbConfigButton";
-            this.usbConfigButton.Size = new System.Drawing.Size(142, 55);
+            this.usbConfigButton.Size = new System.Drawing.Size(144, 49);
             this.usbConfigButton.TabIndex = 3;
             this.usbConfigButton.Text = "USB 설정 창";
             this.usbConfigButton.UseVisualStyleBackColor = true;
@@ -82,7 +71,6 @@ namespace AuthClient.tollgate
             this.Controls.Add(this.usbConfigButton);
             this.Controls.Add(this.logoutButton);
             this.Controls.Add(this.userLabel);
-            this.Controls.Add(this.usbDlgButton);
             this.Name = "MainDialog";
             this.Text = "Main";
             this.ResumeLayout(false);
@@ -91,8 +79,6 @@ namespace AuthClient.tollgate
         }
 
         #endregion
-
-        private System.Windows.Forms.Button usbDlgButton;
         private System.Windows.Forms.Label userLabel;
         private System.Windows.Forms.Button logoutButton;
         private System.Windows.Forms.Button usbConfigButton;

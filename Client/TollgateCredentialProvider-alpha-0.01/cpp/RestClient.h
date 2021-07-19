@@ -17,6 +17,8 @@ public:
         RESULT_CONFIG_FILE_COMPROMISED,
         RESULT_UNAUTHORIZED_ACCESS,
         RESULT_TIMESTAMP_MISMATCH,
+        RESULT_CONNECTION_TIMEOUT,
+        RESULT_SERVER_DB_ERROR,
         RESULT_UNKNOWN_ERROR,
 
         RESULT_CLIENT_PROGRAM_COMPROMISED,
@@ -45,8 +47,14 @@ public:
     DWORD GetRestClientExitCode();
     void GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords);
 
+    BOOL GetAuthFactorBySystemIdentifier(wchar_t* sys_id);
     BOOL RequestUSBVerification(wchar_t* user, wchar_t* usb_info);
-    BOOL RequestPatternVerification(wchar_t* user);
+    BOOL RequestPatternInformation(wchar_t* user);
+    BOOL RequestFaceInformation(wchar_t* user);
+    BOOL RequestFingerprintInformation(wchar_t* user);
+    BOOL RequestOTPIssue(wchar_t* user);
+    BOOL RequestOTPVerification(wchar_t* user, wchar_t* otp);
+    
 
 private:
     BOOL _ExecuteRestClientProcess(wchar_t* wcCommandLine);

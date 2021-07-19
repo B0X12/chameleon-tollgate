@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net;
 
@@ -151,7 +152,7 @@ namespace RestClient.rest
 
     class URLPath
     {
-        //public const string SERVER_HELLO = "";
+        public const string SERVER_HELLO = "";
 
         public const string ACCOUNT_FACTOR = "account/factor/";
 
@@ -159,6 +160,7 @@ namespace RestClient.rest
         public const string REQUEST_PATTERN = "auth/pattern/";
         public const string REQUEST_FINGERPRINT = "auth/finger/";
         public const string REQUEST_FACE = "auth/face/";
-        public const string REQUEST_OTP = "auth/otp/";
+        public const string REQUEST_OTP = "register/otp/";
+        public const string VERIFY_OTP = "auth/otp/";
     }
 }

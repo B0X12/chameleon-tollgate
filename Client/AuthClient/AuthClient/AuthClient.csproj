@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="tollgate\rest\ResponseDataFormat.cs" />
     <Compile Include="tollgate\account\service\AccountService.cs" />
+    <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
     <EmbeddedResource Include="tollgate\account\dialog\LogIn.resx">
       <DependentUpon>LogIn.cs</DependentUpon>
@@ -179,7 +180,6 @@
     <Folder Include="tollgate\pattern\dialog\" />
     <Folder Include="tollgate\pattern\dto\" />
     <Folder Include="tollgate\pattern\service\" />
-    <Folder Include="tollgate\usb\service\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

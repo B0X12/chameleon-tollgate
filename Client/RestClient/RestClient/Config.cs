@@ -5,7 +5,7 @@ namespace RestClient
 {
     class Config
     {
-        private const string CONFIG_FILE_PATH = "C:\\Tollgate\\server.cfg";
+        private const string CONFIG_FILE_PATH = @"C:\Tollgate\server.cfg";
         
 
         private string GetBaseURLAddress(string serverIPPort, bool useHttps = true)

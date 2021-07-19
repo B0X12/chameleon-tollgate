@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using AuthClient.tollgate.usb.dto;
+using AuthClient.tollgate.usb.service;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -7,6 +9,8 @@ namespace AuthClient.tollgate.usb.dialog
 {
     public partial class USBRegisterDialog : Form
     {
+        private string usb_alias;
+
         public USBRegisterDialog()
         {
             InitializeComponent();
@@ -14,6 +18,8 @@ namespace AuthClient.tollgate.usb.dialog
             registerOKButton.Hide();
             registerCancelButton.Hide();
             progressBar1.Show();
+
+            this.usb_alias = "";
         }
 
         private void usbRecognitionTimer_Tick(object sender, EventArgs e)
@@ -31,6 +37,7 @@ namespace AuthClient.tollgate.usb.dialog
 
                     statusMessageLabel.Text = "다음 USB 장치가 검색되었습니다\r\n";
                     statusMessageLabel.Text += (item.VolumeLabel + "\r\n");
+                    this.usb_alias = item.VolumeLabel;
                     statusMessageLabel.Text += "해당 장치를 인증 서버에 등록하시겠습니까?";
 
                     progressBar1.Hide();
@@ -42,10 +49,10 @@ namespace AuthClient.tollgate.usb.dialog
 
         private void registerOKButton_Click(object sender, EventArgs e)
         {
-            string usbInfo = ReadUSBInfoByRegistry();
+            string usbID = ReadUSBInfoByRegistry();
 
             // VID, PID 등의 정보 불러오기 실패
-            if(usbInfo.Length == 0)
+            if(usbID.Length == 0)
             {
                 MessageBox.Show("USB 정보를 불러올 수 없습니다.");
                 this.DialogResult = DialogResult.Cancel;
@@ -54,25 +61,20 @@ namespace AuthClient.tollgate.usb.dialog
             else
             {
                 // USB 정보 문자열 가공
-                usbInfo = usbInfo.Replace("\\", "");
-                usbInfo = usbInfo.Replace("&", "");
+                usbID = usbID.Replace("\\", "");
+                usbID = usbID.Replace("&", "");
 
-                // 서버로 해당 정보 전송
-                /*
-                AuthUSB usb_info = new AuthUSB(Config.GetCurrentUser(), usbInfo);
-                string result = HttpCommunication.SendRequestPOST(URLPath.REGISTER_USB, usb_info);
+                USBInfo usbInfo = new USBInfo(Config.GetCurrentUser(), usbID, this.usb_alias);
+                USBService us = new USBService();
 
-                if (result.Equals("true"))
+                if(us.RegisterUSBInfo(usbInfo))
                 {
-                    MessageBox.Show("USB가 등록되었습니다: " + usbInfo);
                     this.DialogResult = DialogResult.OK;
-                }
+                } 
                 else
                 {
-                    MessageBox.Show("해당 USB 정보가 이미 존재합니다");
                     this.DialogResult = DialogResult.Cancel;
                 }
-                */
             }
         }
 
