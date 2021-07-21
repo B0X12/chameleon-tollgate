@@ -7,7 +7,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.chameleon.tollgate.define.LogTag;
-import com.chameleon.tollgate.fingerprint.FingerPrintActivity;
 import com.chameleon.tollgate.pattern.dto.PatternPack;
 import com.chameleon.tollgate.rest.ErrorResponse;
 import com.chameleon.tollgate.rest.HttpStatus;

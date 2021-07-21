@@ -14,6 +14,7 @@ namespace AuthClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
 
             /*
              *      C:\\Tollgate\\tollgate.cfg 파일을 읽어 기본 서버 주소(URL) 초기화

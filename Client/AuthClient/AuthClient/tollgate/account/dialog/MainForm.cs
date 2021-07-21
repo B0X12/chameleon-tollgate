@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {
-    public partial class Login : UserControl
+    public partial class MainForm : Form
     {
-        public Login()
+        public MainForm()
         {
             InitializeComponent();
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            panel_main.Controls.Add(new InitControl());
         }
     }
 }
