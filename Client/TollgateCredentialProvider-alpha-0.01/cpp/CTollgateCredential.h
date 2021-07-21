@@ -145,7 +145,8 @@ private:
     
 
     // --------------- 인증 관련 정보 ---------------
-    
+    WCHAR _wszUserName[100] = { 0, };
+
     //  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
     //  Field : -     -     Face  Fingerprint  Pattern  OTP   USB   Password
     BYTE _bAuthFactorFlag = 0;

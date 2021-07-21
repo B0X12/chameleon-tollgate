@@ -47,7 +47,9 @@ public:
     DWORD GetRestClientExitCode();
     void GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords);
 
-    BOOL GetAuthFactorBySystemIdentifier(wchar_t* sys_id);
+    BOOL GetUserBySystemIdentifier(wchar_t* sys_id);
+    BOOL GetAuthFactorByUser(wchar_t* user);
+
     BOOL RequestUSBVerification(wchar_t* user, wchar_t* usb_info);
     BOOL RequestPatternInformation(wchar_t* user);
     BOOL RequestFaceInformation(wchar_t* user);

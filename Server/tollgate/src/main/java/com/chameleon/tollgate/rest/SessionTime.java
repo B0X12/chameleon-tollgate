@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class SessionTime {
 	private String id;
-	private long timestamp;
+	private int timestamp;
 	
-	public SessionTime(String id, long timestamp) {
+	public SessionTime(String id, int timestamp) {
 		this.id = id;
 		this.timestamp = timestamp;
 	}

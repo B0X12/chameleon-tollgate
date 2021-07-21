@@ -36,11 +36,11 @@ public class AuthController {
 	@PostMapping(path=Register.PATTERN+"{id}")
 	public ResponseEntity<Response<Boolean>> SetPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
 		Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, service.SetPattern(id, entry.getPattern()), entry.getTimestamp());
-		return new ResponseEntity<>(respon, HttpStatus.OK); 
+		return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST); 
 	}
 	
 	@GetMapping(path=Auth.PATTERN+"{id}")
-	public ResponseEntity<Response<Boolean>> SendSignal(@PathVariable("id") String id, long timestamp) throws Exception {
+	public ResponseEntity<Response<Boolean>> SendSignal(@PathVariable("id") String id, int timestamp) throws Exception {
 		this.sessions.add(id, timestamp);
 		service.SendSignal(id, timestamp);
 		this.status.add(id);
@@ -62,20 +62,15 @@ public class AuthController {
 		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 		
-		boolean result = false;
-		try {
-			result = service.VerifyPattern(id, entry.getPattern());
-		} catch (Exception ex) {
-			this.status.verify(id, false);
-		}
-		
-		if(result)
+		if(service.VerifyPattern(id, entry.getPattern())) {	
 			this.status.verify(id, true);
-		else
-			this.status.verify(id, false);
-		
+			return new ResponseEntity<>(
+					new Response<Boolean>(HttpStatus.OK, true, entry.getTimestamp()),
+					HttpStatus.OK);
+		}
+		this.status.verify(id, false);
 		return new ResponseEntity<>(
-				new Response<Boolean>(HttpStatus.OK, result, entry.getTimestamp()),
-				HttpStatus.OK);
+				new Response<Boolean>(HttpStatus.BAD_REQUEST, false, entry.getTimestamp()),
+				HttpStatus.BAD_REQUEST);
 	}
 }

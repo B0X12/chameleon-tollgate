@@ -244,8 +244,7 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 
 		// 서버로부터 해당 PC와 매핑된 사용자의 factor flag를 얻어옴
 		RestClient* rc = new RestClient();
-
-		if (rc->GetAuthFactorBySystemIdentifier(wszSystemIdentifier))
+		if (rc->GetUserBySystemIdentifier(wszSystemIdentifier))
 		{
 			// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
 			wchar_t wcMessageFromServer[2048] = { 0, };
@@ -256,32 +255,68 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 				// 서버와 연결 성공
 			case rc->RESULT_CONNECTION_SUCCESS:
 			{
+				Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"연결 성공");
 				rc->GetRestClientMessage(wcMessageFromServer, 2048);
-				BYTE flag = (BYTE)_wtoi(&(wcMessageFromServer[0]));
-				_bAuthFactorFlag = flag;
-
-				InitializeAuthStage();
-				break;
-			}
-			case rc->RESULT_CONNECTION_FAILED:
-			{
-				SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결에 실패하였습니다.\r\n관리자에게 문의하십시오");
-				_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+				wcscpy_s(_wszUserName, wcMessageFromServer);
 				break;
 			}
 			default:
-				SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결 중 오류가 발생하였습니다");
-				_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+				Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"연결 실패");
+				wcscpy_s(_wszUserName, L"");
 				break;
 			}
 		}
 		else
 		{
-			//MessageBox(0, L"연결 실패", L"연결 실패", 0);
-			SetAuthMessage(SFI_STAGE_STATUS, L"인증 서버로부터 값을 불러오는 데 실패하였습니다");
-			_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+			Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"GetUserBySystemIdentifier 함수 실패");
+			wcscpy_s(_wszUserName, L"");
 		}
 
+		// 서버로부터 매핑된 사용자명을 얻어왔을 경우 이를 이용하여 Factor flag를 얻어옴
+		if (wcscmp(_wszUserName, L""))
+		{
+			if (rc->GetAuthFactorByUser(_wszUserName))
+			{
+				// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
+				wchar_t wcMessageFromServer[2048] = { 0, };
+				DWORD retCode = rc->GetRestClientExitCode();
+
+				switch (retCode)
+				{
+					// 서버와 연결 성공
+				case rc->RESULT_CONNECTION_SUCCESS:
+				{
+					rc->GetRestClientMessage(wcMessageFromServer, 2048);
+					BYTE flag = (BYTE)_wtoi(&(wcMessageFromServer[0]));
+					_bAuthFactorFlag = flag;
+
+					InitializeAuthStage();
+					break;
+				}
+				case rc->RESULT_CONNECTION_FAILED:
+				{
+					SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결에 실패하였습니다.\r\n관리자에게 문의하십시오");
+					_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+					break;
+				}
+				default:
+					SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결 중 오류가 발생하였습니다");
+					_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+					break;
+				}
+			}
+			else
+			{
+				SetAuthMessage(SFI_STAGE_STATUS, L"인증 서버로부터 값을 불러오는 데 실패하였습니다");
+				_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+			}
+		}
+		else
+		{
+			SetAuthMessage(SFI_STAGE_STATUS, L"사용자를 불러올 수 없습니다");
+			_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+		}
+		
 		delete rc;
 	}
 

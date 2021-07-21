@@ -14,5 +14,7 @@ public interface IAccountService {
 
 	public String getUserByUID(String uid) throws SQLException;
 
-	public boolean unmapUserByUID(String uid);	
+	public boolean unmapUserByUID(String uid);
+
+	public int getFactorFlagByUser(String user) throws SQLException;	
 }

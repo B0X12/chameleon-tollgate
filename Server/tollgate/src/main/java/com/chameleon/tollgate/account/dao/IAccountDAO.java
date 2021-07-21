@@ -11,4 +11,5 @@ public interface IAccountDAO {
 	public boolean insertMapPCInfo(MapPC map_pc);
 	public String getUserByUID(String uid) throws SQLException;
 	public boolean deleteMapPCInfo(String uid);
+	public int getFactorFlagByUser(String user) throws SQLException;
 }

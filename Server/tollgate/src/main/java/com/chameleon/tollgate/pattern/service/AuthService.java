@@ -12,7 +12,7 @@ public class AuthService implements IAuthService {
 	AuthDAO dao;
 	
 	@Override
-	public boolean SendSignal(String id, long timestamp) throws Exception {
+	public boolean SendSignal(String id, int timestamp) throws Exception {
 		dao.open(true);
 		String token = dao.getToken(id);
 		dao.close();
