@@ -69,14 +69,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="tollgate\account\dialog\InitControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\InitControl.Designer.cs">
+      <DependentUpon>InitControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\Login.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="tollgate\Config.cs" />
     <Compile Include="tollgate\account\dto\Account.cs" />
     <Compile Include="tollgate\account\dto\MapPC.cs" />
-    <Compile Include="tollgate\account\dialog\LogIn.cs">
+    <Compile Include="tollgate\account\dialog\LogIn2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="tollgate\account\dialog\LogIn.Designer.cs">
-      <DependentUpon>LogIn.cs</DependentUpon>
+    <Compile Include="tollgate\account\dialog\LogIn2.Designer.cs">
+      <DependentUpon>LogIn2.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\Main.cs">
       <SubType>Form</SubType>
@@ -123,8 +141,17 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
-    <EmbeddedResource Include="tollgate\account\dialog\LogIn.resx">
-      <DependentUpon>LogIn.cs</DependentUpon>
+    <EmbeddedResource Include="tollgate\account\dialog\InitControl.resx">
+      <DependentUpon>InitControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\LogIn2.resx">
+      <DependentUpon>LogIn2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
