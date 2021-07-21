@@ -12,7 +12,9 @@ public class SessionList {
 		this.sessions = new ArrayList<SessionTime>();
 	}
 	
-	public void add(String id, int timestamp) {
+
+	public void add(String id, long timestamp) {
+		remove(id);
 		SessionTime session = new SessionTime(id, timestamp);
 		sessions.add(session);
 	}

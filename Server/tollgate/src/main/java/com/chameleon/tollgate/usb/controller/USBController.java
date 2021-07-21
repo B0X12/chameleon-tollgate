@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import com.chameleon.tollgate.define.url.Auth;
 import com.chameleon.tollgate.define.url.Register;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 import com.chameleon.tollgate.usb.dto.USBInfo;
+=======
+import com.chameleon.tollgate.define.Path;
+>>>>>>> fdc281b9d17d5cffa3f11a587aa9feca32b4583b
 import com.chameleon.tollgate.usb.service.IUSBService;
 
 @RestController
@@ -57,7 +61,7 @@ public class USBController {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 	}
-
+	
 	/*
 	 * 등록된 USB 목록 출력
 	 */

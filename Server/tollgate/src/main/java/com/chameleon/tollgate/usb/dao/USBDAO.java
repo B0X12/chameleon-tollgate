@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.chameleon.tollgate.database.SQLiteManager;
 import com.chameleon.tollgate.usb.dto.USBInfo;
 
+
 @Component
 public class USBDAO extends SQLiteManager implements IUSBDAO {
 	public USBDAO() {

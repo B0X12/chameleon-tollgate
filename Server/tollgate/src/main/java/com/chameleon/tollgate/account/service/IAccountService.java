@@ -3,7 +3,6 @@ package com.chameleon.tollgate.account.service;
 import java.sql.SQLException;
 
 import com.chameleon.tollgate.account.dto.*;
-import com.chameleon.tollgate.account.exception.UserAlreadyExistException;
 
 public interface IAccountService {
 	public boolean logIn(Account account) throws SQLException;
