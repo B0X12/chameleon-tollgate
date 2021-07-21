@@ -16,21 +16,22 @@ namespace RestClient
 		 *	                        서버가 살아 있다면, Hello 문자열 반환
 		 *	                        그 외의 경우 Denied 문자열 반환
          *
-         *
-         *   --get-auth-factor	    --get-auth-factor [사용자ID]
-		 *	                        [사용자ID]의 인증 요소(플래그 변수)를 가져옴
+         *   --get-auth-factor	    --get-auth-factor [UID]
+		 *	                        [UID]와 연동된 사용자의 인증 요소(플래그 변수)를 가져옴
 		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
 		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
          *
-         *
          *   --verify-usb		    --verify-usb [사용자ID] [USB식별값]
 		 *	                        USB 인증 옵션
-		 *	                        반환 값: true / false
-         *
+		 *	                        반환 문자열: Verified / Denied
          *
          *   --request-pattern      --request-pattern [사용자ID]
          *                          서버에게 패턴 인증 요청
-         *                          반환 값: true / false
+         *                          반환 문자열: Verified / Denied
+         *   
+         *   --request-face         --request-face [사용자ID]
+         *                          서버에게 안면 인증 요청
+         *                          반환 문자열: Verified / Denied
          *                          
          *   
          *   --request-otp
@@ -39,70 +40,81 @@ namespace RestClient
          *   
          *   --request-fingerprint  
          *   
-         *   
-         *   
+         *
+         *
          */
 
         static int Main(string[] args)
         {
+            // 인자 체크
             if(!CheckArgumentByOption(args))
             {
-                return (int)ReturnCode.STATUS_FAILED;
+                return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
             }
 
+            // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
+            Config cfg = new Config();
+            string baseURL = cfg.InitAuthServerByConfigFile();
+
+            if(baseURL == "")
+            {
+                return (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
+            }
+            
+
+            // 옵션에 따라 동작 수행
             string option = args[0];
-            AuthCommunication ac = new AuthCommunication();
+            Handler handler = new Handler(baseURL);
 
             switch (option)
             {
+                
                 case "--is-server-alive":
-                    if (ac.IsServerAlive())
-                    {
-                        return (int)ReturnCode.STATUS_OK;
-                    }
-                    else
-                    {
-                        return (int)ReturnCode.STATUS_FAILED;
-                    }
-
+                    return (int)handler.IsServerAlive();
+                  
                 case "--get-auth-factor":
-                    break;
-
+                    {
+                        string uid = args[1];
+                        int retCode = (int)handler.GetAuthFactor(uid);
+                        return retCode;
+                    }
+                    
                 case "--verify-usb":
                     {
                         string user = args[1];
                         string usb_info = args[2];
 
-                        if (ac.VerifyUSB(user, usb_info))
-                        {
-                            return (int)ReturnCode.STATUS_OK;
-                        }
-                        else
-                        {
-                            return (int)ReturnCode.STATUS_FAILED;
-                        }
+                        return (int)handler.VerifyUSB(user, usb_info);
                     }
                     
                 case "--request-pattern":
                     {
                         string user = args[1];
-                        
-                        if (ac.VerifyPattern(user))
-                        {
-                            return (int)ReturnCode.STATUS_OK;
-                        }
-                        else
-                        {
-                            return (int)ReturnCode.STATUS_FAILED;
-                        }
+
+                        return (int)handler.RequestPattern(user);
                     }
-                    
+
+                case "--request-face":
+                    {
+                        string user = args[1];
+
+                        return (int)handler.RequestFace(user);
+                    }
 
                 case "--request-otp":
-                    break;
+                    {
+                        string user = args[1];
+
+                        return (int)handler.RequestOTP(user);
+                    }
 
                 case "--verify-otp":
-                    break;
+                    {
+                        string user = args[1];
+                        string otp = args[2];
+
+                        return (int)handler.VerifyOTP(user, otp);
+                    }
 
 
 
@@ -110,13 +122,7 @@ namespace RestClient
                     break;
             }
 
-            return (int)ReturnCode.STATUS_FAILED;
-        }
-
-        enum ReturnCode
-        {
-            STATUS_FAILED = 4444,
-            STATUS_OK = 200,
+            return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
         }
 
         static bool CheckArgumentByOption(string[] parameters)
@@ -143,7 +149,7 @@ namespace RestClient
                     }
 
                 case "--get-auth-factor":
-                    // 포맷: --get-auth-factor [사용자ID]
+                    // 포맷: --get-auth-factor [SID]
                     if (parameters.Length == 2)
                     {
                         return true;
@@ -175,11 +181,38 @@ namespace RestClient
                         return false;
                     }
 
+                case "--request-face":
+                    // 포맷: --request-face [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 case "--request-otp":
-                    break;
+                    // 포맷: --request-otp [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
                 case "--verify-otp":
-                    break;
+                    // 포맷: --request-otp [사용자ID] [OTP입력값]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
             }
 
             return false;

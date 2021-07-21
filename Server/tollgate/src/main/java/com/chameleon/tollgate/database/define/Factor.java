@@ -17,4 +17,12 @@ public enum Factor {
 	public String toString() {
 		return value;
 	}
+	
+	public static Factor findBy(String value) {
+		for(Factor factor : values()) {
+			if(factor.toString().equals(value))
+				return factor;
+		}
+		return null;
+	}
 }

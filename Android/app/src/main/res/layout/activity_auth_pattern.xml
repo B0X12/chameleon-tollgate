@@ -6,8 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".pattern.AuthPatternActivity">
 
+    <TextView
+        android:id="@+id/text_label_auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/pattern_auth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.andrognito.patternlockview.PatternLockView
-        android:id="@+id/pattern_lock_view"
+        android:id="@+id/pattern_auth"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="200dp"
@@ -18,5 +29,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:normalStateColor="@color/black"
         app:correctStateColor="@color/purple_700"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

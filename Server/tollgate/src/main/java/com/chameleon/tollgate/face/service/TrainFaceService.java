@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TrainFaceService {
-
 	TrainFaceService(){
 		final String title = "얼굴 인증";
 		final String body = "얼굴 인증 요청이 발생했습니다.";

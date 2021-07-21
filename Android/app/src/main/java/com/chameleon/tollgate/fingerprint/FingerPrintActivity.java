@@ -1,6 +1,10 @@
 package com.chameleon.tollgate.fingerprint;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +13,26 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.chameleon.tollgate.R;
+import com.chameleon.tollgate.fingerprint.RestTask;
+
+import java.util.concurrent.ExecutionException;
 
 public class FingerPrintActivity extends AppCompatActivity implements FingerPrintManager.Callback
 {
     Button btn_fingerprint;
     private FingerPrintManager manager_fingerprint;
+    private final FingerprintHandler handler = new FingerprintHandler(this);
+
+    private static class FingerprintHandler extends Handler
+    {
+        FingerPrintActivity activity;
+
+        public FingerprintHandler(FingerPrintActivity activity)
+        {
+            super(Looper.getMainLooper());
+            this.activity = activity;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,14 +58,18 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         });
     }
 
-    @Override public void onBiometricAuthenticationResult(String result, CharSequence errString)
-    {
+    @Override public void onBiometricAuthenticationResult(String result, CharSequence errString) throws ExecutionException, InterruptedException {
+        Intent intent = getIntent();
+        Context context = this;
+        boolean restResult;
+
         switch (result)
         {
             case AUTHENTICATION_SUCCESSFUL:
                 Toast.makeText(FingerPrintActivity.this,
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "AUTHENTICATION_SUCCESSFUL");
+                restResult = AUTH_SUCCESSFUL;
                 break;
 
             case AUTHENTICATION_FAILED:
@@ -54,6 +77,7 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                         Toast.LENGTH_SHORT)
                         .show();
                 Log.d("TAG", "AUTHENTICATION_FAILED");
+                restResult = AUTH_FAILED;
                 break;
 
             case AUTHENTICATION_ERROR:
@@ -61,8 +85,14 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                         "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
                 Log.d("TAG", "AUTHENTICATION_ERROR");
+                restResult = AUTH_ERROR;
                 break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + result);
         }
+        RestTask rest = new RestTask(Long.parseLong(intent.getStringExtra("timestamp")), restResult, context, handler);
+        rest.execute().get();
     }
 
     /*

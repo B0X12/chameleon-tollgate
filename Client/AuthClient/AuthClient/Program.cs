@@ -45,7 +45,7 @@ namespace AuthClient
             catch (WebException we)
             {
                 Config.DeleteConfigFile();
-                MessageBox.Show("인증 서버와 연결이 실패하였습니다");
+                MessageBox.Show("인증 서버로부터 데이터를 불러올 수 없습니다");
                 goto AuthClientStart;
             }
             

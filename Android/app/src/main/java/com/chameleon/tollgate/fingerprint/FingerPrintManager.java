@@ -12,7 +12,10 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+
+import lombok.SneakyThrows;
 
 import static android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG;
 import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
@@ -103,6 +106,7 @@ public class FingerPrintManager {
         biometricPrompt = new BiometricPrompt(fragmentActivity
                 , executor, new BiometricPrompt.AuthenticationCallback()
                 {
+                    @SneakyThrows
                     @Override
                     public void onAuthenticationError(int errorCode,
                                                       @NonNull CharSequence errString)
@@ -111,6 +115,7 @@ public class FingerPrintManager {
                         callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_ERROR, errString);
                     }
 
+                    @SneakyThrows
                     @Override
                     public void onAuthenticationSucceeded(
                             @NonNull BiometricPrompt.AuthenticationResult result)
@@ -120,6 +125,7 @@ public class FingerPrintManager {
                                 "");
                     }
 
+                    @SneakyThrows
                     @Override
                     public void onAuthenticationFailed()
                     {
@@ -142,11 +148,15 @@ public class FingerPrintManager {
 
     interface Callback
     {
-        void onBiometricAuthenticationResult(String result, CharSequence errString);
+        void onBiometricAuthenticationResult(String result, CharSequence errString) throws ExecutionException, InterruptedException;
 
         String AUTHENTICATION_SUCCESSFUL = "인증 성공";
         String AUTHENTICATION_FAILED = "인증 실패";
         String AUTHENTICATION_ERROR = "에러 발생";
+
+        boolean AUTH_SUCCESSFUL = true;
+        boolean AUTH_FAILED = false;
+        boolean AUTH_ERROR = false;
     }
 
 }

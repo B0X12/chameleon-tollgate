@@ -2,13 +2,11 @@ package com.chameleon.tollgate.usb.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.springframework.stereotype.Component;
 
 import com.chameleon.tollgate.database.exception.*;
 import com.chameleon.tollgate.database.SQLiteManager;
-import com.chameleon.tollgate.database.define.Table;
 
 @Component
 public class USBDAO extends SQLiteManager implements IUSBDAO {

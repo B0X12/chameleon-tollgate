@@ -18,7 +18,6 @@
 
 CTollgateProvider::CTollgateProvider():
     _cRef(1),
-    _pCredential(nullptr),
     _pCredProviderUserArray(nullptr)
 {
     DllAddRef();
@@ -26,11 +25,7 @@ CTollgateProvider::CTollgateProvider():
 
 CTollgateProvider::~CTollgateProvider()
 {
-    if (_pCredential != nullptr)
-    {
-        _pCredential->Release();
-        _pCredential = nullptr;
-    }
+    _ReleaseEnumeratedCredentials();
     if (_pCredProviderUserArray != nullptr)
     {
         _pCredProviderUserArray->Release();
@@ -169,7 +164,24 @@ HRESULT CTollgateProvider::GetCredentialCount(
         _CreateEnumeratedCredentials();
     }
 
-    *pdwCount = 1;
+    //*pdwCount = 1;
+
+    HRESULT hr;
+    DWORD dwUserCount = 1;
+
+    if (_pCredProviderUserArray != nullptr) {
+        hr = _pCredProviderUserArray->GetCount(&dwUserCount);
+        if (hr == 0) {
+        }
+        else {
+            dwUserCount = 1;
+        }
+    }
+    else {
+        dwUserCount = 1;
+    }
+
+    *pdwCount = dwUserCount;
 
     return S_OK;
 }
@@ -183,9 +195,9 @@ HRESULT CTollgateProvider::GetCredentialAt(
     HRESULT hr = E_INVALIDARG;
     *ppcpc = nullptr;
 
-    if ((dwIndex == 0) && ppcpc)
+    if ((dwIndex < _pCredential.size()) && ppcpc)
     {
-        hr = _pCredential->QueryInterface(IID_PPV_ARGS(ppcpc));
+        hr = _pCredential[dwIndex]->QueryInterface(IID_PPV_ARGS(ppcpc));
     }
     return hr;
 }
@@ -220,11 +232,14 @@ void CTollgateProvider::_CreateEnumeratedCredentials()
 
 void CTollgateProvider::_ReleaseEnumeratedCredentials()
 {
-    if (_pCredential != nullptr)
-    {
-        _pCredential->Release();
-        _pCredential = nullptr;
+    for (DWORD i = 0; i < _pCredential.size(); i++) {
+        if (_pCredential[i] != nullptr)
+        {
+            _pCredential[i]->Release();
+            _pCredential[i] = nullptr;
+        }
     }
+    _pCredential.clear();
 }
 
 HRESULT CTollgateProvider::_EnumerateCredentials()
@@ -236,25 +251,28 @@ HRESULT CTollgateProvider::_EnumerateCredentials()
         _pCredProviderUserArray->GetCount(&dwUserCount);
         if (dwUserCount > 0)
         {
-            ICredentialProviderUser *pCredUser;
-            hr = _pCredProviderUserArray->GetAt(0, &pCredUser);
-            if (SUCCEEDED(hr))
+            for (DWORD i = 0; i < dwUserCount; i++)
             {
-                _pCredential = new(std::nothrow) CTollgateCredential();
-                if (_pCredential != nullptr)
+                ICredentialProviderUser* pCredUser;
+                hr = _pCredProviderUserArray->GetAt(i, &pCredUser);
+                if (SUCCEEDED(hr))
                 {
-                    hr = _pCredential->Initialize(_cpus, s_rgCredProvFieldDescriptors, s_rgFieldStatePairs, pCredUser);
-                    if (FAILED(hr))
+                    _pCredential.push_back(new(std::nothrow) CTollgateCredential());
+                    if (_pCredential[i] != nullptr)
                     {
-                        _pCredential->Release();
-                        _pCredential = nullptr;
+                        hr = _pCredential[i]->Initialize(_cpus, s_rgCredProvFieldDescriptors, s_rgFieldStatePairs, pCredUser);
+                        if (FAILED(hr))
+                        {
+                            _pCredential[i]->Release();
+                            _pCredential[i] = nullptr;
+                        }
                     }
+                    else
+                    {
+                        hr = E_OUTOFMEMORY;
+                    }
+                    pCredUser->Release();
                 }
-                else
-                {
-                    hr = E_OUTOFMEMORY;
-                }
-                pCredUser->Release();
             }
         }
     }

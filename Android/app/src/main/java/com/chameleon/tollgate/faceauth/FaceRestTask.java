@@ -1,144 +1,81 @@
 package com.chameleon.tollgate.faceauth;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
-import com.chameleon.tollgate.R;
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManagerFactory;
+import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.pattern.PatternMsg;
+import com.chameleon.tollgate.pattern.dto.PatternPack;
+import com.chameleon.tollgate.rest.ErrorResponse;
+import com.chameleon.tollgate.rest.HttpStatus;
+import com.chameleon.tollgate.rest.Response;
+import com.chameleon.tollgate.rest.RestConnection;
+import com.chameleon.tollgate.rest.RestResult;
+import com.chameleon.tollgate.rest.define.Method;
+import com.chameleon.tollgate.rest.define.Path;
+import com.google.gson.Gson;
 
 public class FaceRestTask extends AsyncTask<Void, Void, Boolean> {
-    private URL url;
-    private ContentValues values;
+    FacePack entry;
     private Context context;
-    private String text;
-    private JsonObject body;
+    private Handler handler;
 
-    public FaceRestTask(@NonNull String url, String text, Context context) throws MalformedURLException {
-        this.url = new URL(url);
+    public FaceRestTask(@NonNull FacePack entry, @NonNull Context context, @NonNull Handler handler) {
+        this.entry = entry;
         this.context = context;
-        this.text = text;
-        this.body = new JsonObject();
+        this.handler = handler;
     }
 
-    private SSLContext getSSL() throws Exception {
-        CertificateFactory cf;
-        Certificate ca;
-
-        cf = CertificateFactory.getInstance("X.509");
-        InputStream caInput = this.context.getResources().openRawResource(R.raw.chameleon);
-        try {
-            ca = cf.generateCertificate(caInput);
-        }finally {
-            caInput.close();
-        }
-
-        String keyStoreType = KeyStore.getDefaultType();
-        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
-
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-        tmf.init(keyStore);
-
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, tmf.getTrustManagers(), null);
-
-        return sslContext;
-    }
     @Override
     protected Boolean doInBackground(Void... voids) {
-        //파일 전송 코드 예제
-        //https://www.codejava.net/java-se/networking/upload-files-by-sending-multipart-request-programmatically
-        try{
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setSSLSocketFactory(getSSL().getSocketFactory());
-            conn.setHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
 
-            body.addProperty("body", text);
+        RestConnection rest = null;
+        if(entry.getMode().compareTo("train")==0)
+            rest = new RestConnection(this.context, Path.FACEID_REG, Method.POST);
+        else if(entry.getMode().compareTo("auth")==0)
+            rest = new RestConnection(this.context, Path.FACEID, Method.POST);
 
-            OutputStream out = conn.getOutputStream();
-            byte[] value = body.toString().getBytes();
-            out.write(value, 0, value.length);
-            System.out.println(body.toString());
-            Log.d("t", body.toString());
-            out.close();
 
-            // 보내고 응답 코드를 반환받는다.
-            int responseCode = conn.getResponseCode();
+        if(rest == null)
+            return false;
 
-            String response = "", line = null;
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF_8"));
-                while ((line = br.readLine()) != null) {
-                    response += line;
-                }
-                if(response.compareTo("true") == 0) {
-                    System.out.println("testtesttest"+response);
-                    return true;
-                }
+        rest.setBody(entry);
+
+        try {
+            RestResult result = rest.request();
+            Log.d(LogTag.REST_FACEID, "Result : " + result.toString());
+
+            if(result.responseCode != HttpStatus.OK.value) {
+                ErrorResponse err = new Gson().fromJson(result.result, ErrorResponse.class);
+                Message msg = this.handler.obtainMessage(FaceMsg.TOAST_ERROR, err.getMessage());
+                this.handler.sendMessage(msg);
                 return false;
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+
+            Response<Boolean> respon = new Gson().fromJson(result.result, Response.class);
+            if(this.entry.getTimestamp() != respon.getTimestamp()) {
+                Message msg = this.handler.obtainMessage(FaceMsg.TOAST_ERROR, "Invalid response.");
+                this.handler.sendMessage(msg);
+                return false;
+            }
+            return respon.getResult();
+        } catch (Exception ex) {
+            Log.d(LogTag.REST_FACEID, "Exception : " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Override
     protected void onPostExecute(Boolean result){
-        System.out.println(result);
         super.onPostExecute(result);
 
         // doInBackground()로 부터 반환된 값이 매개변수로 넘어온다.
-        if(result == true)
-            Log.d("testtest", "succeeded!");
+        Log.d(FaceVar.TAG, "replied result : "+result);
     }
 
 }

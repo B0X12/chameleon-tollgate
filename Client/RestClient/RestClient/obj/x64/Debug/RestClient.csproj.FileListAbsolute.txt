@@ -1,0 +1,10 @@
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Debug\RestClient.exe.config
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Debug\RestClient.exe
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Debug\RestClient.pdb
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Debug\Newtonsoft.Json.dll
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Debug\Newtonsoft.Json.xml
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Debug\RestClient.csprojAssemblyReference.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Debug\RestClient.csproj.CoreCompileInputs.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Debug\RestClient.csproj.CopyComplete
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Debug\RestClient.exe
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Debug\RestClient.pdb

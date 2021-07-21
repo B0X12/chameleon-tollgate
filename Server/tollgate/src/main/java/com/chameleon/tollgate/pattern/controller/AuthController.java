@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chameleon.tollgate.define.url.Auth;
-import com.chameleon.tollgate.define.url.Register;
+import com.chameleon.tollgate.define.Path;
+import com.chameleon.tollgate.define.Property;
 import com.chameleon.tollgate.pattern.PatternPack;
 import com.chameleon.tollgate.pattern.service.AuthService;
 import com.chameleon.tollgate.rest.AuthList;
@@ -19,6 +20,8 @@ import com.chameleon.tollgate.rest.SessionList;
 import com.chameleon.tollgate.rest.SessionTime;
 import com.chameleon.tollgate.rest.exception.AuthError;
 import com.chameleon.tollgate.rest.exception.InvalidRequestException;
+import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
+import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 
 @RestController
 public class AuthController {
@@ -33,44 +36,57 @@ public class AuthController {
 		this.sessions = new SessionList();
 	}
 
-	@PostMapping(path=Register.PATTERN+"{id}")
-	public ResponseEntity<Response<Boolean>> SetPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
+	@PostMapping(path=Path.REGIST_PATTERN+"{id}")
+	public ResponseEntity<Response<Boolean>> SetPattern(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
+		if (!userAgent.equals(Property.USER_AGENT))
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+			
 		Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, service.SetPattern(id, entry.getPattern()), entry.getTimestamp());
-		return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST); 
+		return new ResponseEntity<>(respon, HttpStatus.OK); 
 	}
 	
-	@GetMapping(path=Auth.PATTERN+"{id}")
-	public ResponseEntity<Response<Boolean>> SendSignal(@PathVariable("id") String id, int timestamp) throws Exception {
+	@GetMapping(path=Path.AUTH_PATTERN+"{id}")
+	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("id") String id, long timestamp) throws Exception {
+		if (!userAgent.equals(Property.USER_AGENT))
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		
 		this.sessions.add(id, timestamp);
 		service.SendSignal(id, timestamp);
 		this.status.add(id);
-		boolean result = status.waitVerify(id);
+		Boolean result = status.waitVerify(id);
 		this.status.remove(id);
 		this.sessions.remove(id);
-		if(result)
+		
+		if(result == null) {
 			return new ResponseEntity<>(
-					new Response<Boolean>(HttpStatus.OK, result, timestamp),
-					HttpStatus.OK);
-		else
-			return new ResponseEntity<>(
-					new Response<Boolean>(HttpStatus.BAD_REQUEST, result, timestamp),
-					HttpStatus.BAD_REQUEST);
+					new Response<Boolean>(HttpStatus.PARTIAL_CONTENT, false, timestamp),
+					HttpStatus.PARTIAL_CONTENT);
+		}
+		
+		return new ResponseEntity<>(
+				new Response<Boolean>(HttpStatus.OK, result, timestamp),
+				HttpStatus.OK);
 	}
 	
-	@PostMapping(path=Auth.PATTERN+"{id}")
-	public ResponseEntity<Response<Boolean>> VerifyPattern(@PathVariable("id") String id, @RequestBody PatternPack entry) throws Exception {
+	@PostMapping(path=Path.AUTH_PATTERN+"{id}")
+	public ResponseEntity<Response<Boolean>> VerifyPattern(@RequestHeader(value = "User-Agent") String userAgent, 
+			@PathVariable("id") String id, boolean isLast, @RequestBody PatternPack entry) throws Exception {
+		if (!userAgent.equals(Property.USER_AGENT))
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		
 		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 		
-		if(service.VerifyPattern(id, entry.getPattern())) {	
-			this.status.verify(id, true);
-			return new ResponseEntity<>(
-					new Response<Boolean>(HttpStatus.OK, true, entry.getTimestamp()),
-					HttpStatus.OK);
-		}
-		this.status.verify(id, false);
+		boolean result = false;
+		result = service.VerifyPattern(id, entry.getPattern());
+		
+		if(result || isLast)
+			this.status.verify(id, result);
+		
 		return new ResponseEntity<>(
-				new Response<Boolean>(HttpStatus.BAD_REQUEST, false, entry.getTimestamp()),
-				HttpStatus.BAD_REQUEST);
+				new Response<Boolean>(HttpStatus.OK, result, entry.getTimestamp()),
+				HttpStatus.OK);
 	}
 }
