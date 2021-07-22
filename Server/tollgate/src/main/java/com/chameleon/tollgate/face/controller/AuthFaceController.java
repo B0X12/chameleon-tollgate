@@ -72,7 +72,7 @@ public class AuthFaceController {
 	}
 		
 	// 얼굴 해시 등록
-	@PostMapping(path=Auth.FACEID+"{id}")
+	@PostMapping(path=Path.REGIST_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> registerFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception {
 		if (userAgent.equals("Tollgate-client")) {
 			Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, service.SetFace(id, entry.getHashValue()), entry.getTimestamp());
@@ -85,7 +85,7 @@ public class AuthFaceController {
 	}
 	
 	// 인증 시작 요청
-	@GetMapping(path=Auth.FACEID+"{id}")
+	@GetMapping(path=Path.AUTH_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, long timestamp) throws Exception {
 
 		if (userAgent.equals("Tollgate-client")) {
@@ -124,7 +124,7 @@ public class AuthFaceController {
 	}
 	
 			
-	@PostMapping(path=Auth.FACEID+"{id}")
+	@PostMapping(path=Path.AUTH_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> VerifyFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception{
 		if (userAgent.equals("Tollgate-client")) {
 			if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
