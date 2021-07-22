@@ -50,13 +50,13 @@ DWORD RestClient::GetRestClientExitCode()
 }
 
 
-void RestClient::GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords)
+void RestClient::GetRestClientMessage(WCHAR* wcBuffer, rsize_t nBufferSizeInWords)
 {
     wcscpy_s(wcBuffer, nBufferSizeInWords, _wcRestClientMessage);
 }
 
 
-BOOL RestClient::GetUserBySystemIdentifier(wchar_t* sys_id)
+BOOL RestClient::GetUserBySystemIdentifier(WCHAR* sys_id)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -69,7 +69,7 @@ BOOL RestClient::GetUserBySystemIdentifier(wchar_t* sys_id)
 }
 
 
-BOOL RestClient::GetAuthFactorByUser(wchar_t* user)
+BOOL RestClient::GetAuthFactorByUser(WCHAR* user)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -82,7 +82,7 @@ BOOL RestClient::GetAuthFactorByUser(wchar_t* user)
 }
 
 
-BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
+BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* usb_info)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -97,7 +97,7 @@ BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
 }
 
 
-BOOL RestClient::RequestPatternInformation(wchar_t* user)
+BOOL RestClient::RequestPatternInformation(WCHAR* user)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -110,7 +110,7 @@ BOOL RestClient::RequestPatternInformation(wchar_t* user)
 }
 
 
-BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
+BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)
 {
     ZeroMemory(_wcRestClientMessage, sizeof(_wcRestClientMessage));
 
@@ -158,7 +158,8 @@ BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
                         str.erase(idx, 1);
                     }
 
-                    mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
+                    //mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
+                    MultiByteToWideChar(CP_ACP, 0, str.c_str(), strlen(str.c_str()) + 1, buf, 2048);
                     wcscpy_s(_wcRestClientMessage, 2048, buf);
                 }   
             }

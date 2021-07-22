@@ -168,30 +168,6 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	if (SUCCEEDED(hr))
 	{
 		hr = pcpUser->GetSid(&_pszUserSid);
-
-		/*
-		PWSTR token = NULL;
-		PWSTR context = NULL;
-
-		// SID의 기타 정보 제외
-		token = wcstok_s(_pszUserSid, L"-", &context);
-		for (int i = 0; i < 3; i++)
-		{
-			token = wcstok_s(NULL, L"-", &context);
-		}
-
-		// SID에서 시스템 고유 식별값 추출 및 세팅
-		token = wcstok_s(NULL, L"-", &context);
-		wcscat_s(_wszSystemIdentifier, 50, token);
-		wcscat_s(_wszSystemIdentifier, 50, L"-");
-
-		token = wcstok_s(NULL, L"-", &context);
-		wcscat_s(_wszSystemIdentifier, 50, token);
-		wcscat_s(_wszSystemIdentifier, 50, L"-");
-
-		token = wcstok_s(NULL, L"-", &context);
-		wcscat_s(_wszSystemIdentifier, 50, token);
-		*/
 	}
 
 
@@ -255,27 +231,31 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 				// 서버와 연결 성공
 			case rc->RESULT_CONNECTION_SUCCESS:
 			{
-				Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"연결 성공");
 				rc->GetRestClientMessage(wcMessageFromServer, 2048);
-				wcscpy_s(_wszUserName, wcMessageFromServer);
+				wcscpy_s(wszUserName, wcMessageFromServer);
 				break;
 			}
+			case rc->RESULT_CONNECTION_FAILED:
+			{
+				SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결에 실패하였습니다.\r\n관리자에게 문의하십시오");
+				_bAuthFactorFlag = AUTH_FACTOR_INVALID;
+				delete rc;
+				return hr;
+			}
 			default:
-				Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"연결 실패");
-				wcscpy_s(_wszUserName, L"");
+				wcscpy_s(wszUserName, L"");
 				break;
 			}
 		}
 		else
 		{
-			Log(LOG::ALERT::ALERT_ERROR, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"GetUserBySystemIdentifier 함수 실패");
-			wcscpy_s(_wszUserName, L"");
+			wcscpy_s(wszUserName, L"");
 		}
 
 		// 서버로부터 매핑된 사용자명을 얻어왔을 경우 이를 이용하여 Factor flag를 얻어옴
-		if (wcscmp(_wszUserName, L""))
+		if (wcscmp(wszUserName, L""))
 		{
-			if (rc->GetAuthFactorByUser(_wszUserName))
+			if (rc->GetAuthFactorByUser(wszUserName))
 			{
 				// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
 				wchar_t wcMessageFromServer[2048] = { 0, };
@@ -293,12 +273,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 					InitializeAuthStage();
 					break;
 				}
-				case rc->RESULT_CONNECTION_FAILED:
-				{
-					SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결에 실패하였습니다.\r\n관리자에게 문의하십시오");
-					_bAuthFactorFlag = AUTH_FACTOR_INVALID;
-					break;
-				}
 				default:
 					SetAuthMessage(SFI_STAGE_STATUS, L"서버와 연결 중 오류가 발생하였습니다");
 					_bAuthFactorFlag = AUTH_FACTOR_INVALID;
@@ -307,16 +281,18 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			}
 			else
 			{
-				SetAuthMessage(SFI_STAGE_STATUS, L"인증 서버로부터 값을 불러오는 데 실패하였습니다");
+				SetAuthMessage(SFI_STAGE_STATUS, L"인증 정보를 불러올 수 없습니다");
 				_bAuthFactorFlag = AUTH_FACTOR_INVALID;
 			}
 		}
 		else
 		{
-			SetAuthMessage(SFI_STAGE_STATUS, L"사용자를 불러올 수 없습니다");
+			SetAuthMessage(SFI_STAGE_STATUS, L"해당 PC와 연동된 사용자를 불러올 수 없습니다");
 			_bAuthFactorFlag = AUTH_FACTOR_INVALID;
 		}
+
 		
+
 		delete rc;
 	}
 
@@ -606,27 +582,28 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 			// --------------- USB 인증 버튼 ---------------
 		case SFI_USB_VERIFY:
 
-			/*
+			
 			EnableAuthStartButton(SFI_USB_VERIFY, FALSE);
 
 			if (_pUSBAuth != nullptr) {
 				_pUSBAuth->InitAuthThread(this);
 			}
-			*/
-
-			Log(LOG::ALERT::ALERT_INFO, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"Test: GoToNextAuthStage()");
-			GoToNextAuthStage();
+			
+			//Log(LOG::ALERT::ALERT_INFO, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"Test: GoToNextAuthStage()");
+			//GoToNextAuthStage();
 
 			break;
 
 			// --------------- 패턴 정보 요청 버튼 ---------------
 		case SFI_PATTERN_REQUEST:
 
+			/*
 			EnableAuthStartButton(SFI_PATTERN_REQUEST, FALSE);
 
 			if (_pPatternAuth != nullptr) {
 				_pPatternAuth->InitAuthThread(this);
 			}
+			*/
 
 			break;
 
@@ -644,7 +621,6 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 		default:
 			hr = E_INVALIDARG;
 		}
-
 	}
 	else
 	{

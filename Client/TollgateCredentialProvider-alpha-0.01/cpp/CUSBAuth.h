@@ -31,6 +31,6 @@ private:
 
 
     // --------------- Credential Provider에 접근을 위한 포인터 변수 ---------------
-    CTollgateCredential*  _pCredential;
+    CTollgateCredential*  _pCred;
 };
 

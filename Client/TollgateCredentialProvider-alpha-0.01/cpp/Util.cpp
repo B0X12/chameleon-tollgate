@@ -1,6 +1,7 @@
 #include "Util.h"
 #include <WTypesbase.h>
 #include <stdio.h>
+#include <locale.h>
 
 
 void Log(LOG::ALERT alert, LOG::AUTH_METHOD method, wchar_t* message)
@@ -53,6 +54,7 @@ void Log(LOG::ALERT alert, LOG::AUTH_METHOD method, wchar_t* message)
 	wcscat_s(wszLogContents, L";");
 
 	// --------------- 메시지 종류 쓰기 ---------------
+	
 	wcscat_s(wszLogContents, message);
 
 	WriteLogFile(wszLogContents);
@@ -63,6 +65,7 @@ void WriteLogFile(const wchar_t* szString)
 	FILE* pFile;
 	if (fopen_s(&pFile, LOGFILE_NAME, "a") == 0)
 	{
+		_wsetlocale(LC_ALL, L"kor");
 		fwprintf(pFile, L"%s\n", szString);
 		fclose(pFile);
 	}
