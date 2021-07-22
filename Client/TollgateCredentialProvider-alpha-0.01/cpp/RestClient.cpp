@@ -24,7 +24,7 @@ RestClient::RestClient()
     _stStartupInfo.hStdOutput = _hWritePipe;          // Rest Client는 표준 출력으로 hWritePipe 사용
     _stStartupInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-    wcscpy_s(_wcPath, 2048, L"C:\\");
+    wcscpy_s(_wcPath, 2048, L"C:\\Tollgate\\");
     wcscat_s(_wcAppName, 2048, _wcPath);
     wcscat_s(_wcAppName, 2048, L"RestClient.exe");
 }
@@ -50,18 +50,18 @@ DWORD RestClient::GetRestClientExitCode()
 }
 
 
-void RestClient::GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords)
+void RestClient::GetRestClientMessage(WCHAR* wcBuffer, rsize_t nBufferSizeInWords)
 {
     wcscpy_s(wcBuffer, nBufferSizeInWords, _wcRestClientMessage);
 }
 
 
-BOOL RestClient::GetAuthFactorBySystemIdentifier(wchar_t* sys_id)
+BOOL RestClient::GetUserBySystemIdentifier(WCHAR* sys_id)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
-    // Rest Client 프로그램 인자 초기화: --get-auth-factor [sys_uid]
-    wcscpy_s(wcCommandLine, 2048, L" --get-auth-factor ");
+    // Rest Client 프로그램 인자 초기화: --get-user [sys_uid]
+    wcscpy_s(wcCommandLine, 2048, L" --get-user ");
     wcscat_s(wcCommandLine, 2048, sys_id);
 
     // Client 프로세스 실행
@@ -69,7 +69,20 @@ BOOL RestClient::GetAuthFactorBySystemIdentifier(wchar_t* sys_id)
 }
 
 
-BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
+BOOL RestClient::GetAuthFactorByUser(WCHAR* user)
+{
+    wchar_t wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --get-auth-factor [user]
+    wcscpy_s(wcCommandLine, 2048, L" --get-auth-factor ");
+    wcscat_s(wcCommandLine, 2048, user);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
+
+BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* usb_info)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -84,7 +97,7 @@ BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
 }
 
 
-BOOL RestClient::RequestPatternInformation(wchar_t* user)
+BOOL RestClient::RequestPatternInformation(WCHAR* user)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -97,8 +110,10 @@ BOOL RestClient::RequestPatternInformation(wchar_t* user)
 }
 
 
-BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
+BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)
 {
+    ZeroMemory(_wcRestClientMessage, sizeof(_wcRestClientMessage));
+
     // Client 프로세스 생성
     if (::CreateProcessW(_wcAppName, wcCommandLine, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, _wcPath, &_stStartupInfo, &_stProcessInfo))
     {
@@ -143,7 +158,8 @@ BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
                         str.erase(idx, 1);
                     }
 
-                    mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
+                    //mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
+                    MultiByteToWideChar(CP_ACP, 0, str.c_str(), strlen(str.c_str()) + 1, buf, 2048);
                     wcscpy_s(_wcRestClientMessage, 2048, buf);
                 }   
             }

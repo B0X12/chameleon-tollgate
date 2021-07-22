@@ -36,38 +36,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
 
     int mSec = 0;
     Context context = this;
-    Timer timer = new Timer();
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            if(!(mSec < 30)) {
-                FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), context, handler);
-                boolean result = false;
-                try {
-                    result = faceRest.execute().get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.d(LogTag.AUTH_FACEID, "Face Auth Result : " + result);
 
-                if(!result) {
-                    Message msg = handler.obtainMessage(FaceMsg.TOAST_ERROR, "Invalid response.");
-                    handler.sendMessage(msg);
-                    finish();
-                }
-                else{
-                    Message msg = handler.obtainMessage(FaceMsg.TOAST_MSG, "인증을 다시 수행해 주세요.");
-                    handler.sendMessage(msg);
-                    finish();
-                }
-
-            }
-            else {
-                mSec++;
-                return;
-            }
-        }
-    };
 
     private FaceAuthService mFaceAS;
     private CameraBridgeViewBase mCameraView;
@@ -132,8 +101,6 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 mode = FaceVar.ActivationMode.AUTH;
                 hashValue = parentIntent.getStringExtra("hashValue");
                 timestamp = parentIntent.getStringExtra("timestamp");
-                System.out.println(hashValue);
-                System.out.println(timestamp);
                 mFaceAS = new FaceAuthService(mode, this, handler);
 
                 String modelPath = mFaceAS.getModelPath();
@@ -142,7 +109,6 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                     finish();
                 }
                 Log.d(FaceVar.TAG, "onCreate : Hash Value Matched");
-                timer.schedule(task, 0, 1000);
             }
         }
 
@@ -180,7 +146,6 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
         if(mCameraView != null){
             mCameraView.disableView();
         }
-        timer.cancel();
     }
 
     @Override

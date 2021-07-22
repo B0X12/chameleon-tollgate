@@ -1,9 +1,12 @@
 package com.chameleon.tollgate.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -18,6 +21,10 @@ import android.widget.Toast;
 import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogLevel;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
+import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
 import com.chameleon.tollgate.pattern.PatternMsg;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -70,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LogTag.TOLLGATE, "App started");
 
         MainActivity activity = this;
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+        tollgateLog.setLogPath(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tollgate/Logs");
 
         Button btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(new View.OnClickListener() {

@@ -25,13 +25,14 @@
 const TCHAR* g_wszUSBClassName = L"USB Auth Window Class";
 
 CUSB* g_pUSBModule = nullptr;
+WCHAR* g_wszUser = nullptr;
 
 
 CUSBAuth::CUSBAuth(void)
 {
 	_hWnd = NULL;
 	_hInst = NULL;
-	_pCredential = NULL;
+	_pCred = NULL;
 }
 
 CUSBAuth::~CUSBAuth(void)
@@ -43,10 +44,10 @@ CUSBAuth::~CUSBAuth(void)
 		_hWnd = NULL;
 	}
 
-	if (_pCredential != NULL)
+	if (_pCred != NULL)
 	{
-		_pCredential->Release();
-		_pCredential = NULL;
+		_pCred->Release();
+		_pCred = NULL;
 	}
 }
 
@@ -55,12 +56,12 @@ HRESULT CUSBAuth::InitAuthThread(CTollgateCredential* pCredential)
 {
 	HRESULT hr = S_OK;
 
-	if (_pCredential != NULL)
+	if (_pCred != NULL)
 	{
-		_pCredential->Release();
+		_pCred->Release();
 	}
-	_pCredential = pCredential;
-	_pCredential->AddRef();
+	_pCred = pCredential;
+	_pCred->AddRef();
 
 	// Create and launch the window thread.
 	HANDLE hThread = ::CreateThread(NULL, 0, CUSBAuth::_ThreadProc, (LPVOID)this, 0, NULL);
@@ -74,6 +75,7 @@ HRESULT CUSBAuth::InitAuthThread(CTollgateCredential* pCredential)
 	}
 
 	g_pUSBModule = new CUSB();
+	g_wszUser = _pCred->wszUserName;
 
 	return hr;
 }
@@ -142,46 +144,46 @@ BOOL CUSBAuth::_ProcessNextMessage()
 	case WM_TIMER_ELAPSE:
 		nTime = (unsigned int)msg.wParam;
 		StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"USB 인식 중.. %d", nTime);
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, wszTimeoutMessage);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, wszTimeoutMessage);
 		break;
 
 	case WM_TIMER_TIMEOUT:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"인증 시간이 만료되었습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"인증 시간이 만료되었습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_AUTHENTICATION_GRANT:
-		_pCredential->GoToNextAuthStage();
+		_pCred->GoToNextAuthStage();
 		break;
 
 	case WM_AUTHENTICATION_DENY:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"등록되지 않은 USB입니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"등록되지 않은 USB입니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_CONFIG_FILE_COMPROMISED:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_CLIENT_PROGRAM_COMPROMISED:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"서버와의 통신 모듈이 손상되었습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"서버와의 통신 모듈이 손상되었습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_SERVER_NOT_RESPOND:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 응답이 없습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 응답이 없습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_ANOMALY_DETECTED:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_UNKNOWN_ERROR:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
-		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
 	case WM_EXIT_THREAD:
@@ -221,12 +223,13 @@ LRESULT CALLBACK CUSBAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		break;
 
 	case WM_DEVICECHANGE:
-		// 인증 성공
+		// Device Type 검사
 		if (g_pUSBModule->IsDeviceTypeUSB(wParam, lParam))
 		{
 			::KillTimer(hWnd, 0);
 
-			switch (g_pUSBModule->VerifyUSB(wParam, lParam))
+			// 해당 USB가 User에 의해 등록된 USB인지 검사
+			switch (g_pUSBModule->VerifyUSB((PDEV_BROADCAST_HDR)lParam, g_wszUser))
 			{
 			case g_pUSBModule->USB_VERIFICATION_SUCCESS:
 				::PostMessage(hWnd, WM_AUTHENTICATION_GRANT, 0, 0);
