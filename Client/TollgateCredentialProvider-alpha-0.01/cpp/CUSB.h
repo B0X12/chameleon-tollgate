@@ -19,6 +19,6 @@ public:
 
 	void RegisterDeviceNotify(HWND hwnd);
 	BOOL IsDeviceTypeUSB(WPARAM wParam, LPARAM lParam);
-	DWORD VerifyUSB(WPARAM wParam, LPARAM lParam);
+	DWORD VerifyUSB(PDEV_BROADCAST_HDR pHdr, WCHAR* wszUserName);
 };
 

@@ -154,6 +154,7 @@ namespace RestClient.rest
     {
         public const string SERVER_HELLO = "";
 
+        public const string ACCOUNT_USER = "account/map/pc/";
         public const string ACCOUNT_FACTOR = "account/factor/";
 
         public const string VERIFY_USB = "auth/usb/";

@@ -1,11 +1,29 @@
 package com.chameleon.tollgate.usb.controller;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
+import com.chameleon.tollgate.define.url.Auth;
+import com.chameleon.tollgate.define.url.Register;
+import com.chameleon.tollgate.rest.Response;
+import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
+import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
+import com.chameleon.tollgate.usb.dto.USBInfo;
+=======
 import com.chameleon.tollgate.define.Path;
+>>>>>>> fdc281b9d17d5cffa3f11a587aa9feca32b4583b
 import com.chameleon.tollgate.usb.service.IUSBService;
 
 @RestController
@@ -15,19 +33,92 @@ public class USBController {
 	IUSBService service;
 
 	/*
-	 * 유저의 아이디와 USB 정보를 인자로 받아
-	 * 데이터베이스로부터 해당 정보가 있는지 검색
+	 * 유저의 아이디와 USB 정보를 인자로 받아 데이터베이스로부터 해당 정보가 있는지 검색
 	 */
-	@GetMapping(path = Path.AUTH_USB + "{user}/{usb_info}")
-	public boolean verifyIfRegisteredUSB(@PathVariable("user") String user, @PathVariable("usb_info") String usb_info) throws Exception {
+	@GetMapping(path = Auth.USB + "{user}/{usb_info}")
+	public ResponseEntity<Response<Boolean>> verifyIfRegisteredUSB(
+			@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("user") String user,
+			@PathVariable("usb_info") String usb_info, long timestamp)
+			throws UnauthorizedUserAgentException, SQLException {
 
-		System.out.println(user + " : " + usb_info); // 디버그용
-		if (service.verifyUSB(user, usb_info)) {
-			System.out.println(usb_info + " registered by " + user);	// 디버그용
-			return true;
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = service.verifyUSB(user, usb_info);
+
+			// 등록된 USB일 경우
+			if (result == true) {
+				System.out.println(usb_info + " registered by " + user); // 디버그용
+				Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			}
+			// 등록되지 않은 USB일 경우
+			else {
+				System.out.println(usb_info + " not registered to " + user); // 디버그용
+				Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			}
+
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
-		System.out.println(usb_info + " not registered to " + user);	// 디버그용
-		return false;
+	}
+	
+	/*
+	 * 등록된 USB 목록 출력
+	 */
+	@GetMapping(path = Auth.USB + "{user}")
+	public ResponseEntity<Response<List<USBInfo>>> getRegisteredUSBList(
+			@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("user") String user, long timestamp)
+			throws UnauthorizedUserAgentException, SQLException {
+
+		if (userAgent.equals("Tollgate-client")) {
+
+			List<USBInfo> result = service.getRegisteredUSBList(user);
+			Response<List<USBInfo>> resp = new Response<List<USBInfo>>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
 	}
 
+	/*
+	 * 새로운 USB 등록
+	 */
+	@PostMapping(path = Register.USB)
+	public ResponseEntity<Response<Boolean>> registerUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
+			@RequestBody USBInfo usb_info, long timestamp) throws SQLException, UnauthorizedUserAgentException {
+
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = service.registerUSB(usb_info);
+			Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+
+	/*
+	 * 기존에 등록된 USB 삭제
+	 */
+	@DeleteMapping(path = Register.USB + "{user}/{usb_id}")
+	public ResponseEntity<Response<Boolean>> unregisterUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("user") String user, @PathVariable("usb_id") String usb_id, long timestamp)
+			throws SQLException, UnauthorizedUserAgentException {
+
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = service.unregisterUSB(user, usb_id);
+
+			if (result == true) {
+				// 성공은 응답 OK로 처리
+				Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, true, timestamp);
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			} else {
+				// 실패는 응답 INTERNAL_SERVER_ERROR로 처리
+				Response<Boolean> resp = new Response<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR, false, timestamp);
+				return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
 }
