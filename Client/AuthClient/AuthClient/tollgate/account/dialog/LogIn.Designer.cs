@@ -36,35 +36,18 @@ namespace AuthClient.tollgate.account.dialog
             // 
             // textBox1
             // 
-<<<<<<< HEAD
-            this.pwdField.Location = new System.Drawing.Point(126, 90);
-            this.pwdField.Name = "pwdField";
-            this.pwdField.PasswordChar = '●';
-            this.pwdField.Size = new System.Drawing.Size(221, 25);
-            this.pwdField.TabIndex = 2;
-=======
+
             this.textBox1.Location = new System.Drawing.Point(98, 195);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(231, 21);
             this.textBox1.TabIndex = 0;
->>>>>>> b37677976a6ae725033aade9e3f25bd72a06e269
             // 
             // contextMenuStrip1
             // 
-<<<<<<< HEAD
-            this.logonButton.Location = new System.Drawing.Point(126, 138);
-            this.logonButton.Name = "logonButton";
-            this.logonButton.Size = new System.Drawing.Size(117, 37);
-            this.logonButton.TabIndex = 3;
-            this.logonButton.Text = "로그인";
-            this.logonButton.UseVisualStyleBackColor = true;
-            this.logonButton.Click += new System.EventHandler(this.logonButton_Click);
-=======
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
->>>>>>> b37677976a6ae725033aade9e3f25bd72a06e269
             // 
             // Login
             // 
