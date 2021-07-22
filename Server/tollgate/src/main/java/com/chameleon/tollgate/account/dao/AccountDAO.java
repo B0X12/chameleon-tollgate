@@ -18,7 +18,7 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		if (!super.isOpen())
 			super.open(false, true);
 	}
-	
+
 	public void finalize() {
 		if (super.isOpen()) {
 			super.close();
@@ -98,7 +98,6 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 			SearchUpdate(SqlInstruct);
 			return true;
 		} catch (SQLException se) {
-			System.out.println(se.getMessage());
 			return false;
 		}
 	}
@@ -124,8 +123,6 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		return Result;
 	}
 
-	
-	
 	// ------------------------------------------------------------------------------------
 
 	private boolean SearchUpdate(final String SqlCommand) throws SQLException {

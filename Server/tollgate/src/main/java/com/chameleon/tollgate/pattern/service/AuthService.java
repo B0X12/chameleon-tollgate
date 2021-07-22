@@ -30,6 +30,7 @@ public class AuthService implements IAuthService {
 				.setClickAction(click_action)
 				.putData("timestamp", String.valueOf(timestamp))
 				.build());
+		
 			return true;
 		} finally {
 			this.dao.close();

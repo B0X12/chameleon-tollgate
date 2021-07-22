@@ -9,8 +9,7 @@ public enum Table {
 	AUTH_FACTOR("auth_factor"),
 	INIT_FACTOR("init_factor"),
 	MAP_PC("map_pc"),
-	MAP_ANDROID("map_android"),
-	HISTORY("history");
+	MAP_ANDROID("map_android");
 	
 	private final String value; 
 	

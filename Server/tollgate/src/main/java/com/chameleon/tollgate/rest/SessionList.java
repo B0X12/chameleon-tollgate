@@ -12,7 +12,6 @@ public class SessionList {
 		this.sessions = new ArrayList<SessionTime>();
 	}
 	
-
 	public void add(String id, long timestamp) {
 		remove(id);
 		SessionTime session = new SessionTime(id, timestamp);
@@ -29,7 +28,7 @@ public class SessionList {
 		}
 	}
 	
-	public int getTimestamp(String id) throws NoUserException {
+	public long getTimestamp(String id) throws NoUserException {
 		SessionTime session = findSession(id);
 		return session.getTimestamp();
 	}

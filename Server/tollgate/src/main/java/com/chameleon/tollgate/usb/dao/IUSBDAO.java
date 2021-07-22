@@ -11,6 +11,6 @@ public interface IUSBDAO {
 	boolean InsertUSBInfo(USBInfo usb_info) throws SQLException;
 
 	List<USBInfo> getRegisteredUSBList(String user) throws SQLException;
-	
+
 	boolean unregisterUSB(String user, String usb_id);
 }

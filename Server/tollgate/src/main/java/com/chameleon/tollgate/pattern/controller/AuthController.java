@@ -43,10 +43,9 @@ public class AuthController {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 			
 		Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, service.SetPattern(id, entry.getPattern()), entry.getTimestamp());
-		return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST); 
+		return new ResponseEntity<>(respon, HttpStatus.OK); 
 	}
 	
-
 	@GetMapping(path=Path.AUTH_PATTERN+"{id}")
 	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("id") String id, long timestamp) throws Exception {
