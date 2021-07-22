@@ -129,13 +129,26 @@ public class SQLiteManager {
 	public boolean isInitFactor(String id, Factor factor) throws Exception {
 		if(!this.isOpened)
 			throw new DatabaseConnectException(DBError.NO_CONNECTION);
-		PreparedStatement state = connection.prepareStatement("select ? from " + Table.INIT_FACTOR + " where id = ?");
-		state.setString(1, factor.toString());
+		PreparedStatement state = connection.prepareStatement("select " + factor + " from " + Table.INIT_FACTOR + " where id = ?");
 		state.setString(1, id);
 		ResultSet rs = state.executeQuery();
 
 		int result = rs.getInt(1);
 		rs.close();
 		return Util.paresBoolean(result);
+	}
+	
+	public int setInitFactor(String id, Factor factor, boolean value) throws Exception {
+		if(!this.isOpened)
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		int count = getCountOf(Table.INIT_FACTOR, "id", id);
+		PreparedStatement state;
+		if(count == 0)
+			state = connection.prepareStatement("insert into " + Table.INIT_FACTOR + "(" + factor + ", id) values(?, ?)");
+		else
+			state = connection.prepareStatement("update " + Table.INIT_FACTOR + " set " + factor + " = ? where id = ?");
+		state.setInt(1, value? 1 : 0);
+		state.setString(2,  id);
+		return state.executeUpdate();
 	}
 }

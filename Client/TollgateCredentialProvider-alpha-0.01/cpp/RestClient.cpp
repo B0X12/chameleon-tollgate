@@ -56,6 +56,19 @@ void RestClient::GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWo
 }
 
 
+BOOL RestClient::GetAuthFactorBySystemIdentifier(wchar_t* sys_id)
+{
+    wchar_t wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --get-auth-factor [sys_uid]
+    wcscpy_s(wcCommandLine, 2048, L" --get-auth-factor ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
+
 BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
 {
     wchar_t wcCommandLine[2048] = { 0, };
@@ -71,7 +84,7 @@ BOOL RestClient::RequestUSBVerification(wchar_t* user, wchar_t* usb_info)
 }
 
 
-BOOL RestClient::RequestPatternVerification(wchar_t* user)
+BOOL RestClient::RequestPatternInformation(wchar_t* user)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
@@ -89,8 +102,10 @@ BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
     // Client 프로세스 생성
     if (::CreateProcessW(_wcAppName, wcCommandLine, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, _wcPath, &_stStartupInfo, &_stProcessInfo))
     {
+        DWORD wait = WaitForSingleObject(_stProcessInfo.hProcess, INFINITE);
+
         // RestClient 종료 시 시그널 발생
-        if (WaitForSingleObject(_stProcessInfo.hProcess, INFINITE) == WAIT_OBJECT_0)
+        if (wait == WAIT_OBJECT_0)
         {
             // 리턴 코드 세팅
             GetExitCodeProcess(_stProcessInfo.hProcess, &_dwRestClientExitCode);
@@ -100,17 +115,12 @@ BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
 
             // 종료 발생 시 hWritePipe(STDOUT)에 기록된 내용을 한번에 읽음
             DWORD bytesInPipe = 0;
-            BOOL bResult = TRUE;
-
-            while (bResult && (bytesInPipe == 0))
-            {
-                bResult = PeekNamedPipe(_hReadPipe, NULL, 0, NULL, &bytesInPipe, NULL);
-            }
+            PeekNamedPipe(_hReadPipe, NULL, 0, NULL, &bytesInPipe, NULL);
 
             if (bytesInPipe != 0) {
                 DWORD dwRead;
                 CHAR* pipeContents = new CHAR[bytesInPipe];
-                bResult = ReadFile(_hReadPipe, pipeContents, bytesInPipe, &dwRead, NULL);
+                BOOL bResult = ReadFile(_hReadPipe, pipeContents, bytesInPipe, &dwRead, NULL);
 
                 if (!(!bResult || dwRead == 0))
                 {
@@ -135,11 +145,19 @@ BOOL RestClient::_ExecuteRestClientProcess(wchar_t* wcCommandLine)
 
                     mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
                     wcscpy_s(_wcRestClientMessage, 2048, buf);
-
-                    // 리턴 코드 세팅 및 클라이언트 프로그램 결과 값 세팅 완료
-                    return TRUE;
-                }
+                }   
             }
+            // 리턴 코드 세팅 및 클라이언트 프로그램 결과 값 세팅 완료
+            return TRUE;
+        }
+        else
+        {
+            _dwRestClientExitCode = RESULT_CONNECTION_FAILED;
+
+            CloseHandle(_stProcessInfo.hProcess);
+            CloseHandle(_stProcessInfo.hThread);
+
+            return TRUE;
         }
     }
 

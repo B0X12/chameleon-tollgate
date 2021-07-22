@@ -16,21 +16,22 @@ namespace RestClient
 		 *	                        서버가 살아 있다면, Hello 문자열 반환
 		 *	                        그 외의 경우 Denied 문자열 반환
          *
-         *
          *   --get-auth-factor	    --get-auth-factor [UID]
 		 *	                        [UID]와 연동된 사용자의 인증 요소(플래그 변수)를 가져옴
 		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
 		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
          *
-         *
          *   --verify-usb		    --verify-usb [사용자ID] [USB식별값]
 		 *	                        USB 인증 옵션
-		 *	                        반환 값: true / false
-         *
+		 *	                        반환 문자열: Verified / Denied
          *
          *   --request-pattern      --request-pattern [사용자ID]
          *                          서버에게 패턴 인증 요청
-         *                          반환 값: true / false
+         *                          반환 문자열: Verified / Denied
+         *   
+         *   --request-face         --request-face [사용자ID]
+         *                          서버에게 안면 인증 요청
+         *                          반환 문자열: Verified / Denied
          *                          
          *   
          *   --request-otp
@@ -67,14 +68,15 @@ namespace RestClient
 
             switch (option)
             {
-                /*
+                
                 case "--is-server-alive":
                     return (int)handler.IsServerAlive();
-                */  
+                  
                 case "--get-auth-factor":
                     {
                         string uid = args[1];
-                        return (int)handler.GetAuthFactor(uid);
+                        int retCode = (int)handler.GetAuthFactor(uid);
+                        return retCode;
                     }
                     
                 case "--verify-usb":
@@ -89,16 +91,30 @@ namespace RestClient
                     {
                         string user = args[1];
 
-                        return (int)handler.VerifyPattern(user);
-                        
+                        return (int)handler.RequestPattern(user);
                     }
-                    
+
+                case "--request-face":
+                    {
+                        string user = args[1];
+
+                        return (int)handler.RequestFace(user);
+                    }
 
                 case "--request-otp":
-                    break;
+                    {
+                        string user = args[1];
+
+                        return (int)handler.RequestOTP(user);
+                    }
 
                 case "--verify-otp":
-                    break;
+                    {
+                        string user = args[1];
+                        string otp = args[2];
+
+                        return (int)handler.VerifyOTP(user, otp);
+                    }
 
 
 
@@ -165,11 +181,38 @@ namespace RestClient
                         return false;
                     }
 
+                case "--request-face":
+                    // 포맷: --request-face [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 case "--request-otp":
-                    break;
+                    // 포맷: --request-otp [사용자ID]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
                 case "--verify-otp":
-                    break;
+                    // 포맷: --request-otp [사용자ID] [OTP입력값]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
             }
 
             return false;

@@ -20,21 +20,24 @@ public class RestTask extends AsyncTask<Void, Void, Boolean> {
     PatternPack entry;
     private final Context context;
     private final Handler handler;
+    private final boolean isLast;
 
-    public RestTask(PatternPack entry, Context context, Handler handler) {
+    public RestTask(PatternPack entry, Context context, Handler handler, boolean isLast) {
         this.entry = entry;
         this.context = context;
         this.handler = handler;
+        this.isLast = isLast;
     }
 
     @Override
-    protected  void onPreExecute(){
+    protected void onPreExecute(){
         super.onPreExecute();
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
         RestConnection rest = new RestConnection(this.context, Path.PATTERN, Method.POST);
+        rest.putParam("isLast", this.isLast);
         rest.setBody(entry);
 
         try {

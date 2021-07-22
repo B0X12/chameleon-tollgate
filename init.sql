@@ -54,7 +54,8 @@ REFERENCES account(id));
 
 CREATE TABLE auth_otp(
 id TEXT NOT NULL PRIMARY KEY,
-otp TEXT NOT NULL,
+timestamp INTEGER NOT NULL,
+otp TEXT NULL,
 CONSTRAINT auth_otp_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 

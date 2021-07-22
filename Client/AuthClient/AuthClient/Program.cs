@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using AuthClient.tollgate;
 using AuthClient.tollgate.account.dialog;
 using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.otp.dialog;
 
 namespace AuthClient
 {
@@ -14,6 +15,11 @@ namespace AuthClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+
+            //OTP Test
+            //Application.Run(new OtpTest());
+            //return;
 
             /*
              *      C:\\Tollgate\\tollgate.cfg 파일을 읽어 기본 서버 주소(URL) 초기화

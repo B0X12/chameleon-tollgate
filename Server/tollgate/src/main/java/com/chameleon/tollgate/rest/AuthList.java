@@ -13,6 +13,10 @@ public class AuthList {
 	}
 	
 	public void add(String id) {
+		try {
+			verify(id, false);
+		} catch (NoUserException ex) { }
+		
 		AuthStatus stat = new AuthStatus(id);
 		status.add(stat);
 	}
@@ -27,7 +31,7 @@ public class AuthList {
 		}
 	}
 	
-	public boolean waitVerify(String id) throws NoUserException, InterruptedException {
+	public Boolean waitVerify(String id) throws NoUserException, InterruptedException {
 		AuthStatus as = findStatus(id);
 		return as.waitVerify();
 	}
@@ -43,7 +47,6 @@ public class AuthList {
 	
 	public void verify(String id, boolean success) throws NoUserException {
 		AuthStatus as = findStatus(id);
-		as.setSuccess(success);
-		as.setVerified(true);
+		as.verify(success);
 	}
 }

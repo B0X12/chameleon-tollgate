@@ -13,6 +13,7 @@ public class SessionList {
 	}
 	
 	public void add(String id, long timestamp) {
+		remove(id);
 		SessionTime session = new SessionTime(id, timestamp);
 		sessions.add(session);
 	}

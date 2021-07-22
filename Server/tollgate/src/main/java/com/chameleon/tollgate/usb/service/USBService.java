@@ -3,9 +3,6 @@ package com.chameleon.tollgate.usb.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chameleon.tollgate.fcm.FCMSender;
-import com.chameleon.tollgate.pattern.dao.AuthDAO;
-import com.chameleon.tollgate.usb.dao.IUSBDAO;
 import com.chameleon.tollgate.usb.dao.USBDAO;
 
 @Service

@@ -131,9 +131,6 @@ BOOL CUSBAuth::_ProcessNextMessage()
 	(void) ::TranslateMessage(&(msg));
 	(void) ::DispatchMessage(&(msg));
 
-
-	//CString strTimeoutMsg = L"인증 시간이 만료되었습니다";
-	//CString strInvalidUSBMsg = L"등록되지 않은 USB입니다";
 	int nTime;
 	wchar_t wszTimeoutMessage[256] = { 0, };
 
@@ -178,7 +175,7 @@ BOOL CUSBAuth::_ProcessNextMessage()
 		break;
 
 	case WM_ANOMALY_DETECTED:
-		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"서버로부터 정상적이지 않은 응답이 반환되었습니다");
+		_pCredential->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
 		_pCredential->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 
@@ -262,7 +259,6 @@ LRESULT CALLBACK CUSBAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 
 			::PostMessage(hWnd, WM_EXIT_THREAD, 0, 0);
 		}
-
 		break;
 
 	default:

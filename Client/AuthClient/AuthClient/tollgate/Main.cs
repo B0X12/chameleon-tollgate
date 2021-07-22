@@ -20,15 +20,6 @@ namespace AuthClient.tollgate
             userLabel.Text += Config.GetCurrentUser();
         }
 
-        private void usbDlgButton_Click(object sender, EventArgs e)
-        {
-            //Application.Restart();
-            
-            USBRegisterDialog usbRegisterDlg = new USBRegisterDialog();
-            usbRegisterDlg.ShowDialog();
-
-        }
-
         private void logoutButton_Click(object sender, EventArgs e)
         {
             AccountService accountService = new AccountService();

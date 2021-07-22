@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chameleon.tollgate.define.url.Auth;
-import com.chameleon.tollgate.define.url.Register;
+import com.chameleon.tollgate.define.Path;
 import com.chameleon.tollgate.face.dto.FacePack;
+
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import com.chameleon.tollgate.face.service.AuthFaceService;
 import com.chameleon.tollgate.rest.AuthList;
 import com.chameleon.tollgate.rest.Response;
@@ -49,11 +50,10 @@ public class AuthFaceController {
 		this.status = new AuthList();
 		this.sessions = new SessionList();
 	}
-	
-	// 얼굴 해시 등록
-	@PostMapping(path=Register.FACEID+"{id}")
-	public ResponseEntity<Response<Boolean>> registerFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception {
 		
+	// 얼굴 해시 등록
+	@PostMapping(path=Auth.FACEID+"{id}")
+	public ResponseEntity<Response<Boolean>> registerFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception {
 		if (userAgent.equals("Tollgate-client")) {
 			Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, service.SetFace(id, entry.getHashValue()), entry.getTimestamp());
 			return new ResponseEntity<>(respon, HttpStatus.OK);
@@ -67,6 +67,7 @@ public class AuthFaceController {
 	// 인증 시작 요청
 	@GetMapping(path=Auth.FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, long timestamp) throws Exception {
+
 		if (userAgent.equals("Tollgate-client")) {
 			
 			tollgateLog.e(req.getRemoteAddr(), LogFactor.FACE, faceCode.NO_FACE, "test Log");

@@ -13,63 +13,83 @@ public class AdAccountService implements IAdAccountService {
 	@Autowired
 	AdAccountDAO dao;
 	
+	@Override
 	public boolean login(String id, String pwd) throws Exception {
-		this.dao.open(true);
-		int count = this.dao.getCountOf(Table.ACCOUNT, "id", id);
-		if(count != 1) {
+		try {
+			this.dao.open(true);
+			int count = this.dao.getCountOf(Table.ACCOUNT, "id", id);
+			if(count != 1) {
+				this.dao.close();
+				throw new InvalidIDException(AccountError.NO_USER);
+			}
+			
+			String exist = this.dao.getPassword(id);
 			this.dao.close();
-			throw new InvalidIDException(AccountError.NO_USER);
+			
+			if(exist.compareTo(pwd) == 0)
+				return true;
+			return false;
+		} finally {
+			this.dao.close();
 		}
-		
-		String exist = this.dao.getPassword(id);
-		this.dao.close();
-		
-		if(exist.compareTo(pwd) == 0)
-			return true;
-		return false;
 	}
-	
+
+	@Override
 	public boolean logout(String id) throws Exception {
-		this.dao.open();
-		int result = this.dao.removeToken(id);
-		this.dao.commit();
-		this.dao.close();
-		
-		if(result == 1)
-			return true;
-		return false;
-	}
-	
-	public boolean mapAndroid(String id, String token) throws Exception {
-		this.dao.open();
-		if(this.dao.isExistToken(id, token)) {
+		try {
+			this.dao.open();
+			int result = this.dao.removeToken(id);
+			this.dao.commit();
 			this.dao.close();
-			return true;
+			
+			if(result == 1)
+				return true;
+			return false;
+		} finally {
+			this.dao.close();
 		}
-		
-		if(this.dao.getCountOf(Table.MAP_ANDROID, "id", id) == 1) {
-			if(this.dao.removeToken(id) != 1) {
+	}
+
+	@Override
+	public boolean mapAndroid(String id, String token) throws Exception {
+		try {
+			this.dao.open();
+			if(this.dao.isExistToken(id, token)) {
+				this.dao.close();
+				return true;
+			}
+			
+			if(this.dao.getCountOf(Table.MAP_ANDROID, "id", id) == 1) {
+				if(this.dao.removeToken(id) != 1) {
+					this.dao.close();
+					return false;
+				}
+			}
+			
+			if(this.dao.setToken(id, token) != 1) {
 				this.dao.close();
 				return false;
 			}
-		}
-		
-		if(this.dao.setToken(id, token) != 1) {
+			this.dao.commit();
 			this.dao.close();
-			return false;
+			
+			return true;
+		} finally {
+			this.dao.close();
 		}
-		this.dao.commit();
-		this.dao.close();
-		
-		return true;
 	}
-	
+
+	@Override
 	public String getID(String token) throws Exception {
-		this.dao.open();
-   		if(this.dao.getCountOf(Table.MAP_ANDROID, "token", token) != 1)
-			return null;
-		String result = this.dao.getID(token);
-		this.dao.close();
-		return result;
+		try {
+			this.dao.open();
+	   		if(this.dao.getCountOf(Table.MAP_ANDROID, "token", token) != 1)
+				return null;
+			String result = this.dao.getID(token);
+			this.dao.close();
+			return result;
+		} finally {
+			this.dao.close();
+		}
 	}
 }
