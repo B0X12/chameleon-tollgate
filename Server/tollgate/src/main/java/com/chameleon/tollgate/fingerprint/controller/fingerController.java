@@ -19,8 +19,8 @@ import com.chameleon.tollgate.rest.exception.InvalidRequestException;
 import com.chameleon.tollgate.rest.exception.NoUserException;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
-import com.chameleon.tollgate.define.url.*;
 import com.chameleon.tollgate.fingerprint.service.fingerService;
+import com.chameleon.tollgate.define.Path;
 
 /*
  * 반환해주는 값을 좀 더 다양화
@@ -46,7 +46,7 @@ public class fingerController
 	
 	
 	// 인증 시작 요청
-	@GetMapping(Auth.FINGERPRINT + "{id}")
+	@GetMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> SendMessage(@PathVariable("id") String id
 			, long timestamp,  @RequestHeader(value = "User-Agent") String userAgent) throws Exception
 	{
@@ -81,7 +81,7 @@ public class fingerController
 	
 	
 	// 안드로이드 -> 서버로 값을 전송할 때
-	@PostMapping(Auth.FINGERPRINT + "{id}")
+	@PostMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> AuthResult(@PathVariable("id") String id
 			, long timestamp, boolean restResult
 			, @RequestHeader(value = "User-Agent") String userAgent) throws NoUserException, InvalidRequestException, UnauthorizedUserAgentException
