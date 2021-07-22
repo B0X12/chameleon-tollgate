@@ -6,10 +6,11 @@ import lombok.Getter;
 public class LogRecord {
 
 	private String timestamp;
+	private String ip;
 	private String level;
 	private String factor;
 	private String code;
-	private String ip;
+	private String message;
 	
 	public LogRecord(String log, String separator){
         String[] logData = log.split(separator);
@@ -18,5 +19,6 @@ public class LogRecord {
         level = logData[2];
         factor = logData[3];
         code = logData[4];
+        message = logData[5];
 	}
 }
