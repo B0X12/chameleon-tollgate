@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chameleon.tollgate.account.dto.Account;
 import com.chameleon.tollgate.account.dto.MapPC;
+import com.chameleon.tollgate.account.exception.UserAlreadyExistException;
 import com.chameleon.tollgate.account.service.AccountService;
 import com.chameleon.tollgate.define.Path;
 import com.chameleon.tollgate.rest.Response;
@@ -25,7 +26,7 @@ import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 public class AccountController {
 	@Autowired
 	private AccountService accountService;
-	
+
 	// --------------- 로그인 ---------------
 	@PostMapping(path = Path.LOGIN)
 	public ResponseEntity<Response<Boolean>> logIn(@RequestHeader(value = "User-Agent") String userAgent,
@@ -94,11 +95,9 @@ public class AccountController {
 	@GetMapping(path = Path.MAP_PC + "{uid}")
 	public ResponseEntity<Response<String>> getUserByUID(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("uid") String uid, long timestamp) throws UnauthorizedUserAgentException, SQLException {
-
 		// User-Agent 값 검사
 		if (userAgent.equals("Tollgate-client")) {
 			String result = accountService.getUserByUID(uid);
-
 			// 성공/실패는 모든 응답 OK로 처리, 결과 값(검색된 UID 문자열)로 탐색 여부 판단
 			Response<String> resp = new Response<String>(HttpStatus.OK, result, timestamp);
 			return new ResponseEntity<>(resp, HttpStatus.OK);
@@ -125,6 +124,22 @@ public class AccountController {
 				Response<Boolean> resp = new Response<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR, false, timestamp);
 				return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+
+	// --------------- 사용자 아이디를 이용하여 Factor Flag 불러옴 ---------------
+	@GetMapping(path = "/account/factor/" + "{user}")
+	public ResponseEntity<Response<Integer>> getFactorFlagByUser(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("user") String user, long timestamp) throws UnauthorizedUserAgentException, SQLException {
+		// User-Agent 값 검사
+		if (userAgent.equals("Tollgate-client")) {
+			int result = accountService.getFactorFlagByUser(user);
+
+			// 성공/실패는 모든 응답 OK로 처리, 결과 값(검색된 UID 문자열)로 탐색 여부 판단
+			Response<Integer> resp = new Response<Integer>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} else {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}

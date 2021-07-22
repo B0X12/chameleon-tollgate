@@ -1,20 +1,29 @@
 package com.chameleon.tollgate.face.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chameleon.tollgate.define.Path;
 import com.chameleon.tollgate.face.dto.FacePack;
-
 import org.springframework.web.bind.annotation.RequestHeader;
-
 import com.chameleon.tollgate.face.service.AuthFaceService;
+<<<<<<< HEAD
 import com.chameleon.tollgate.rest.AuthList;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.SessionList;
@@ -34,21 +43,32 @@ import com.chameleon.tollgate.util.userHistory.dto.historyRecord;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+=======
+
+
+>>>>>>> 5d2b10c01c8ea0662fec9afa1396140f27d73479
 
 @RestController
-public class AuthFaceController {	
+public class AuthFaceController {
+	private static final String path = "D:/";
+	
+	
 	@Autowired
 	AuthFaceService service;
 	@Autowired
 	UserHistory history;
 
+<<<<<<< HEAD
 	SessionList sessions;
 	AuthList status;
 	
 	
+=======
+	ArrayList<AuthFaceStatus> status;
+>>>>>>> 5d2b10c01c8ea0662fec9afa1396140f27d73479
 	AuthFaceController(){
-		this.status = new AuthList();
-		this.sessions = new SessionList();
+		status = new ArrayList<AuthFaceStatus>();
+		
 	}
 		
 	// 얼굴 해시 등록
@@ -116,16 +136,16 @@ public class AuthFaceController {
 						new Response<Boolean>(HttpStatus.OK, true, entry.getTimestamp()),
 						HttpStatus.OK);
 			}
-			
-			this.status.verify(id, false);
-			
-			return new ResponseEntity<>(
-					new Response<Boolean>(HttpStatus.BAD_REQUEST, false, entry.getTimestamp()),
-					HttpStatus.BAD_REQUEST);
-			
-		} else {
-			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		
+		if(body.body.compareTo("true") == 0) {
+			as.setSuccess(true);
+			as.setVerified(true);
+			System.out.println("Verified!!!!");
+			return true;
 		}
+		
+		// mobile로 가는 결과
+		return false;
 	}
 	
 

@@ -45,18 +45,20 @@ public:
     RestClient();
     ~RestClient();
     DWORD GetRestClientExitCode();
-    void GetRestClientMessage(wchar_t* wcBuffer, rsize_t nBufferSizeInWords);
+    void GetRestClientMessage(WCHAR* wcBuffer, rsize_t nBufferSizeInWords);
 
-    BOOL GetAuthFactorBySystemIdentifier(wchar_t* sys_id);
-    BOOL RequestUSBVerification(wchar_t* user, wchar_t* usb_info);
-    BOOL RequestPatternInformation(wchar_t* user);
-    BOOL RequestFaceInformation(wchar_t* user);
-    BOOL RequestFingerprintInformation(wchar_t* user);
-    BOOL RequestOTPIssue(wchar_t* user);
-    BOOL RequestOTPVerification(wchar_t* user, wchar_t* otp);
+    BOOL GetUserBySystemIdentifier(WCHAR* sys_id);
+    BOOL GetAuthFactorByUser(WCHAR* user);
+
+    BOOL RequestUSBVerification(WCHAR* user, WCHAR* usb_info);
+    BOOL RequestPatternInformation(WCHAR* user);
+    BOOL RequestFaceInformation(WCHAR* user);
+    BOOL RequestFingerprintInformation(WCHAR* user);
+    BOOL RequestOTPIssue(WCHAR* user);
+    BOOL RequestOTPVerification(WCHAR* user, WCHAR* otp);
     
 
 private:
-    BOOL _ExecuteRestClientProcess(wchar_t* wcCommandLine);
+    BOOL _ExecuteRestClientProcess(WCHAR* wcCommandLine);
 };
 

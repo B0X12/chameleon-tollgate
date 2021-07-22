@@ -71,11 +71,18 @@ namespace RestClient
                 
                 case "--is-server-alive":
                     return (int)handler.IsServerAlive();
-                  
-                case "--get-auth-factor":
+
+                case "--get-user":
                     {
                         string uid = args[1];
-                        int retCode = (int)handler.GetAuthFactor(uid);
+                        int retCode = (int)handler.GetUser(uid);
+                        return retCode;
+                    }
+
+                case "--get-auth-factor":
+                    {
+                        string user = args[1];
+                        int retCode = (int)handler.GetAuthFactor(user);
                         return retCode;
                     }
                     
@@ -116,7 +123,12 @@ namespace RestClient
                         return (int)handler.VerifyOTP(user, otp);
                     }
 
+                case "--request-fingerprint":
+                    {
+                        string user = args[1];
 
+                        return (int)handler.RequestFingerprint(user);
+                    }
 
                 default:
                     break;
@@ -148,8 +160,19 @@ namespace RestClient
                         return false;
                     }
 
+                case "--get-user":
+                    // 포맷: --get-user [sid]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 case "--get-auth-factor":
-                    // 포맷: --get-auth-factor [SID]
+                    // 포맷: --get-auth-factor [user]
                     if (parameters.Length == 2)
                     {
                         return true;
@@ -204,8 +227,19 @@ namespace RestClient
                     }
 
                 case "--verify-otp":
-                    // 포맷: --request-otp [사용자ID] [OTP입력값]
+                    // 포맷: --verify-otp [사용자ID] [OTP입력값]
                     if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--request-fingerprint":
+                    // 포맷: --request-fingerprint [사용자ID]
+                    if (parameters.Length == 2)
                     {
                         return true;
                     }

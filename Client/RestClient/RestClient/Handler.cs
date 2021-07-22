@@ -24,8 +24,6 @@ namespace RestClient
             Console.WriteLine(message);
         }
 
-
-
         internal ReturnCode IsServerAlive()
         {
             // 통신 세팅
@@ -74,12 +72,60 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode GetAuthFactor(string uid)
+        internal ReturnCode GetUser(string uid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_FACTOR + uid, qs);
+            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_USER + uid, qs);
+
+            try
+            {
+                RestResult result = hc.SendRequest();
+
+                // 서버 응답 코드가 200일 경우
+                if (result.statusCode == HttpStatusCode.OK)
+                {
+                    ResponseData<string> rd = JsonConvert.DeserializeObject<ResponseData<string>>(result.jsonResult);
+
+                    // 타임 스탬프 일치
+                    if (rd.getTimestamp().Equals(currentTimestamp))
+                    {
+                        SetRestClientMessage(rd.getResult());
+                        return ReturnCode.RESULT_CONNECTION_SUCCESS;
+                    }
+                    // 타임 스탬프 불일치
+                    else
+                    {
+                        return ReturnCode.RESULT_TIMESTAMP_MISMATCH;
+                    }
+                }
+
+                // 서버 응답 코드가 400(Bad Request)일 경우
+                else if (result.statusCode == HttpStatusCode.BadRequest)
+                {
+                    return ReturnCode.RESULT_UNAUTHORIZED_ACCESS;
+                }
+
+                // 기타 서버 응답 코드 처리
+                else
+                {
+                    return ReturnCode.RESULT_UNKNOWN_ERROR;
+                }
+            }
+            // 존재하지 않는 서버로 연결 시도
+            catch (WebException)
+            {
+                return ReturnCode.RESULT_CONNECTION_FAILED;
+            }
+        }
+
+        internal ReturnCode GetAuthFactor(string user)
+        {
+            // 통신 세팅
+            long currentTimestamp = Util.GetCurrentTimestamp();
+            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_FACTOR + user, qs);
 
             try
             {
@@ -432,6 +478,73 @@ namespace RestClient
             // 존재하지 않는 서버로 연결 시도
             catch (WebException)
             {
+                return ReturnCode.RESULT_CONNECTION_FAILED;
+            }
+        }
+
+        internal ReturnCode RequestFingerprint(string user)
+        {
+            // 통신 세팅
+            long currentTimestamp = Util.GetCurrentTimestamp();
+            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.REQUEST_FINGERPRINT + user, qs);
+
+            try
+            {
+                RestResult result = hc.SendRequest();
+
+                // 서버 응답 코드가 200일 경우
+                if (result.statusCode == HttpStatusCode.OK)
+                {
+                    ResponseData<bool> rd = JsonConvert.DeserializeObject<ResponseData<bool>>(result.jsonResult);
+
+                    // 타임 스탬프 일치
+                    if (rd.getTimestamp().Equals(currentTimestamp))
+                    {
+                        // USB 인증 여부 확인 - 성공
+                        if (rd.getResult() == true)
+                        {
+                            SetRestClientMessage("Verified");
+                            return ReturnCode.RESULT_CONNECTION_SUCCESS;
+                        }
+                        // USB 인증 여부 확인 - 실패
+                        else
+                        {
+                            SetRestClientMessage("Denied");
+                            return ReturnCode.RESULT_CONNECTION_SUCCESS;
+                        }
+                    }
+                    // 타임 스탬프 불일치
+                    else
+                    {
+                        Console.WriteLine("Timestamp mismatch");
+                        return ReturnCode.RESULT_TIMESTAMP_MISMATCH;
+                    }
+                }
+
+                // 서버 타임아웃
+                else if (result.statusCode == HttpStatusCode.PartialContent)
+                {
+                    return ReturnCode.RESULT_CONNECTION_TIMEOUT;
+                }
+
+                // 서버 응답 코드가 400(Bad Request)일 경우
+                else if (result.statusCode == HttpStatusCode.BadRequest)
+                {
+                    return ReturnCode.RESULT_UNAUTHORIZED_ACCESS;
+                }
+
+                // 기타 서버 응답 코드 처리
+                else
+                {
+                    return ReturnCode.RESULT_UNKNOWN_ERROR;
+                }
+            }
+
+            // 존재하지 않는 서버로 연결 시도
+            catch (WebException e)
+            {
+                Console.WriteLine(e.Message);
                 return ReturnCode.RESULT_CONNECTION_FAILED;
             }
         }

@@ -25,22 +25,6 @@ import com.chameleon.tollgate.face.AuthFaceStatus;
 import com.chameleon.tollgate.face.utils;
 import com.chameleon.tollgate.face.dto.Test;
 import com.chameleon.tollgate.face.service.AuthFaceService;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import com.chameleon.tollgate.pattern.AuthStatus;
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
-=======
->>>>>>> 6cb2a903a463f81eb0c87c577ff2e04a6e51037c
 
 
 
