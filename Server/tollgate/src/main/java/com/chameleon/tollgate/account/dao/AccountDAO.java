@@ -19,6 +19,12 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 			super.open(false, true);
 	}
 
+	public void finalize() {
+		if (super.isOpen()) {
+			super.close();
+		}
+	}
+
 	@Override
 	public boolean checkIDPW(Account account) throws SQLException {
 		int Result = 0;
@@ -53,8 +59,8 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 	}
 
 	@Override
-	public boolean insertMapPCInfo(MapPC map_pc){
-		
+	public boolean insertMapPCInfo(MapPC map_pc) {
+
 		String SqlInstruct = "INSERT INTO map_pc(id,pc,alias) VALUES ('" + map_pc.id + "','" + map_pc.pc + "','"
 				+ map_pc.alias + "')";
 		try {
@@ -66,6 +72,7 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		}
 	}
 
+	@Override
 	public String getUserByUID(String uid) throws SQLException {
 		String Result = "";
 		String SqlInstruct = "SELECT id FROM map_pc WHERE pc='" + uid + "'";
@@ -83,9 +90,10 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 
 		return Result;
 	}
-	
+
+	@Override
 	public boolean deleteMapPCInfo(String uid) {
-		String SqlInstruct = "DELETE FROM map_pc WHERE pc='" + uid + "'"; 
+		String SqlInstruct = "DELETE FROM map_pc WHERE pc='" + uid + "'";
 		try {
 			SearchUpdate(SqlInstruct);
 			return true;
@@ -93,7 +101,27 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 			return false;
 		}
 	}
-	
+
+	@Override
+	public int getFactorFlagByUser(String user) throws SQLException {
+		int Result = 0;
+		String SqlInstruct = "SELECT factor FROM auth_factor WHERE id = '" + user + "'";
+
+		try {
+			Result = SearchQuery_int(SqlInstruct);
+		} catch (SQLException se) {
+			System.out.println(se.getMessage());
+			// 검색 결과 없음 - 해당 UID와 연동된 유저가 없음
+			if (se.getErrorCode() == 0) {
+				Result = 0;
+			} else {
+				throw se;
+			}
+		}
+
+		// 검색 결과가 존재하지 않을 경우 0 반환, 그 외의 경우 플래그 값(int) 반환
+		return Result;
+	}
 
 	// ------------------------------------------------------------------------------------
 
@@ -147,7 +175,4 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		return resultValue;
 	}
 
-	
-
-	
 }

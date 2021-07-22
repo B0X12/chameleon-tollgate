@@ -48,4 +48,9 @@ public class AccountService implements IAccountService {
 	public boolean unmapUserByUID(String uid){
 		return dao.deleteMapPCInfo(uid);
 	}
+	
+	@Override
+	public int getFactorFlagByUser(String user) throws SQLException {
+		return dao.getFactorFlagByUser(user);
+	}
 }
