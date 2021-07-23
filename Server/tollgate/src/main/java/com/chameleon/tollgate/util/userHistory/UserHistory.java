@@ -15,7 +15,7 @@ public class UserHistory {
 	@Autowired
 	HistoryDAO dao;
 	
-	public boolean leave(String id, HistoryFactor factor, String pc, HistoryResult result) throws Exception {		
+	public boolean write(String id, HistoryFactor factor, String pc, HistoryResult result) throws Exception {		
 		dao.open();
 		boolean daoResult = dao.record(id, factor.getFactor(), pc, result.getCode());
 		dao.commit();

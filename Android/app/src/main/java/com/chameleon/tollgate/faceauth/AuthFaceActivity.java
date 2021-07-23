@@ -106,6 +106,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 String modelPath = mFaceAS.getModelPath();
                 if(hashValue.compareTo(FaceAuthService.file2SHA512String(modelPath)) != 0){
                     Log.d(FaceVar.TAG, "onCreate : Hash Value Not Matched");
+                    Toast.makeText(getApplicationContext(), "얼굴 정보를 등록해 주세요", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 Log.d(FaceVar.TAG, "onCreate : Hash Value Matched");
@@ -229,7 +230,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 if(mode.equals(FaceVar.ActivationMode.TRAIN)){
                     if(mFaceAS.isTrainPossible()){
                         String hashValue = mFaceAS.trainFace();
-                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, 12345), this, handler);
+                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, Integer.parseInt(timestamp)), this, handler);
                         boolean result = false;
                         try {
                             result = faceRest.execute().get();
@@ -255,7 +256,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                         FaceRestTask faceRest = null;
 
                         faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, Integer.parseInt(timestamp)), this, handler);
-                        boolean result = false;
+                        Boolean result = false;
                         try {
                             result = faceRest.execute().get();
                         } catch (ExecutionException | InterruptedException e) {
@@ -263,11 +264,15 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                         }
                         Log.d(LogTag.AUTH_FACEID, "Face Auth Result : " + result);
 
-                        if(!result) {
+                        if(result == null){
+                            Message msg = handler.obtainMessage(FaceMsg.TOAST_ERROR, "인증 시간이 만료되었습니다.");
+                            handler.sendMessage(msg);
+                        }
+                        else if(result == false) {
                             Message msg = handler.obtainMessage(FaceMsg.TOAST_ERROR, "Invalid response.");
                             handler.sendMessage(msg);
                         }
-                        else{
+                        else {
                             Message msg = handler.obtainMessage(FaceMsg.TOAST_MSG, "인증에 성공했습니다.");
                             handler.sendMessage(msg);
                         }
