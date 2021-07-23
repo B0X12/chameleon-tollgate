@@ -47,7 +47,7 @@ BOOL CUSB::IsDeviceTypeUSB(WPARAM wParam, LPARAM lParam)
 }
 
 
-DWORD CUSB::VerifyUSB(PDEV_BROADCAST_HDR pHdr, WCHAR* wszUser)
+DWORD CUSB::VerifyUSB(PDEV_BROADCAST_HDR pHdr, WCHAR* wszUser, WCHAR* wszSystemIdentifier)
 {
     PDEV_BROADCAST_DEVICEINTERFACE pDevInf = (PDEV_BROADCAST_DEVICEINTERFACE)pHdr;
 
@@ -66,7 +66,7 @@ DWORD CUSB::VerifyUSB(PDEV_BROADCAST_HDR pHdr, WCHAR* wszUser)
     // --------------- 인증 서버로부터 USB 정보 검증 ---------------
     RestClient* rc = new RestClient();
 
-    if (rc->RequestUSBVerification(wszUser, szDevId.GetBuffer()))
+    if (rc->RequestUSBVerification(wszUser, wszSystemIdentifier, szDevId.GetBuffer()))
     {
         // --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
         wchar_t wcMessageFromServer[2048] = { 0, };

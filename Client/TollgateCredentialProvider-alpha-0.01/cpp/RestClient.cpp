@@ -82,13 +82,15 @@ BOOL RestClient::GetAuthFactorByUser(WCHAR* user)
 }
 
 
-BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* usb_info)
+BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* sys_id, WCHAR* usb_info)
 {
     wchar_t wcCommandLine[2048] = { 0, };
 
-    // Rest Client 프로그램 인자 초기화: --verify-usb [user] [usb_info]
+    // Rest Client 프로그램 인자 초기화: --verify-usb [user] [sys_id] [usb_info]
     wcscpy_s(wcCommandLine, 2048, L" --verify-usb ");
     wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
     wcscat_s(wcCommandLine, 2048, L" ");
     wcscat_s(wcCommandLine, 2048, usb_info);
     
@@ -142,7 +144,7 @@ BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)
                     std::stringstream stream(pipeContents);
                     std::string str;
                     wchar_t buf[2048] = { 0, };
-                    size_t cn;
+                    //size_t cn;
 
                     // --------------- 데이터 추출 및 세팅 ---------------
                     getline(stream, str);

@@ -21,7 +21,7 @@ namespace RestClient
 		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
 		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
          *
-         *   --verify-usb		    --verify-usb [사용자ID] [USB식별값]
+         *   --verify-usb		    --verify-usb [사용자ID] [SID값] [USB식별값]
 		 *	                        USB 인증 옵션
 		 *	                        반환 문자열: Verified / Denied
          *
@@ -89,9 +89,10 @@ namespace RestClient
                 case "--verify-usb":
                     {
                         string user = args[1];
-                        string usb_info = args[2];
+                        string sid = args[2];
+                        string usb_info = args[3];
 
-                        return (int)handler.VerifyUSB(user, usb_info);
+                        return (int)handler.VerifyUSB(user, sid, usb_info);
                     }
                     
                 case "--request-pattern":
@@ -183,8 +184,8 @@ namespace RestClient
                     }
 
                 case "--verify-usb":
-                    // 포맷: --verify-usb [사용자ID] [USB정보]
-                    if (parameters.Length == 3)
+                    // 포맷: --verify-usb [사용자ID] [SID값] [USB정보]
+                    if (parameters.Length == 4)
                     {
                         return true;
                     }

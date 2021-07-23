@@ -50,7 +50,7 @@ public:
     BOOL GetUserBySystemIdentifier(WCHAR* sys_id);
     BOOL GetAuthFactorByUser(WCHAR* user);
 
-    BOOL RequestUSBVerification(WCHAR* user, WCHAR* usb_info);
+    BOOL RequestUSBVerification(WCHAR* user, WCHAR* sys_id, WCHAR* usb_info);
     BOOL RequestPatternInformation(WCHAR* user);
     BOOL RequestFaceInformation(WCHAR* user);
     BOOL RequestFingerprintInformation(WCHAR* user);

@@ -202,7 +202,7 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			token = wcstok_s(NULL, L"-", &context);
 		}
 
-		WCHAR wszSystemIdentifier[50] = { 0, };
+		//WCHAR wszSystemIdentifier[50] = { 0, };
 
 		// SID에서 시스템 고유 식별값 추출 및 세팅
 		token = wcstok_s(NULL, L"-", &context);

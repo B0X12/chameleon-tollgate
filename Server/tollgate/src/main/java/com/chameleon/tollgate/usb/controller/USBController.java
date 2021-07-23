@@ -33,9 +33,10 @@ public class USBController {
 	@GetMapping(path = Path.AUTH_USB + "{user}/{usb_info}")
 	public ResponseEntity<Response<Boolean>> verifyIfRegisteredUSB(
 			@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("user") String user,
-			@PathVariable("usb_info") String usb_info, long timestamp)
+			@PathVariable("usb_info") String usb_info, long timestamp, String sid)
 			throws UnauthorizedUserAgentException, SQLException {
 
+		System.out.println(sid);
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.verifyUSB(user, usb_info);
 

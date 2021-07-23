@@ -148,6 +148,7 @@ public:
 
   public:
     WCHAR wszUserName[100] = { 0, };
+    WCHAR wszSystemIdentifier[100] = { 0, };
 
   private:
     //  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01

@@ -26,6 +26,7 @@ const TCHAR* g_wszUSBClassName = L"USB Auth Window Class";
 
 CUSB* g_pUSBModule = nullptr;
 WCHAR* g_wszUser = nullptr;
+WCHAR* g_wszSystemIdentifier = nullptr;
 
 
 CUSBAuth::CUSBAuth(void)
@@ -76,6 +77,7 @@ HRESULT CUSBAuth::InitAuthThread(CTollgateCredential* pCredential)
 
 	g_pUSBModule = new CUSB();
 	g_wszUser = _pCred->wszUserName;
+	g_wszSystemIdentifier = _pCred->wszSystemIdentifier;
 
 	return hr;
 }
@@ -229,7 +231,7 @@ LRESULT CALLBACK CUSBAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 			::KillTimer(hWnd, 0);
 
 			// 해당 USB가 User에 의해 등록된 USB인지 검사
-			switch (g_pUSBModule->VerifyUSB((PDEV_BROADCAST_HDR)lParam, g_wszUser))
+			switch (g_pUSBModule->VerifyUSB((PDEV_BROADCAST_HDR)lParam, g_wszUser, g_wszSystemIdentifier))
 			{
 			case g_pUSBModule->USB_VERIFICATION_SUCCESS:
 				::PostMessage(hWnd, WM_AUTHENTICATION_GRANT, 0, 0);

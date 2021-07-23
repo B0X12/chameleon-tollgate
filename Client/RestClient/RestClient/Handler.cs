@@ -72,12 +72,12 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode GetUser(string uid)
+        internal ReturnCode GetUser(string sid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_USER + uid, qs);
+            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_USER + sid, qs);
 
             try
             {
@@ -168,11 +168,12 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode VerifyUSB(string user, string usb_info)
+        internal ReturnCode VerifyUSB(string user, string sid, string usb_info)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
+            qs.AddQueryString("sid", sid);
             HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.VERIFY_USB + user + "/" + usb_info, qs);
 
             try
