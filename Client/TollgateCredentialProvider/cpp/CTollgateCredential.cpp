@@ -582,7 +582,6 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 			// --------------- USB 인증 버튼 ---------------
 		case SFI_USB_VERIFY:
 
-			
 			EnableAuthStartButton(SFI_USB_VERIFY, FALSE);
 
 			if (_pUSBAuth != nullptr) {
@@ -590,21 +589,18 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 			}
 			
 			//Log(LOG::ALERT::ALERT_INFO, LOG::AUTH_METHOD::AUTH_METHOD_USB, L"Test: GoToNextAuthStage()");
-			//GoToNextAuthStage();
 
 			break;
 
 			// --------------- 패턴 정보 요청 버튼 ---------------
 		case SFI_PATTERN_REQUEST:
 
-			/*
 			EnableAuthStartButton(SFI_PATTERN_REQUEST, FALSE);
 
 			if (_pPatternAuth != nullptr) {
 				_pPatternAuth->InitAuthThread(this);
 			}
-			*/
-
+			
 			break;
 
 			// --------------- 지문 정보 요청 버튼 ---------------
@@ -614,7 +610,13 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 
 			// --------------- 안면 인식 정보 요청 버튼 ---------------
 		case SFI_FACE_REQUEST:
-			GoToNextAuthStage();
+			
+			EnableAuthStartButton(SFI_FACE_REQUEST, FALSE);
+
+			if (_pFaceAuth != nullptr) {
+				_pFaceAuth->InitAuthThread(this);
+			}
+
 			break;
 
 

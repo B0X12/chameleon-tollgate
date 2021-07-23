@@ -332,6 +332,12 @@ namespace RestClient
                     }
                 }
 
+                // 데이터베이스에 패턴 없음
+                else if(result.statusCode == HttpStatusCode.NotFound)
+                {
+                    return ReturnCode.RESULT_UNKNOWN_ERROR;
+                }
+
                 // 서버 응답 코드가 400(Bad Request)일 경우
                 else if (result.statusCode == HttpStatusCode.BadRequest)
                 {
