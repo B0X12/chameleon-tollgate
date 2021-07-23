@@ -15,13 +15,21 @@ public class UserHistory {
 	@Autowired
 	HistoryDAO dao;
 	
-	public boolean write(String id, HistoryFactor factor, String pc, HistoryResult result) throws Exception {		
+	public boolean write(String id, HistoryFactor factor, String sid, HistoryResult result) {		
 		dao.open();
-		boolean daoResult = dao.record(id, factor.getFactor(), pc, result.getCode());
-		dao.commit();
-		dao.close();
-		
-		return daoResult;
+		boolean daoResult;
+		try {
+			daoResult = dao.record(id, factor.getFactor(), dao.getAlias(sid), result.getCode());
+			dao.commit();
+			return daoResult;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(dao.isOpen())
+				dao.close();	
+		}
+		return false;
 	}
 	
 	public ArrayList<historyRecord> get(String id) throws Exception {		

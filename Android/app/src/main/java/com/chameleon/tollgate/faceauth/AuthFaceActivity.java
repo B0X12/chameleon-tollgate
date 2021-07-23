@@ -104,9 +104,36 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 mFaceAS = new FaceAuthService(mode, this, handler);
 
                 String modelPath = mFaceAS.getModelPath();
-                if(hashValue.compareTo(FaceAuthService.file2SHA512String(modelPath)) != 0){
-                    Log.d(FaceVar.TAG, "onCreate : Hash Value Not Matched");
+
+                if(modelPath == null){
+
+                    FaceRestTask faceRest
+                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+                    boolean result = false;
+                    try {
+                        if(faceRest != null)
+                            result = faceRest.execute().get();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(getApplicationContext(), "얼굴 정보를 등록해 주세요", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else if(hashValue.compareTo(FaceAuthService.file2SHA512String(modelPath)) != 0){
+                    Log.d(FaceVar.TAG, "onCreate : Hash Value Not Matched");
+
+                    FaceRestTask faceRest
+                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+                    boolean result = false;
+                    try {
+                        if(faceRest != null)
+                            result = faceRest.execute().get();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(getApplicationContext(), "얼굴 정보를 다시 등록해 주세요", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 Log.d(FaceVar.TAG, "onCreate : Hash Value Matched");

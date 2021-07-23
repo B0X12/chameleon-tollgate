@@ -22,7 +22,7 @@ public class HistoryDAO extends SQLiteManager {
 		super();
 	}
 	
-	public boolean record(String id, String factor, String pc, int result) throws Exception {
+	public boolean record(String id, String factor, String sid, int result) throws Exception {
 		if(!super.isOpen())
 			throw new DatabaseConnectException(DBError.NO_CONNECTION);
 
@@ -33,12 +33,33 @@ public class HistoryDAO extends SQLiteManager {
 		state.setString(1, id);
 		state.setString(2, timestamp);
 		state.setString(3, factor);
-		state.setString(4, pc);
+		state.setString(4, sid);
 		state.setString(5, Integer.toString(result));
 		
 		state.executeUpdate();
 		
 		return true;
+	}
+	
+	public String getAlias(String sid) throws Exception {
+		if(!isOpen()) {
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		}
+
+		int count = getCountOf(Table.MAP_PC, "pc", sid);
+		if(count < 1) 
+			throw new HistoryResultException(HistoryError.NO_SID);
+
+		PreparedStatement state = super.connection.prepareStatement("select * from " + Table.MAP_PC + " where pc = ?");
+		state.setString(1,  sid);
+		ResultSet rs = state.executeQuery();
+
+		String alias = rs.getString(3);
+			
+		rs.close();
+		
+		
+		return alias;
 	}
 	
 	// 데이터 한번에 받아올 수 있게

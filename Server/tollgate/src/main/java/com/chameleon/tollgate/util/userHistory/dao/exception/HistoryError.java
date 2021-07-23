@@ -8,13 +8,14 @@ import lombok.Getter;
 
 @Getter
 public enum HistoryError implements BaseExceptionType {
-	NO_HISTORY("There is no Face Model Hash.", HttpStatus.NOT_FOUND);
+	NO_HISTORY("No history left", HttpStatus.NOT_FOUND),
+	NO_SID("no pc with sid matching", HttpStatus.NOT_FOUND);
 	
 	private final String message;
 	private final HttpStatus httpStatus;
 	
 	private HistoryError(String message, HttpStatus httpStatus) {
-		this.message = message;
+		this.message = message;	
 		this.httpStatus = httpStatus;
 	}
 }

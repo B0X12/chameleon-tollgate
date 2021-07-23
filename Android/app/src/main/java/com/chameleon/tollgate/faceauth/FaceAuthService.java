@@ -261,7 +261,7 @@ public class FaceAuthService {
         double predict[] = new double[1];
         recognizer.predict(CropResizedImage, label, predict);
 
-        if(label[0] != -1 && (int)predict[0] < 60){
+        if(label[0] != -1 && (int)predict[0] < FaceVar.DISTANCE){
             Log.d(FaceVar.TAG, "isUser : Face Matched");
             return true;
         }
@@ -278,6 +278,16 @@ public class FaceAuthService {
         }
 
         try {
+            System.out.println("testtest:  "+path);
+            File file = new File(path);
+
+            if(file.exists()){
+                System.out.println("testtest");
+            }
+            else{
+                System.out.println("testtestjffffffjfskldjflskdfjlsjkdfj");
+            }
+
             FileInputStream fIS = new FileInputStream(path);
 
             byte[] dataBytes = new byte[4096];
