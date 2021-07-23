@@ -42,10 +42,14 @@ public class SessionList {
 		throw new NoUserException(AuthError.NO_USER);
 	}
 	
-	public boolean isExist(SessionTime session) throws NoUserException {
-		SessionTime st = findSession(session.getId());
-		if(st.equals(session))
-			return true;
-		return false;
+	public boolean isExist(SessionTime session) {
+		try {
+			SessionTime st = findSession(session.getId());
+			if(st.equals(session))
+				return true;
+			return false;
+		} catch (NoUserException e) {
+			return false;
+		}
 	}
 }
