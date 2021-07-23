@@ -30,8 +30,6 @@ import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
 import com.chameleon.tollgate.util.userHistory.UserHistory;
-import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
-import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
 
 @RestController
 public class AuthFaceController {	
@@ -112,8 +110,7 @@ public class AuthFaceController {
 		tollgateLog.i(req.getRemoteAddr(), LogFactor.FACE, faceCode.TIMEOUT, "Mobile device not responded within time limit");
 		boolean result = service.VerifyFace(id, entry);
 		
-		if(result) 
-			this.status.verify(id, true);
+		this.status.verify(id, result);
 		
 		
 		return new ResponseEntity<>(

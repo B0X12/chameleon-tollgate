@@ -20,12 +20,17 @@ import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 import com.chameleon.tollgate.usb.dto.USBInfo;
 import com.chameleon.tollgate.usb.service.IUSBService;
+import com.chameleon.tollgate.util.userHistory.UserHistory;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
 
 @RestController
 public class USBController {
 
 	@Autowired
 	IUSBService service;
+	@Autowired
+	UserHistory history;
 
 	/*
 	 * 유저의 아이디와 USB 정보를 인자로 받아 데이터베이스로부터 해당 정보가 있는지 검색
@@ -37,9 +42,11 @@ public class USBController {
 			throws UnauthorizedUserAgentException, SQLException {
 
 		System.out.println(sid);
+		history.write(user, HistoryFactor.USB, sid, HistoryResult.SUCCESS);
+		
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.verifyUSB(user, usb_info);
-
+			
 			// 등록된 USB일 경우
 			if (result == true) {
 				System.out.println(usb_info + " registered by " + user); // 디버그용
@@ -68,6 +75,7 @@ public class USBController {
 
 		if (userAgent.equals("Tollgate-client")) {
 
+			
 			List<USBInfo> result = service.getRegisteredUSBList(user);
 			Response<List<USBInfo>> resp = new Response<List<USBInfo>>(HttpStatus.OK, result, timestamp);
 			return new ResponseEntity<>(resp, HttpStatus.OK);
