@@ -7,15 +7,15 @@
 
 CPatternAuth::CPatternAuth(void)
 {
-	_pCredential = NULL;
+	_pCred = NULL;
 }
 
 CPatternAuth::~CPatternAuth(void)
 {
-	if (_pCredential != NULL)
+	if (_pCred != NULL)
 	{
-		_pCredential->Release();
-		_pCredential = NULL;
+		_pCred->Release();
+		_pCred = NULL;
 	}
 }
 
@@ -24,12 +24,12 @@ HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
 {
 	HRESULT hr = S_OK;
 
-	if (_pCredential != NULL)
+	if (_pCred != NULL)
 	{
-		_pCredential->Release();
+		_pCred->Release();
 	}
-	_pCredential = pCredential;
-	_pCredential->AddRef();
+	_pCred = pCredential;
+	_pCred->AddRef();
 
 	// Create and launch the window thread.
 	HANDLE hThread = ::CreateThread(NULL, 0, CPatternAuth::_ThreadProc, (LPVOID)this, 0, NULL);
@@ -59,7 +59,7 @@ DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 
 
 	// --------------- Credential Provider 내 메시지 변경 ---------------
-	pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보를 요청하고 있습니다..");
+	pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보를 요청하고 있습니다..");
 
 
 	// --------------- 서버로부터 패턴 정보 요청 ---------------
@@ -82,43 +82,43 @@ DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 			// 인증 성공
 			if (!wcscmp(wcMessageFromServer, L"Verified"))
 			{
-				pThis->_pCredential->GoToNextAuthStage();
+				pThis->_pCred->GoToNextAuthStage();
 			}
 			// 인증 실패
 			else
 			{
-				pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보가 일치하지 않습니다");
-				pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+				pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보가 일치하지 않습니다");
+				pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 			}
 			break;
 
 			// 패턴 입력 시간 타임아웃
 		case rc->RESULT_CONNECTION_TIMEOUT:
-			pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 입력 시간이 초과되었습니다");
-			pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 입력 시간이 초과되었습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 
 			// 서버와 연결 실패
 		case rc->RESULT_CONNECTION_FAILED:
-			pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 응답이 없습니다");
-			pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 응답이 없습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 			break;
 
 			// 설정 파일이 존재하지 않음
 		case rc->RESULT_CONFIG_FILE_COMPROMISED:
-			pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
-			pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 			break;
 
 			// 정상적인 클라이언트 프로그램이 아님 / 타임 스탬프 일치하지 않음
 		case rc->RESULT_UNAUTHORIZED_ACCESS:
 		case rc->RESULT_TIMESTAMP_MISMATCH:
-			pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
-			pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 			break;
 
 		case rc->RESULT_UNKNOWN_ERROR:
-			pThis->_pCredential->SetAuthMessage(SFI_PATTERN_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
-			pThis->_pCredential->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
 			break;
 		}
 	}

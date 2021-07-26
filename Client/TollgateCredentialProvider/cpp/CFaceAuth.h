@@ -4,16 +4,16 @@
 #include "CTollgateCredential.h"
 
 
-class CPatternAuth
+class CFaceAuth
 {
 public:
-    CPatternAuth(void);
-    ~CPatternAuth(void);
+    CFaceAuth(void);
+    ~CFaceAuth(void);
     HRESULT InitAuthThread(CTollgateCredential* pCredential);
 
 private:
     static DWORD WINAPI     _ThreadProc(LPVOID lpParameter);
 
-    CTollgateCredential* _pCredential;
+    CTollgateCredential* _pCred;
 };
 
