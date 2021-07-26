@@ -59,7 +59,6 @@ public class FaceAuthService {
     private static Context context;
     private Handler handler;
 
-    private int trainNum;
     private Rect rcFace;
     private Mat OriginImage, PortraitImage, GrayImage, GrayResizedImage, CroppedImage, CropResizedImage;
     private ArrayList<Mat> trainImages;
@@ -75,7 +74,6 @@ public class FaceAuthService {
         this.context = context;
         this.handler = handler;
 
-        this.trainNum = 50;
         this.rcFace = new Rect();
         this.trainImages = new ArrayList<>();
 
@@ -185,7 +183,7 @@ public class FaceAuthService {
     }
 
     public boolean isTrainPossible(){
-        if(trainImages.size() == trainNum) return true;
+        if(trainImages.size() == FaceVar.TRAIN_NUM) return true;
         else return false;
     }
 
@@ -219,7 +217,7 @@ public class FaceAuthService {
         Mat matOutput = PortraitImage;
         if(rcFace!=null) {
             if (mode.equals(FaceVar.ActivationMode.TRAIN))
-                putText(matOutput, (String.format("%.2f", (((float) trainImages.size() / trainNum) * 100))) + "% ", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_SIMPLEX, 1, rectColor, 4);
+                putText(matOutput, (String.format("%.2f", (((float) trainImages.size() / FaceVar.TRAIN_NUM) * 100))) + "% ", new Point(rcFace.x, rcFace.y), FONT_HERSHEY_SIMPLEX, 1, rectColor, 4);
 
             rectangle(matOutput, rcFace, rectColor, 5);
         }
@@ -229,7 +227,7 @@ public class FaceAuthService {
     }
 
     public boolean addCurrnentImage2List() {
-        if(!(trainImages.size() < trainNum)) {
+        if(!(trainImages.size() < FaceVar.TRAIN_NUM)) {
             return false;
         }
 

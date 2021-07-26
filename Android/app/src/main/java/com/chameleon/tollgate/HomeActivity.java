@@ -35,6 +35,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        tollgateLog.e(LogFactor.FACE, faceCode.NO_FACE);
     }
 }

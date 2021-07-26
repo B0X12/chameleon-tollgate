@@ -1,8 +1,14 @@
 package com.chameleon.tollgate.util.tollgateLog.dto.code;
 
 public enum faceCode implements LogCode {
-	NO_FACE("No Face", 1),
-	WRONG_HASH("Wrong Hash", 2);
+	START_AUTH("Face Authentication Start", 1),
+	TRAIN_AUTH("Start Authentication with train mode", 2),
+	AUTH_AUTH("Start Authentication with auth mode", 3),
+	UNKNOWN_AUTH("No Face", 4),
+	FACE_NOT_FOUND("No Face", 5),
+	FACE_WRONG("Wrong Face Model file", 6),
+	FACE_REGISTER("New Face Model Created", 7),
+	FACE_VERIFIED("Face Matched with Existing face model", 7);
 
 	private final String log;
 	private final int code;

@@ -150,6 +150,13 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogFactor.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogLevel.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogRecord.cs" />
+    <Compile Include="tollgate\util\tollgateLog\tollgateLog.cs" />
     <EmbeddedResource Include="tollgate\account\dialog\InitControl.resx">
       <DependentUpon>InitControl.cs</DependentUpon>
     </EmbeddedResource>

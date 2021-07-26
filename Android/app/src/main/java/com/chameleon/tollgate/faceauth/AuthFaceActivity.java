@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.define.LogTag;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
+import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -23,6 +26,8 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +49,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
     private String hashValue;
     private String timestamp;
     private FaceVar.ActivationMode mode;
+    private boolean timeout = false;
 
 
     private BaseLoaderCallback m_LoaderCallback = new BaseLoaderCallback(this) {
@@ -80,16 +86,19 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_face);
 
+        tollgateLog.i(LogFactor.FACE, faceCode.START_AUTH);
 
         Intent parentIntent = getIntent();
         if(parentIntent != null){
             String activationMode = parentIntent.getStringExtra("mode");
 
             if(activationMode == null) {
+                tollgateLog.e(LogFactor.FACE, faceCode.UNKNOWN_AUTH);
                 Log.d(FaceVar.TAG, "onCreate : Unknown Activation Mode");
                 finish();
             }
             else if(activationMode.compareTo("train") == 0){
+                tollgateLog.i(LogFactor.FACE, faceCode.TRAIN_AUTH);
                 Log.d(FaceVar.TAG, "onCreate : Start With Train Mode");
                 mode = FaceVar.ActivationMode.TRAIN;
                 hashValue = null;
@@ -97,6 +106,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 mFaceAS = new FaceAuthService(mode, this, handler);
             }
             else if(activationMode.compareTo("auth") == 0){
+                tollgateLog.i(LogFactor.FACE, faceCode.AUTH_AUTH);
                 Log.d(FaceVar.TAG, "onCreate : Start With Authentication Mode");
                 mode = FaceVar.ActivationMode.AUTH;
                 hashValue = parentIntent.getStringExtra("hashValue");
@@ -106,9 +116,10 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 String modelPath = mFaceAS.getModelPath();
 
                 if(modelPath == null){
-
+                    tollgateLog.e(LogFactor.FACE, faceCode.FACE_NOT_FOUND);
+                    Log.d(FaceVar.TAG, "onCreate : Face Model file not found");
                     FaceRestTask faceRest
-                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Long.parseLong(timestamp)), this, handler);
                     boolean result = false;
                     try {
                         if(faceRest != null)
@@ -121,10 +132,11 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                     finish();
                 }
                 else if(hashValue.compareTo(FaceAuthService.file2SHA512String(modelPath)) != 0){
+                    tollgateLog.e(LogFactor.FACE, faceCode.FACE_WRONG);
                     Log.d(FaceVar.TAG, "onCreate : Hash Value Not Matched");
 
                     FaceRestTask faceRest
-                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+                            = new FaceRestTask(new FacePack(hashValue, "auth", false, Long.parseLong(timestamp)), this, handler);
                     boolean result = false;
                     try {
                         if(faceRest != null)
@@ -178,19 +190,21 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
 
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
 
-        FaceRestTask faceRest = null;
-        if(mode.compareTo(FaceVar.ActivationMode.AUTH) == 0)
-            faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Integer.parseInt(timestamp)), this, handler);
+        if(timeout == true) {
+            FaceRestTask faceRest = null;
+            if (mode.compareTo(FaceVar.ActivationMode.AUTH) == 0)
+                faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Long.parseLong(timestamp)), this, handler);
 
-        boolean result = false;
-        try {
-            if(faceRest != null)
-                result = faceRest.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            boolean result = false;
+            try {
+                if (faceRest != null)
+                    result = faceRest.execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        super.onBackPressed();
     }
 
     @Override
@@ -235,9 +249,9 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
     @Override
     public void onCameraViewStarted(int width, int height) {
         if(mode.equals(FaceVar.ActivationMode.TRAIN))
-            Toast.makeText(this, "학습을 시작합니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "학습을 시작합니다.", Toast.LENGTH_SHORT).show();
         else if (mode.equals(FaceVar.ActivationMode.AUTH))
-            Toast.makeText(this, "인증을 시작합니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "인증을 시작합니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -256,8 +270,13 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
 
                 if(mode.equals(FaceVar.ActivationMode.TRAIN)){
                     if(mFaceAS.isTrainPossible()){
+                        tollgateLog.i(LogFactor.FACE, faceCode.FACE_REGISTER);
                         String hashValue = mFaceAS.trainFace();
-                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, Integer.parseInt(timestamp)), this, handler);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+                        String train_timestamp = sdf.format(new Timestamp(System.currentTimeMillis()));
+
+                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, Long.parseLong(train_timestamp)), this, handler);
                         boolean result = false;
                         try {
                             result = faceRest.execute().get();
@@ -280,9 +299,10 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 }
                 else if(mode.equals(FaceVar.ActivationMode.AUTH)){
                     if(mFaceAS.isUser()) {
+                        tollgateLog.i(LogFactor.FACE, faceCode.FACE_VERIFIED);
                         FaceRestTask faceRest = null;
 
-                        faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, Integer.parseInt(timestamp)), this, handler);
+                        faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, Long.parseLong(timestamp)), this, handler);
                         Boolean result = false;
                         try {
                             result = faceRest.execute().get();
@@ -292,7 +312,8 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                         Log.d(LogTag.AUTH_FACEID, "Face Auth Result : " + result);
 
                         if(result == null){
-                            Message msg = handler.obtainMessage(FaceMsg.TOAST_ERROR, "인증 시간이 만료되었습니다.");
+                            Message msg = handler.obtainMessage(FaceMsg.TOAST_MSG, "인증 시간이 만료되었습니다.");
+                            timeout = true;
                             handler.sendMessage(msg);
                         }
                         else if(result == false) {
