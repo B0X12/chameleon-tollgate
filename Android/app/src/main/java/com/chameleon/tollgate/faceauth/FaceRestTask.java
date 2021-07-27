@@ -36,7 +36,7 @@ public class FaceRestTask extends AsyncTask<Void, Void, Boolean> {
 
         RestConnection rest = null;
         if(entry.getMode().compareTo("train")==0)
-            rest = new RestConnection(this.context, Path.FACEID_REG, Method.POST);
+            rest = new RestConnection(this.context, Path.REGIST_FACE, Method.POST);
         else if(entry.getMode().compareTo("auth")==0)
             rest = new RestConnection(this.context, Path.FACEID, Method.POST);
 
@@ -52,6 +52,11 @@ public class FaceRestTask extends AsyncTask<Void, Void, Boolean> {
 
             if(result.responseCode != HttpStatus.OK.value) {
                 ErrorResponse err = new Gson().fromJson(result.result, ErrorResponse.class);
+
+                if(err.getMessage().compareTo("Invalid request.") == 0){
+                    return null;
+                }
+
                 Message msg = this.handler.obtainMessage(FaceMsg.TOAST_ERROR, err.getMessage());
                 this.handler.sendMessage(msg);
                 return false;

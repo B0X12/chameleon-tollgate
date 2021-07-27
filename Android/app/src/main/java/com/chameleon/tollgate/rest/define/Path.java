@@ -8,14 +8,14 @@ public enum Path {
     PATTERN("/auth/pattern/"),
     FINGERPRINT("/auth/finger/"),
     FACEID("/auth/face/"),
-    FACEID_REG("/register/face/"),
     OTP("/auth/otp/"),
     LOGIN("/account/android/login/"),
     LOGOUT("/account/android/logout/"),
     SET_TOKEN("/account/android/map/"),
     AD_ID("/account/android/id/"),
 
-    REGIST_PATTERN("/register/pattern/");
+    REGIST_PATTERN("/register/pattern/"),
+    REGIST_FACE("/register/face/");
 
     private final String value;
 

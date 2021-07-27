@@ -21,7 +21,7 @@ namespace RestClient
 		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
 		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
          *
-         *   --verify-usb		    --verify-usb [사용자ID] [USB식별값]
+         *   --verify-usb		    --verify-usb [사용자ID] [SID값] [USB식별값]
 		 *	                        USB 인증 옵션
 		 *	                        반환 문자열: Verified / Denied
          *
@@ -71,20 +71,28 @@ namespace RestClient
                 
                 case "--is-server-alive":
                     return (int)handler.IsServerAlive();
-                  
-                case "--get-auth-factor":
+
+                case "--get-user":
                     {
                         string uid = args[1];
-                        int retCode = (int)handler.GetAuthFactor(uid);
+                        int retCode = (int)handler.GetUser(uid);
+                        return retCode;
+                    }
+
+                case "--get-auth-factor":
+                    {
+                        string user = args[1];
+                        int retCode = (int)handler.GetAuthFactor(user);
                         return retCode;
                     }
                     
                 case "--verify-usb":
                     {
                         string user = args[1];
-                        string usb_info = args[2];
+                        string sid = args[2];
+                        string usb_info = args[3];
 
-                        return (int)handler.VerifyUSB(user, usb_info);
+                        return (int)handler.VerifyUSB(user, sid, usb_info);
                     }
                     
                 case "--request-pattern":
@@ -116,7 +124,12 @@ namespace RestClient
                         return (int)handler.VerifyOTP(user, otp);
                     }
 
+                case "--request-fingerprint":
+                    {
+                        string user = args[1];
 
+                        return (int)handler.RequestFingerprint(user);
+                    }
 
                 default:
                     break;
@@ -148,8 +161,19 @@ namespace RestClient
                         return false;
                     }
 
+                case "--get-user":
+                    // 포맷: --get-user [sid]
+                    if (parameters.Length == 2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 case "--get-auth-factor":
-                    // 포맷: --get-auth-factor [SID]
+                    // 포맷: --get-auth-factor [user]
                     if (parameters.Length == 2)
                     {
                         return true;
@@ -160,8 +184,8 @@ namespace RestClient
                     }
 
                 case "--verify-usb":
-                    // 포맷: --verify-usb [사용자ID] [USB정보]
-                    if (parameters.Length == 3)
+                    // 포맷: --verify-usb [사용자ID] [SID값] [USB정보]
+                    if (parameters.Length == 4)
                     {
                         return true;
                     }
@@ -204,8 +228,19 @@ namespace RestClient
                     }
 
                 case "--verify-otp":
-                    // 포맷: --request-otp [사용자ID] [OTP입력값]
+                    // 포맷: --verify-otp [사용자ID] [OTP입력값]
                     if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--request-fingerprint":
+                    // 포맷: --request-fingerprint [사용자ID]
+                    if (parameters.Length == 2)
                     {
                         return true;
                     }

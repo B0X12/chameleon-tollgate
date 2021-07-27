@@ -225,6 +225,15 @@
     <Compile Include="tollgate\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="tollgate\otp\dialog\OtpTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tollgate\otp\dialog\OtpTest.Designer.cs">
+      <DependentUpon>OtpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\otp\dto\AuthOtp.cs" />
+    <Compile Include="tollgate\otp\service\ErrorKind.cs" />
+    <Compile Include="tollgate\otp\service\OtpService.cs" />
     <Compile Include="tollgate\usb\dialog\USBConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,6 +273,15 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
+
+    <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogFactor.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogLevel.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogRecord.cs" />
+    <Compile Include="tollgate\util\tollgateLog\tollgateLog.cs" />
+    
     <EmbeddedResource Include="tollgate\account\dialog\login\LoginButton.resx">
       <DependentUpon>LoginButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -282,6 +300,7 @@
     <EmbeddedResource Include="tollgate\account\dialog\serverIP\ConnectButton.resx">
       <DependentUpon>ConnectButton.cs</DependentUpon>
     </EmbeddedResource>
+
     <EmbeddedResource Include="tollgate\account\dialog\InitControl.resx">
       <DependentUpon>InitControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -333,6 +352,9 @@
     <EmbeddedResource Include="tollgate\account\dialog\CheckServer.resx">
       <DependentUpon>CheckServer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\otp\dialog\OtpTest.resx">
+      <DependentUpon>OtpTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="tollgate\usb\dialog\USBConfig.resx">
       <DependentUpon>USBConfig.cs</DependentUpon>
     </EmbeddedResource>
@@ -368,9 +390,6 @@
     <Folder Include="tollgate\fingerprint\dialog\" />
     <Folder Include="tollgate\fingerprint\dto\" />
     <Folder Include="tollgate\fingerprint\service\" />
-    <Folder Include="tollgate\otp\dialog\" />
-    <Folder Include="tollgate\otp\dto\" />
-    <Folder Include="tollgate\otp\service\" />
     <Folder Include="tollgate\pattern\dialog\" />
     <Folder Include="tollgate\pattern\dto\" />
     <Folder Include="tollgate\pattern\service\" />

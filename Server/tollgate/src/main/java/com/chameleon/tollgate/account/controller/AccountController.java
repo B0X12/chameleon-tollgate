@@ -129,4 +129,20 @@ public class AccountController {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 	}
+
+	// --------------- 사용자 아이디를 이용하여 Factor Flag 불러옴 ---------------
+	@GetMapping(path = "/account/factor/" + "{user}")
+	public ResponseEntity<Response<Integer>> getFactorFlagByUser(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("user") String user, long timestamp) throws UnauthorizedUserAgentException, SQLException {
+		// User-Agent 값 검사
+		if (userAgent.equals("Tollgate-client")) {
+			int result = accountService.getFactorFlagByUser(user);
+
+			// 성공/실패는 모든 응답 OK로 처리, 결과 값(검색된 UID 문자열)로 탐색 여부 판단
+			Response<Integer> resp = new Response<Integer>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
 }

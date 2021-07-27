@@ -21,6 +21,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FCMService extends FirebaseMessagingService {
+    public static Intent fcmIntent;
+
+    @Override
+    public final void handleIntent(Intent intent) {
+        // handleIntent : https://stackoverflow.com/questions/37711082/how-to-handle-notification-when-app-in-background-in-firebase
+        super.handleIntent(intent);
+        fcmIntent = intent;
+        Log.d(LogTag.FCM, "#FCM (HandleIntent) fcmIntent Data: " + fcmIntent);
+    }
+
     @Override
     public void onNewToken(@NotNull String token) {
         Log.d(LogTag.FCM, "Refreshed token: " + token);
