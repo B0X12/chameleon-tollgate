@@ -1,5 +1,8 @@
 ﻿using AuthClient.tollgate.account.service;
 using AuthClient.tollgate.usb.dialog;
+using AuthClient.tollgate.util.tollgateLog;
+using AuthClient.tollgate.util.tollgateLog.dto;
+using AuthClient.tollgate.util.tollgateLog.dto.code;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

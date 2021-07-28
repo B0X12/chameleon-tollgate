@@ -9,7 +9,7 @@ public class FacePack {
     private boolean result;
     private long timestamp;
 
-    public FacePack(String hashValue, String mode, boolean result, int timestamp) {
+    public FacePack(String hashValue, String mode, boolean result, long timestamp) {
         this.hashValue = hashValue;
         this.mode = mode;
         this.result = result;

@@ -84,8 +84,8 @@ public class AuthFaceController {
 		if(result == null) {
 			tollgateLog.w(req.getRemoteAddr(), LogFactor.FACE, faceCode.TIMEOUT, "Mobile device not responded within time limit");
 			return new ResponseEntity<>(
-					new Response<Boolean>(HttpStatus.PARTIAL_CONTENT, false, timestamp),
-					HttpStatus.PARTIAL_CONTENT);
+					new Response<Boolean>(HttpStatus.REQUEST_TIMEOUT, false, timestamp),
+					HttpStatus.REQUEST_TIMEOUT);
 		}
 			
 		return new ResponseEntity<>(
