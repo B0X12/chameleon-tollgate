@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 
 namespace RestClient
@@ -6,9 +7,9 @@ namespace RestClient
     class Config
     {
         private const string CONFIG_FILE_PATH = @"C:\Tollgate\server.cfg";
-        
+        private static string baseURL = "";
 
-        private string GetBaseURLAddress(string serverIPPort, bool useHttps = true)
+        private static string SetServerBaseURLAddress(string serverIPPort, bool useHttps = true)
         {
             // baseURL 초기화
             string baseURL = "";
@@ -32,8 +33,7 @@ namespace RestClient
             return baseURL;
         }
 
-
-        public string InitAuthServerByConfigFile()
+        public static bool InitAuthServerByConfigFile()
         {
             // 파일 존재 유무 검사
             if (File.Exists(CONFIG_FILE_PATH))
@@ -54,16 +54,37 @@ namespace RestClient
 
                     if (secureTransmission.Equals("true"))
                     {
-                        return GetBaseURLAddress(address + ":" + port, true);
+                        baseURL = SetServerBaseURLAddress(address + ":" + port, true);
                     }
                     else
                     {
-                        return GetBaseURLAddress(address + ":" + port, false);
+                        baseURL = SetServerBaseURLAddress(address + ":" + port, false);
                     }
+                    return true;
                 }
             }
 
-            return "";
+            baseURL = "";
+            return false;
+        }
+
+        public static string GetServerURL()
+        {
+            return baseURL;
+        }
+
+        public static string GetServerIPAddress()
+        {
+            string[] token = baseURL.Split(new string[] { "/", ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+            try
+            {
+                return token[1];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return "-";
+            }
         }
     }
 }

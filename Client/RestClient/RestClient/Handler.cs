@@ -12,13 +12,6 @@ namespace RestClient
 {
     class Handler
     {
-        private string baseURL = "";
-
-        public Handler(string baseURL)
-        {
-            this.baseURL = baseURL;
-        }
-
         private void SetRestClientMessage(string message)
         {
             Console.WriteLine(message);
@@ -29,7 +22,7 @@ namespace RestClient
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.SERVER_HELLO, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.SERVER_HELLO, qs);
 
             try
             {
@@ -77,7 +70,7 @@ namespace RestClient
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_USER + sid, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.ACCOUNT_USER + sid, qs);
 
             try
             {
@@ -125,7 +118,7 @@ namespace RestClient
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.ACCOUNT_FACTOR + user, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.ACCOUNT_FACTOR + user, qs);
 
             try
             {
@@ -174,7 +167,8 @@ namespace RestClient
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
             qs.AddQueryString("sid", sid);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.VERIFY_USB + user + "/" + usb_info, qs);
+            string usbHash = Util.EncryptSHA512(usb_info);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.VERIFY_USB + user + "/" + usbHash, qs);
 
             try
             {
@@ -228,12 +222,12 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode RequestPattern(string user)
+        internal ReturnCode RequestPattern(string user, string sid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.REQUEST_PATTERN + user, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_PATTERN + user, qs);
 
             try
             {
@@ -293,12 +287,12 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode RequestFace(string user)
+        internal ReturnCode RequestFace(string user, string sid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.REQUEST_FACE + user, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_FACE + user, qs);
 
             try
             {
@@ -344,6 +338,12 @@ namespace RestClient
                     return ReturnCode.RESULT_UNAUTHORIZED_ACCESS;
                 }
 
+                // 서버 타임아웃
+                else if (result.statusCode == HttpStatusCode.PartialContent)
+                {
+                    return ReturnCode.RESULT_CONNECTION_TIMEOUT;
+                }
+
                 // 기타 서버 응답 코드 처리
                 else
                 {
@@ -358,13 +358,13 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode RequestOTP(string user)
+        internal ReturnCode RequestOTP(string user, string sid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
-            OTPInfo otpInfo = new OTPInfo(user, currentTimestamp);
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.POST, URLPath.REQUEST_OTP, qs, otpInfo);
+            OTPInfo otpInfo = new OTPInfo(user, null);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.REQUEST_OTP, qs, otpInfo);
 
             try
             {
@@ -385,8 +385,6 @@ namespace RestClient
                                 return ReturnCode.RESULT_CONNECTION_SUCCESS;
 
                             case OTPReturnMessage.REGISTER_DATABASE:
-                                return ReturnCode.RESULT_SERVER_DB_ERROR;
-
                             case OTPReturnMessage.REGISTER_INFORMATION:
                             default:
                                 return ReturnCode.RESULT_UNKNOWN_ERROR;
@@ -419,13 +417,13 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode VerifyOTP(string user, string otp)
+        internal ReturnCode VerifyOTP(string user, string sid, string otp)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
-            OTPInfo otpInfo = new OTPInfo(user, currentTimestamp, otp);
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.POST, URLPath.VERIFY_OTP, qs, otpInfo);
+            OTPInfo otpInfo = new OTPInfo(user, otp);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.VERIFY_OTP, qs, otpInfo);
 
             try
             {
@@ -450,12 +448,10 @@ namespace RestClient
                                 SetRestClientMessage("Denied");
                                 return ReturnCode.RESULT_CONNECTION_SUCCESS;
 
-                            case OTPReturnMessage.VERIFY_DATABASE:
-                                return ReturnCode.RESULT_SERVER_DB_ERROR;
-                            
                             case OTPReturnMessage.VERIFY_TIMEOUT:
                                 return ReturnCode.RESULT_CONNECTION_TIMEOUT;
 
+                            case OTPReturnMessage.VERIFY_DATABASE:
                             case OTPReturnMessage.VERIFY_INFORMATION:
                             default:
                                 return ReturnCode.RESULT_UNKNOWN_ERROR;
@@ -489,12 +485,12 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode RequestFingerprint(string user)
+        internal ReturnCode RequestFingerprint(string user, string sid)
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            HttpCommunication hc = new HttpCommunication(baseURL, Method.GET, URLPath.REQUEST_FINGERPRINT + user, qs);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_FINGERPRINT + user, qs);
 
             try
             {

@@ -15,8 +15,10 @@
 #include <unknwn.h>
 #include "guid.h"
 #include "CTollgateCredential.h"
+
 #include "CUSBAuth.h"
 #include "CPatternAuth.h"
+#include "CFaceAuth.h"
 #include "RestClient.h"
 
 
@@ -141,7 +143,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	 */
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"OTP 요청 후 인증하십시오", &_rgFieldStrings[SFI_OTP_MESSAGE]);
+		hr = SHStrDupW(L"비밀번호와 OTP 값을 입력하십시오", &_rgFieldStrings[SFI_OTP_MESSAGE]);
 	}
 	if (SUCCEEDED(hr))
 	{
@@ -174,8 +176,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	// 플래그 초기화
 	_pUSBAuth = new CUSBAuth();
 	_pPatternAuth = new CPatternAuth();
-
-	//Sleep(5000);
+	_pFaceAuth = new CFaceAuth();
 
 	return hr;
 }
@@ -202,7 +203,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			token = wcstok_s(NULL, L"-", &context);
 		}
 
-		//WCHAR wszSystemIdentifier[50] = { 0, };
 
 		// SID에서 시스템 고유 식별값 추출 및 세팅
 		token = wcstok_s(NULL, L"-", &context);
@@ -216,7 +216,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 		token = wcstok_s(NULL, L"-", &context);
 		wcscat_s(wszSystemIdentifier, 50, token);
 
-		//MessageBox(0, wszSystemIdentifier, L"SID 가공", 0);
 
 		// 서버로부터 해당 PC와 매핑된 사용자의 factor flag를 얻어옴
 		RestClient* rc = new RestClient();
@@ -259,9 +258,9 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			{
 				// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
 				wchar_t wcMessageFromServer[2048] = { 0, };
-				DWORD retCode = rc->GetRestClientExitCode();
+				DWORD dwRetCode = rc->GetRestClientExitCode();
 
-				switch (retCode)
+				switch (dwRetCode)
 				{
 					// 서버와 연결 성공
 				case rc->RESULT_CONNECTION_SUCCESS:
@@ -290,8 +289,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			SetAuthMessage(SFI_STAGE_STATUS, L"해당 PC와 연동된 사용자를 불러올 수 없습니다");
 			_bAuthFactorFlag = AUTH_FACTOR_INVALID;
 		}
-
-		
 
 		delete rc;
 	}
@@ -603,11 +600,6 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 			
 			break;
 
-			// --------------- 지문 정보 요청 버튼 ---------------
-		case SFI_FINGERPRINT_REQUEST:
-			GoToNextAuthStage();
-			break;
-
 			// --------------- 안면 인식 정보 요청 버튼 ---------------
 		case SFI_FACE_REQUEST:
 			
@@ -619,6 +611,36 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 
 			break;
 
+			// --------------- 지문 정보 요청 버튼 ---------------
+		case SFI_FINGERPRINT_REQUEST:
+
+			EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, FALSE);
+		{
+			RestClient* rc = new RestClient();
+
+			if (rc->RequestQRIssue(NULL, NULL))
+			{
+				// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
+				DWORD retCode = rc->GetRestClientExitCode();
+
+				switch (retCode)
+				{
+					// 서버와 연결 성공
+				case rc->RESULT_CONNECTION_SUCCESS:
+					GoToNextAuthStage();
+					break;
+				default:
+					SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+					EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
+					break;
+				}
+			}
+
+			delete rc;
+		}
+			
+			//GoToNextAuthStage();
+			break;
 
 		default:
 			hr = E_INVALIDARG;

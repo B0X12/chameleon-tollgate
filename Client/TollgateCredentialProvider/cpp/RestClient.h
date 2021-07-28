@@ -18,7 +18,6 @@ public:
         RESULT_UNAUTHORIZED_ACCESS,
         RESULT_TIMESTAMP_MISMATCH,
         RESULT_CONNECTION_TIMEOUT,
-        RESULT_SERVER_DB_ERROR,
         RESULT_UNKNOWN_ERROR,
 
         RESULT_CLIENT_PROGRAM_COMPROMISED,
@@ -51,13 +50,13 @@ public:
     BOOL GetAuthFactorByUser(WCHAR* user);
 
     BOOL RequestUSBVerification(WCHAR* user, WCHAR* sys_id, WCHAR* usb_info);
-    BOOL RequestPatternInformation(WCHAR* user);
-    BOOL RequestFaceInformation(WCHAR* user);
-    BOOL RequestFingerprintInformation(WCHAR* user);
-    BOOL RequestOTPIssue(WCHAR* user);
-    BOOL RequestOTPVerification(WCHAR* user, WCHAR* otp);
+    BOOL RequestPatternInformation(WCHAR* user, WCHAR* sys_id);
+    BOOL RequestFaceInformation(WCHAR* user, WCHAR* sys_id);
+    BOOL RequestFingerprintInformation(WCHAR* user, WCHAR* sys_id);
+    BOOL RequestOTPIssue(WCHAR* user, WCHAR* sys_id);
+    BOOL RequestOTPVerification(WCHAR* user, WCHAR* sys_id, WCHAR* otp);
+    BOOL RequestQRIssue(WCHAR* user, WCHAR* sys_id);
     
-
 private:
     BOOL _ExecuteRestClientProcess(WCHAR* wcCommandLine);
 };

@@ -65,9 +65,7 @@ DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 	// --------------- 서버로부터 패턴 정보 요청 ---------------
 	RestClient* rc = new RestClient();
 
-	CString user = L"user02";
-
-	if (rc->RequestPatternInformation(user.GetBuffer()))
+	if (rc->RequestPatternInformation(pThis->_pCred->wszUserName, pThis->_pCred->wszSystemIdentifier))
 	{
 		// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
 		DWORD retCode = rc->GetRestClientExitCode();
@@ -96,6 +94,7 @@ DWORD WINAPI CPatternAuth::_ThreadProc(LPVOID lpParameter)
 		case rc->RESULT_CONNECTION_TIMEOUT:
 			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 입력 시간이 초과되었습니다");
 			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			break;
 
 			// 서버와 연결 실패
 		case rc->RESULT_CONNECTION_FAILED:
