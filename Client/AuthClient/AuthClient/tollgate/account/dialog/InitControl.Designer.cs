@@ -31,8 +31,8 @@ namespace AuthClient.tollgate.account.dialog
         {
             this.panel_init = new System.Windows.Forms.TableLayoutPanel();
             this.panel_border_flow = new System.Windows.Forms.Panel();
-            this.panel_flow = new NoWheelFlowPanel();
             this.picture_wallpaper = new System.Windows.Forms.PictureBox();
+            this.panel_flow = new AuthClient.tollgate.account.dialog.NoWheelFlowPanel();
             this.view_step = new AuthClient.tollgate.account.dialog.StepControl();
             this.panel_init.SuspendLayout();
             this.panel_border_flow.SuspendLayout();
@@ -67,15 +67,6 @@ namespace AuthClient.tollgate.account.dialog
             this.panel_border_flow.Size = new System.Drawing.Size(531, 531);
             this.panel_border_flow.TabIndex = 1;
             // 
-            // panel_flow
-            // 
-            this.panel_flow.AutoScroll = true;
-            this.panel_flow.Location = new System.Drawing.Point(0, 0);
-            this.panel_flow.Name = "panel_flow";
-            this.panel_flow.Size = new System.Drawing.Size(531, 531);
-            this.panel_flow.TabIndex = 0;
-            this.panel_flow.WrapContents = false;
-            // 
             // picture_wallpaper
             // 
             this.picture_wallpaper.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -88,6 +79,15 @@ namespace AuthClient.tollgate.account.dialog
             this.picture_wallpaper.TabIndex = 2;
             this.picture_wallpaper.TabStop = false;
             this.picture_wallpaper.Click += new System.EventHandler(this.picture_wallpaper_Click);
+            // 
+            // panel_flow
+            // 
+            this.panel_flow.AutoScroll = true;
+            this.panel_flow.Location = new System.Drawing.Point(0, 0);
+            this.panel_flow.Name = "panel_flow";
+            this.panel_flow.Size = new System.Drawing.Size(531, 531);
+            this.panel_flow.TabIndex = 0;
+            this.panel_flow.WrapContents = false;
             // 
             // view_step
             // 

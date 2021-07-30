@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
@@ -24,8 +17,8 @@ namespace AuthClient.tollgate.account.dialog
         private LoginControl loginCon;
         private SignupControl signupControl;
 
-        public delegate void LoginClickEvent();
-        public event LoginClickEvent loginButtonClick;
+        public delegate void LoginEvent();
+        public event LoginEvent Login;
 
         public InitControl()
         {
@@ -38,23 +31,38 @@ namespace AuthClient.tollgate.account.dialog
             panel_flow.Height = panel_flow.Parent.Height + SystemInformation.HorizontalScrollBarHeight;
 
             initServerControl = new InitServerControl();
-            initServerControl.connectButtonClick += flowNext;
+            initServerControl.ConnectButtonClick += InitServerControl_ConnectButtonClick;
             panel_flow.Controls.Add(initServerControl);
 
             loginCon = new LoginControl();
-            loginCon.signupButtonClick += flowNext;
-            loginCon.loginButtonClick += btn_login_Click;
+            loginCon.LoginButtonClick += LoginCon_LoginButtonClick;
+            loginCon.SignupButtonClick += LoginCon_SignupButtonClick;
 
             signupControl = new SignupControl();
-            signupControl.signupButtonClick += flowPrev;
+            signupControl.SignupButtonClick += SignupControl_SignupButtonClick;
 
             view_step.setStep(step);
         }
 
-        private void btn_login_Click()
+        private void SignupControl_SignupButtonClick(object sender, EventArgs e)
         {
-            if (loginButtonClick != null)
-                loginButtonClick();
+            flowPrev();
+        }
+
+        private void LoginCon_SignupButtonClick(object sender, EventArgs e)
+        {
+            flowNext();
+        }
+
+        private void LoginCon_LoginButtonClick(object sender, EventArgs e)
+        {
+            if (Login != null)
+                Login();
+        }
+
+        private void InitServerControl_ConnectButtonClick(object sender, EventArgs e)
+        {
+            flowNext();
         }
 
         /// <summary>

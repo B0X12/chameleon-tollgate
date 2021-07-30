@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AuthClient.tollgate.account.dialog;
+using AuthClient.tollgate.home.dialog;
+using System;
 using System.Windows.Forms;
 
-namespace AuthClient.tollgate.account.dialog
+namespace AuthClient.tollgate
 {
     public partial class MainForm : Form
     {
@@ -17,44 +12,45 @@ namespace AuthClient.tollgate.account.dialog
 
         private InitControl initcontrol;
         private SplashControl splashControl;
+        private HomeControl homeControl;
 
         public MainForm()
         {
             InitializeComponent();
 
-            panel_flow_main.Width = panel_flow_main.Parent.Width + SystemInformation.VerticalScrollBarWidth;
-            //panel_flow_main.Height = panel_flow_main.Parent.Height + SystemInformation.HorizontalScrollBarHeight;
+            MaximizeBox = false;
 
             initcontrol = new InitControl();
-            initcontrol.loginButtonClick += flowNext;
+            initcontrol.Login += Initcontrol_Login; ;
+            panel_main.Controls.Add(initcontrol);
 
             splashControl = new SplashControl();
+            splashControl.SplashButtonClick += SplashControl_SplashButtonClick; ;
+            panel_main.Controls.Add(splashControl);
+
+            homeControl = new HomeControl();
+            panel_main.Controls.Add(homeControl);
+
+            ChangePage(0);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void SplashControl_SplashButtonClick(object sender, EventArgs e)
         {
-            panel_flow_main.Controls.Add(initcontrol);
-            panel_flow_main.Controls.Add(splashControl);
-            //panel_flow_main.VerticalScroll.Value = FLOW_SIZE;
+            ChangePage(2);
         }
 
-        private void flowNext()
+        private void Initcontrol_Login()
         {
-            /*
-            for (int i = FLOW_SIZE - FLOW_INTERVAL; i > 0; i -= FLOW_INTERVAL)
+            splashControl.User = Config.GetCurrentUser();
+            ChangePage(1);
+        }
+
+        private void ChangePage(int page)
+        {
+            for(int i = 0; i < panel_main.Controls.Count; i++)
             {
-                try
-                {
-                    panel_flow_main.VerticalScroll.Value = i;
-                }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                    panel_flow_main.VerticalScroll.Value = 0;
-                }
-                panel_flow_main.Update();
-            }*/
-
-            panel_flow_main.Controls.RemoveAt(0);
+                panel_main.Controls[i].Visible = (i == page);
+            }
         }
     }
 }

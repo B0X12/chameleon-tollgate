@@ -1,40 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {
     public partial class LoginControl : UserControl
     {
-        public delegate void LoginClickEvent();
-        public event LoginClickEvent loginButtonClick;
-        public event LoginTitle.SignupClickEvent signupButtonClick;
+        [Category("Tollgate")]
+        public event EventHandler LoginButtonClick
+        {
+            add { btn_login.Click += value; }
+            remove { btn_login.Click -= value; }
+        }
+
+        [Category("Tollgate")]
+        public event EventHandler SignupButtonClick
+        {
+            add { img_title.SignupButtonClick += value; }
+            remove { img_title.SignupButtonClick -= value; }
+        }
+
+        [Category("Tollgate")]
+        public string ID
+        {
+            get { return text_id.Text; }
+            set { text_id.Text = value; }
+        }
+
+        [Category("Tollgate")]
+        public string PWD
+        {
+            get { return text_pwd.Text; }
+            set { text_pwd.Text = value; }
+        }
+
+        [Category("Tollgate")]
+        public bool FixID
+        {
+            get { return text_id.Fix; }
+            set { text_id.Fix = value; }
+        }
 
         public LoginControl()
         {
             InitializeComponent();
-
-            img_title.signupButtonClick += btn_signup_Click;
         }
-
-        private void btn_signup_Click()
-        {
-            if (signupButtonClick != null)
-                signupButtonClick();
-        }
-
-        private void btn_login_Click(object sender, EventArgs e)
-        {
-            if (loginButtonClick != null)
-                loginButtonClick();
-        }
-
-
     }
 }

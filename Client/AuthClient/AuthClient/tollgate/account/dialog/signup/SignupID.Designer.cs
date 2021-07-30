@@ -65,7 +65,7 @@ namespace AuthClient.tollgate.account.dialog.signup
             this.Font = new System.Drawing.Font("새굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SignupID";
-            this.Size = new System.Drawing.Size(390, 44);
+            this.Size = new System.Drawing.Size(341, 41);
             ((System.ComponentModel.ISupportInitialize)(this.img_back)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

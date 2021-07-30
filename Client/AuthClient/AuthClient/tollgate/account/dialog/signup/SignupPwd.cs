@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog.signup
@@ -13,6 +7,17 @@ namespace AuthClient.tollgate.account.dialog.signup
     public partial class SignupPwd : UserControl
     {
         private const string hint = "Password";
+
+        public new string Text
+        {
+            get
+            {
+                if (textBox.Text != hint)
+                    return textBox.Text;
+                return String.Empty;
+            }
+            set { textBox.Text = value; }
+        }
 
         public SignupPwd()
         {
@@ -28,6 +33,7 @@ namespace AuthClient.tollgate.account.dialog.signup
             TextBox txt = (TextBox)sender;
             if (txt.Text == hint)
             {
+                txt.PasswordChar = '●';
                 txt.ForeColor = Color.Black;
                 txt.Text = string.Empty;
             }
@@ -38,6 +44,7 @@ namespace AuthClient.tollgate.account.dialog.signup
             TextBox txt = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(txt.Text))
             {
+                txt.PasswordChar = '\0';
                 txt.ForeColor = Color.DarkGray;
                 txt.Text = hint;
             }

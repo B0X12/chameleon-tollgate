@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
@@ -13,7 +7,11 @@ namespace AuthClient.tollgate.account.dialog
     public partial class LoginTitle : UserControl
     {
         public delegate void SignupClickEvent();
-        public event SignupClickEvent signupButtonClick;
+        public event EventHandler SignupButtonClick
+        {
+            add { btn_signup.Click += value; }
+            remove { btn_signup.Click -= value; }
+        }
 
         public LoginTitle()
         {
@@ -24,12 +22,6 @@ namespace AuthClient.tollgate.account.dialog
             btn_signup.FlatAppearance.MouseDownBackColor = Color.Transparent;
             btn_signup.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btn_signup.BackColor = Color.Transparent;
-        }
-
-        private void btn_signup_Click(object sender, EventArgs e)
-        {
-            if (signupButtonClick != null)
-                signupButtonClick();
         }
     }
 }

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
@@ -13,6 +7,23 @@ namespace AuthClient.tollgate.account.dialog
     public partial class LoginID : UserControl
     {
         private const string hint = "ID";
+
+        public new string Text
+        {
+            get
+            {
+                if (textBox.Text != hint)
+                    return textBox.Text;
+                return String.Empty;
+            }
+            set { textBox.Text = value; }
+        }
+
+        public bool Fix
+        {
+            get { return textBox.Enabled; }
+            set { textBox.Enabled = value; }
+        }
 
         public LoginID()
         {

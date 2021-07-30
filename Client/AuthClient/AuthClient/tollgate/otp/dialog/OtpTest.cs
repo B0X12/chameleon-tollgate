@@ -27,14 +27,12 @@ namespace AuthClient.tollgate.otp.dialog
 
         private void button_Login_Click(object sender, EventArgs e)
         {
-            LogOnDialog LOD = new LogOnDialog();
-            LOD.Show();
+
         }
 
         private void button_Register_Click(object sender, EventArgs e)
         {
-            LogOnDialog LOSUD = new LogOnDialog();
-            LOSUD.Show();
+
         }
 
         private void button_OtpCertification_Click(object sender, EventArgs e)

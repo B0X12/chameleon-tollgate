@@ -1,29 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {
     public partial class SignupControl : UserControl
     {
-        public delegate void SignupClickEvent();
-        public event SignupClickEvent signupButtonClick;
+        [Category("Tollgate")]
+        public event EventHandler SignupButtonClick
+        {
+            add { btn_signup.Click += value; }
+            remove { btn_signup.Click -= value; }
+        }
+
+        [Category("Tollgate")]
+        public string ID
+        {
+            get { return text_id.Text; }
+            set { text_id.Text = value; }
+        }
+
+        [Category("Tollgate")]
+        public string PWD
+        {
+            get { return text_pwd.Text; }
+            set { text_pwd.Text = value; }
+        }
+
+        [Category("Tollgate")]
+        public string Confirm
+        {
+            get { return text_confirm.Text; }
+            set { text_confirm.Text = value; }
+        }
 
         public SignupControl()
         {
             InitializeComponent();
-        }
-
-        private void btn_signup_Click(object sender, EventArgs e)
-        {
-            if (signupButtonClick != null)
-                signupButtonClick();
         }
     }
 }

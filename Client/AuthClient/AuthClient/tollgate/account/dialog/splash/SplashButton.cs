@@ -1,18 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {
     public partial class SplashButton : UserControl
     {
+        public new event EventHandler Click
+        {
+            add
+            {
+                base.Click += value;
+                foreach (Control control in Controls)
+                {
+                    control.Click += value;
+                }
+            }
+            remove
+            {
+                base.Click -= value;
+                foreach (Control control in Controls)
+                {
+                    control.Click -= value;
+                }
+            }
+        }
+
         public SplashButton()
         {
             InitializeComponent();
@@ -22,8 +36,8 @@ namespace AuthClient.tollgate.account.dialog
             Font font = new Font(fonts.Families[0], 11);
             label.Font = font;
 
-            label.Left = ((img_back.Width - label.Width) / 2) + img_back.Left;
-            label.Top = ((img_back.Height - label.Height) / 2) + img_back.Top;
+            label.Left = ((img_back.Width - label.Width) / 2);
+            label.Top = ((img_back.Height - label.Height) / 2);
         }
     }
 }

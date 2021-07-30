@@ -43,7 +43,6 @@ namespace AuthClient.tollgate.account.dialog
             this.btn_signup.TabIndex = 1;
             this.btn_signup.TabStop = false;
             this.btn_signup.UseVisualStyleBackColor = true;
-            this.btn_signup.Click += new System.EventHandler(this.btn_signup_Click);
             // 
             // img_back
             // 

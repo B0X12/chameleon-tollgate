@@ -99,7 +99,6 @@ namespace AuthClient.tollgate.account.dialog
             this.btn_login.Name = "btn_login";
             this.btn_login.Size = new System.Drawing.Size(341, 41);
             this.btn_login.TabIndex = 0;
-            this.btn_login.Click += new System.EventHandler(this.btn_login_Click);
             // 
             // LoginControl
             // 

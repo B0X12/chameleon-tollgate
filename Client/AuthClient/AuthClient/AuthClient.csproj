@@ -177,6 +177,7 @@
     <Compile Include="tollgate\account\dialog\splash\SplashControl.Designer.cs">
       <DependentUpon>SplashControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="tollgate\define\Define.cs" />
     <Compile Include="tollgate\DoubleBufferPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -185,6 +186,42 @@
     </Compile>
     <Compile Include="tollgate\home\dialog\HomeControl.Designer.cs">
       <DependentUpon>HomeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SelectCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SelectCard.Designer.cs">
+      <DependentUpon>SelectCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainControl.Designer.cs">
+      <DependentUpon>MainControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainToggle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainToggle.Designer.cs">
+      <DependentUpon>MainToggle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarMain.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarMain.Designer.cs">
+      <DependentUpon>SidebarMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarSetting.Designer.cs">
+      <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UsingList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UsingList.Designer.cs">
+      <DependentUpon>UsingList.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\MainForm.cs">
       <SubType>Form</SubType>
@@ -213,18 +250,6 @@
     <Compile Include="tollgate\Config.cs" />
     <Compile Include="tollgate\account\dto\Account.cs" />
     <Compile Include="tollgate\account\dto\MapPC.cs" />
-    <Compile Include="tollgate\account\dialog\LogIn2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\LogIn2.Designer.cs">
-      <DependentUpon>LogIn2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
     <Compile Include="tollgate\otp\dialog\OtpTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,26 +268,8 @@
     <Compile Include="tollgate\usb\dto\USBInfo.cs" />
     <Compile Include="tollgate\rest\Exception.cs" />
     <Compile Include="tollgate\rest\RestCommunication.cs" />
-    <Compile Include="tollgate\account\dialog\SignUp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\SignUp.Designer.cs">
-      <DependentUpon>SignUp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\CheckServer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\CheckServer.Designer.cs">
-      <DependentUpon>CheckServer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="tollgate\account\dialog\LogInSignUp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\LogInSignUp.Designer.cs">
-      <DependentUpon>LogInSignUp.cs</DependentUpon>
-    </Compile>
     <Compile Include="tollgate\usb\dialog\USBRegister.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,7 +280,6 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
-
     <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
@@ -281,7 +287,6 @@
     <Compile Include="tollgate\util\tollgateLog\dto\LogLevel.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\LogRecord.cs" />
     <Compile Include="tollgate\util\tollgateLog\tollgateLog.cs" />
-    
     <EmbeddedResource Include="tollgate\account\dialog\login\LoginButton.resx">
       <DependentUpon>LoginButton.cs</DependentUpon>
     </EmbeddedResource>
@@ -300,15 +305,11 @@
     <EmbeddedResource Include="tollgate\account\dialog\serverIP\ConnectButton.resx">
       <DependentUpon>ConnectButton.cs</DependentUpon>
     </EmbeddedResource>
-
     <EmbeddedResource Include="tollgate\account\dialog\InitControl.resx">
       <DependentUpon>InitControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\account\dialog\serverIP\InitServerControl.resx">
       <DependentUpon>InitServerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\LogIn2.resx">
-      <DependentUpon>LogIn2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\account\dialog\signup\SignupButton.resx">
       <DependentUpon>SignupButton.cs</DependentUpon>
@@ -331,6 +332,24 @@
     <EmbeddedResource Include="tollgate\home\dialog\HomeControl.resx">
       <DependentUpon>HomeControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SelectCard.resx">
+      <DependentUpon>SelectCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\MainControl.resx">
+      <DependentUpon>MainControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\MainToggle.resx">
+      <DependentUpon>MainToggle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SidebarMain.resx">
+      <DependentUpon>SidebarMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SidebarSetting.resx">
+      <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\UsingList.resx">
+      <DependentUpon>UsingList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="tollgate\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -342,15 +361,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\account\dialog\serverIP\ServerIP.resx">
       <DependentUpon>ServerIP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\SignUp.resx">
-      <DependentUpon>SignUp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\CheckServer.resx">
-      <DependentUpon>CheckServer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\otp\dialog\OtpTest.resx">
       <DependentUpon>OtpTest.cs</DependentUpon>
@@ -365,9 +375,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\LogInSignUp.resx">
-      <DependentUpon>LogInSignUp.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -402,6 +409,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Font\NotoSansKR-Medium.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Font\NotoSansKR-Regular.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Init\textbox.png" />
@@ -455,13 +465,124 @@
     <None Include="Resources\Init\initButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\splashButton.png" />
+    <None Include="Resources\Init\splashButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\splashWallpaper.png" />
+    <None Include="Resources\Init\splashWallpaper.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\splashSmile.png" />
+    <None Include="Resources\Init\splashSmile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainListBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSelectBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainWallpaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideSettingOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideMainOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideSettingOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideMainOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainListTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSelectTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainToggleOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainToggleOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternLabel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

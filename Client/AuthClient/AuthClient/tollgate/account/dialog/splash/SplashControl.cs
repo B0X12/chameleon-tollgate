@@ -1,18 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {
     public partial class SplashControl : UserControl
     {
+        public event EventHandler SplashButtonClick
+        {
+            add { btn_splash.Click += value; }
+            remove { btn_splash.Click -= value; }
+        }
+
+        private string user;
+
+        public string User
+        {
+            get { return user; }
+            set { user = value; }
+        }
+
         public SplashControl()
         {
             InitializeComponent();
@@ -22,15 +30,15 @@ namespace AuthClient.tollgate.account.dialog
 
             Font font = new Font(fonts.Families[0], 24);
             label_hello.Font = font;
-            label_hello.Text = "안녕하세요, " + Config.GetCurrentUser() + "님!";
+            label_hello.Text = "안녕하세요, " + user + "님!";
 
-            label_hello.Left = (this.ClientSize.Width - (label_hello.Width + img_smile.Width - 10)) / 2;
+            label_hello.Left = (ClientSize.Width - (label_hello.Width + img_smile.Width - 10)) / 2;
             label_hello.Top = 288;
             img_smile.Left = label_hello.Right - 10;
             img_smile.Top = ((label_hello.Height - img_smile.Height) / 2) + label_hello.Top + 2;
-            label_sub.Left = (this.ClientSize.Width - label_sub.Width) / 2;
+            label_sub.Left = (ClientSize.Width - label_sub.Width) / 2;
             label_sub.Top = label_hello.Bottom + 10;
-            btn_splash.Left = (this.ClientSize.Width - btn_splash.Width) / 2;
+            btn_splash.Left = (ClientSize.Width - btn_splash.Width) / 2;
             btn_splash.Top = label_sub.Bottom + 51;
         }
     }
@@ -39,8 +47,6 @@ namespace AuthClient.tollgate.account.dialog
     {
         protected override void OnPaint(PaintEventArgs e)
         {
-            Point drawPoint = new Point(0, 0);
-
             string subL = "이제 언제나 ";
             string subM = "TOLLGATE와 함께";
             string subR = "하실 수 있습니다.";

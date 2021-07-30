@@ -1,19 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Text;
 
 namespace AuthClient.tollgate.account.dialog
 {
     public partial class TextServerControl : UserControl
     {
         private const string hint = "127.xxx.xxx.xxx";
+
+        public new string Text
+        {
+            get
+            {
+                if (textBox.Text != hint)
+                    return textBox.Text;
+                return String.Empty;
+            }
+            set { textBox.Text = value; }
+        }
+
+        public bool Fix
+        {
+            get { return textBox.Enabled; }
+            set { textBox.Enabled = value; }
+        }
 
         public TextServerControl()
         {

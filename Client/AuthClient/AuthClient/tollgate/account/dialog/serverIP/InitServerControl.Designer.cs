@@ -31,7 +31,7 @@ namespace AuthClient.tollgate.account.dialog
         {
             this.panel_base_server = new System.Windows.Forms.TableLayoutPanel();
             this.img_title = new System.Windows.Forms.PictureBox();
-            this.button_connect = new AuthClient.tollgate.account.dialog.ConnectButton();
+            this.btn_connect = new AuthClient.tollgate.account.dialog.ConnectButton();
             this.text_serverIP = new AuthClient.tollgate.account.dialog.TextServerControl();
             this.panel_base_server.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).BeginInit();
@@ -44,7 +44,7 @@ namespace AuthClient.tollgate.account.dialog
             this.panel_base_server.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 341F));
             this.panel_base_server.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panel_base_server.Controls.Add(this.img_title, 1, 1);
-            this.panel_base_server.Controls.Add(this.button_connect, 1, 5);
+            this.panel_base_server.Controls.Add(this.btn_connect, 1, 5);
             this.panel_base_server.Controls.Add(this.text_serverIP, 1, 3);
             this.panel_base_server.Location = new System.Drawing.Point(0, 0);
             this.panel_base_server.Margin = new System.Windows.Forms.Padding(0);
@@ -69,15 +69,14 @@ namespace AuthClient.tollgate.account.dialog
             this.img_title.TabIndex = 2;
             this.img_title.TabStop = false;
             // 
-            // button_connect
+            // btn_connect
             // 
-            this.button_connect.BackColor = System.Drawing.Color.Transparent;
-            this.button_connect.Location = new System.Drawing.Point(95, 386);
-            this.button_connect.Margin = new System.Windows.Forms.Padding(0);
-            this.button_connect.Name = "button_connect";
-            this.button_connect.Size = new System.Drawing.Size(341, 41);
-            this.button_connect.TabIndex = 0;
-            this.button_connect.Click += new System.EventHandler(this.button_connect_Click);
+            this.btn_connect.BackColor = System.Drawing.Color.Transparent;
+            this.btn_connect.Location = new System.Drawing.Point(95, 386);
+            this.btn_connect.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_connect.Name = "btn_connect";
+            this.btn_connect.Size = new System.Drawing.Size(341, 41);
+            this.btn_connect.TabIndex = 0;
             // 
             // text_serverIP
             // 
@@ -108,6 +107,6 @@ namespace AuthClient.tollgate.account.dialog
         private TextServerControl text_serverIP;
         private System.Windows.Forms.PictureBox img_title;
         private System.Windows.Forms.TableLayoutPanel panel_base_server;
-        private ConnectButton button_connect;
+        private ConnectButton btn_connect;
     }
 }

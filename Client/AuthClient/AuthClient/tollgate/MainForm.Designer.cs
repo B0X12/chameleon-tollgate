@@ -1,5 +1,5 @@
 ﻿
-namespace AuthClient.tollgate.account.dialog
+namespace AuthClient.tollgate
 {
     partial class MainForm
     {
@@ -29,23 +29,22 @@ namespace AuthClient.tollgate.account.dialog
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel_flow_main = new DoubleBufferPanel();
+            this.panel_main = new AuthClient.tollgate.DoubleBufferPanel();
             this.panel_border_main = new System.Windows.Forms.Panel();
             this.panel_border_main.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel_flow_main
+            // panel_main
             // 
-            this.panel_flow_main.AutoScroll = false;
-            this.panel_flow_main.Location = new System.Drawing.Point(0, 0);
-            this.panel_flow_main.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_flow_main.Name = "panel_flow_main";
-            this.panel_flow_main.Size = new System.Drawing.Size(1280, 720);
-            this.panel_flow_main.TabIndex = 0;
+            this.panel_main.Location = new System.Drawing.Point(0, 0);
+            this.panel_main.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_main.Name = "panel_main";
+            this.panel_main.Size = new System.Drawing.Size(1280, 720);
+            this.panel_main.TabIndex = 0;
             // 
             // panel_border_main
             // 
-            this.panel_border_main.Controls.Add(this.panel_flow_main);
+            this.panel_border_main.Controls.Add(this.panel_main);
             this.panel_border_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_border_main.Location = new System.Drawing.Point(0, 0);
             this.panel_border_main.Name = "panel_border_main";
@@ -62,7 +61,6 @@ namespace AuthClient.tollgate.account.dialog
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.Text = "Tollgate";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel_border_main.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -70,7 +68,7 @@ namespace AuthClient.tollgate.account.dialog
 
         #endregion
 
-        private DoubleBufferPanel panel_flow_main;
+        private DoubleBufferPanel panel_main;
         private System.Windows.Forms.Panel panel_border_main;
     }
 }

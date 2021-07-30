@@ -136,6 +136,117 @@
   <data name="loginTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\loginTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFaceidIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFaceidIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFaceidLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFaceidLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFaceidOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFaceidOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFaceidOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFaceidOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFingerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFingerIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFingerLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFingerLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFingerOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFingerOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainFingerOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainFingerOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainListBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainListBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainListTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainListTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainOtpIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainOtpIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainOtpLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainOtpLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainOtpOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainOtpOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainOtpOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainOtpOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainPatternIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainPatternIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainPatternLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainPatternLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainPatternOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainPatternOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainPatternOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainPatternOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainQrIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainQrIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainQrLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainQrLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainQrOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainQrOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainQrOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainQrOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSelectBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSelectBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSelectTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSelectTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideMainOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideMainOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideMainOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideMainOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideSettingOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideSettingOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideSettingOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideSettingOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainToggleOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainToggleOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainToggleOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainToggleOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUsbIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUsbIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUsbLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUsbLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUsbOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUsbOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUsbOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUsbOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainWallpaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainWallpaper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="signupBotton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\signupBotton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -146,13 +257,13 @@
     <value>..\Resources\Init\signupTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="splashButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\splashButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Init\splashButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="splashSmile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\splashSmile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Init\splashSmile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="splashWallpaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\splashWallpaper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Init\splashWallpaper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="stepOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\stepOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

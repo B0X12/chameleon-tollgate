@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
 {

@@ -128,7 +128,6 @@ namespace AuthClient.tollgate.account.dialog
             this.btn_signup.Name = "btn_signup";
             this.btn_signup.Size = new System.Drawing.Size(341, 41);
             this.btn_signup.TabIndex = 0;
-            this.btn_signup.Click += new System.EventHandler(this.btn_signup_Click);
             // 
             // SignupControl
             // 
