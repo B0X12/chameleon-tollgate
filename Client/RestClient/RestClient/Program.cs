@@ -1,8 +1,11 @@
-﻿using System;
+﻿using AuthClient.tollgate.util.tollgateLog;
+using AuthClient.tollgate.util.tollgateLog.dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RestClient
 {
@@ -49,26 +52,28 @@ namespace RestClient
             // 인자 체크
             if(!CheckArgumentByOption(args))
             {
+                /*
+                 * TODO: 로그 기록
+                 */
                 return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
             }
 
             // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
-            Config cfg = new Config();
-            string baseURL = cfg.InitAuthServerByConfigFile();
-
-            if(baseURL == "")
+            if(Config.InitAuthServerByConfigFile())
             {
+                /*
+                 * TODO: 로그 기록
+                 */
                 return (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
             }
             
 
             // 옵션에 따라 동작 수행
             string option = args[0];
-            Handler handler = new Handler(baseURL);
+            Handler handler = new Handler();
 
             switch (option)
             {
-                
                 case "--is-server-alive":
                     return (int)handler.IsServerAlive();
 
@@ -98,37 +103,49 @@ namespace RestClient
                 case "--request-pattern":
                     {
                         string user = args[1];
+                        string sid = args[2];
 
-                        return (int)handler.RequestPattern(user);
+                        return (int)handler.RequestPattern(user, sid);
                     }
 
                 case "--request-face":
                     {
                         string user = args[1];
+                        string sid = args[2];
 
-                        return (int)handler.RequestFace(user);
+                        return (int)handler.RequestFace(user, sid);
                     }
 
                 case "--request-otp":
                     {
                         string user = args[1];
+                        string sid = args[2];
 
-                        return (int)handler.RequestOTP(user);
+                        return (int)handler.RequestOTP(user, sid);
                     }
 
                 case "--verify-otp":
                     {
                         string user = args[1];
-                        string otp = args[2];
+                        string sid = args[2];
+                        string otp = args[3];
 
-                        return (int)handler.VerifyOTP(user, otp);
+                        return (int)handler.VerifyOTP(user, sid, otp);
                     }
 
                 case "--request-fingerprint":
                     {
                         string user = args[1];
+                        string sid = args[2];
 
-                        return (int)handler.RequestFingerprint(user);
+                        return (int)handler.RequestFingerprint(user, sid);
+                    }
+
+                case "--issue-qrcode":
+                    {
+                        Application.EnableVisualStyles();
+                        Application.Run(new QRForm());
+                        return (int)ReturnCode.RESULT_CONNECTION_SUCCESS;
                     }
 
                 default:
@@ -195,40 +212,7 @@ namespace RestClient
                     }
 
                 case "--request-pattern":
-                    // 포맷: --request-pattern [사용자ID]
-                    if (parameters.Length == 2)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case "--request-face":
-                    // 포맷: --request-face [사용자ID]
-                    if (parameters.Length == 2)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case "--request-otp":
-                    // 포맷: --request-otp [사용자ID]
-                    if (parameters.Length == 2)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case "--verify-otp":
-                    // 포맷: --verify-otp [사용자ID] [OTP입력값]
+                    // 포맷: --request-pattern [사용자ID] [SID값]
                     if (parameters.Length == 3)
                     {
                         return true;
@@ -238,9 +222,53 @@ namespace RestClient
                         return false;
                     }
 
+                case "--request-face":
+                    // 포맷: --request-face [사용자ID] [SID값]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--request-otp":
+                    // 포맷: --request-otp [사용자ID] [SID값]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--verify-otp":
+                    // 포맷: --verify-otp [사용자ID] [SID값] [OTP입력값]
+                    if (parameters.Length == 4)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 case "--request-fingerprint":
-                    // 포맷: --request-fingerprint [사용자ID]
-                    if (parameters.Length == 2)
+                    // 포맷: --request-fingerprint [사용자ID] [SID값]
+                    if (parameters.Length == 3)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case "--issue-qrcode":
+                    // 포맷: --issue-qrcode
+                    if (parameters.Length == 1)
                     {
                         return true;
                     }
