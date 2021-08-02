@@ -63,6 +63,126 @@ namespace AuthClient.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap checkBg {
+            get {
+                object obj = ResourceManager.GetObject("checkBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkFaceidText {
+            get {
+                object obj = ResourceManager.GetObject("checkFaceidText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkFingerText {
+            get {
+                object obj = ResourceManager.GetObject("checkFingerText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkLine {
+            get {
+                object obj = ResourceManager.GetObject("checkLine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkPatternText {
+            get {
+                object obj = ResourceManager.GetObject("checkPatternText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkPhoneText {
+            get {
+                object obj = ResourceManager.GetObject("checkPhoneText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkStatComplete {
+            get {
+                object obj = ResourceManager.GetObject("checkStatComplete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkStatDoing {
+            get {
+                object obj = ResourceManager.GetObject("checkStatDoing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkStatFailed {
+            get {
+                object obj = ResourceManager.GetObject("checkStatFailed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkStatWait {
+            get {
+                object obj = ResourceManager.GetObject("checkStatWait", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkTitle {
+            get {
+                object obj = ResourceManager.GetObject("checkTitle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap checkUsbText {
+            get {
+                object obj = ResourceManager.GetObject("checkUsbText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap connectButton {
             get {
                 object obj = ResourceManager.GetObject("connectButton", resourceCulture);
@@ -116,6 +236,16 @@ namespace AuthClient.Properties {
         internal static System.Drawing.Bitmap loginTitle {
             get {
                 object obj = ResourceManager.GetObject("loginTitle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap loginTitleNoSignup {
+            get {
+                object obj = ResourceManager.GetObject("loginTitleNoSignup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -226,6 +356,16 @@ namespace AuthClient.Properties {
         internal static System.Drawing.Bitmap mainListTitle {
             get {
                 object obj = ResourceManager.GetObject("mainListTitle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap mainLogout {
+            get {
+                object obj = ResourceManager.GetObject("mainLogout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -476,6 +616,26 @@ namespace AuthClient.Properties {
         internal static System.Drawing.Bitmap mainUsbOn {
             get {
                 object obj = ResourceManager.GetObject("mainUsbOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap mainUserBg {
+            get {
+                object obj = ResourceManager.GetObject("mainUserBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap mainUserIcon {
+            get {
+                object obj = ResourceManager.GetObject("mainUserIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -118,6 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="checkBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkFaceidText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkFaceidText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkFingerText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkFingerText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkLine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkPatternText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkPatternText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkPhoneText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkPhoneText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkStatComplete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkStatComplete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkStatDoing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkStatDoing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkStatFailed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkStatFailed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkStatWait" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkStatWait.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkUsbText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\checkUsbText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="connectButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\connectButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -135,6 +171,9 @@
   </data>
   <data name="loginTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\loginTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loginTitleNoSignup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\init\loginTitleNoSignup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -168,6 +207,9 @@
   </data>
   <data name="mainListTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainListTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainLogout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainLogout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mainOtpIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainOtpIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -243,6 +285,12 @@
   </data>
   <data name="mainUsbOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainUsbOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUserBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUserBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainUserIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainUserIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mainWallpaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainWallpaper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

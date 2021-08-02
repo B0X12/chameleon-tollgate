@@ -187,6 +187,18 @@
     <Compile Include="tollgate\home\dialog\HomeControl.Designer.cs">
       <DependentUpon>HomeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckDialog.Designer.cs">
+      <DependentUpon>CheckDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckEntry.Designer.cs">
+      <DependentUpon>CheckEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="tollgate\home\main\dialog\SelectCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,6 +228,12 @@
     </Compile>
     <Compile Include="tollgate\home\main\dialog\SidebarSetting.Designer.cs">
       <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UserCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UserCard.Designer.cs">
+      <DependentUpon>UserCard.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\home\main\dialog\UsingList.cs">
       <SubType>UserControl</SubType>
@@ -332,6 +350,12 @@
     <EmbeddedResource Include="tollgate\home\dialog\HomeControl.resx">
       <DependentUpon>HomeControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\CheckDialog.resx">
+      <DependentUpon>CheckDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\CheckEntry.resx">
+      <DependentUpon>CheckEntry.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\SelectCard.resx">
       <DependentUpon>SelectCard.cs</DependentUpon>
     </EmbeddedResource>
@@ -346,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\SidebarSetting.resx">
       <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\UserCard.resx">
+      <DependentUpon>UserCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\UsingList.resx">
       <DependentUpon>UsingList.cs</DependentUpon>
@@ -583,6 +610,50 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\main\mainPatternLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\loginTitleNoSignup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatWait.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatComplete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatDoing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatFailed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkLine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkPatternText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkUsbText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkFaceidText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkFingerText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkPhoneText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUserIcon.png" />
+    <None Include="Resources\main\mainUserBg.png" />
+    <Content Include="Resources\main\mainLogout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

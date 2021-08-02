@@ -36,6 +36,7 @@ namespace AuthClient.tollgate
 
         private void SplashControl_SplashButtonClick(object sender, EventArgs e)
         {
+            homeControl.User = Config.GetCurrentUser();
             ChangePage(2);
         }
 
