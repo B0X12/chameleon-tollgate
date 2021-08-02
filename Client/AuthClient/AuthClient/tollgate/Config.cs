@@ -12,6 +12,7 @@ namespace AuthClient.tollgate
     class Config
     {
         private const string CONFIG_FILE_PATH = "C:\\Tollgate\\server.cfg";
+        private const int SERVER_PORT = 8080;
         private static string currentUser = "";
         private static string signupUser = "";
         private static string baseURL = "";
@@ -36,7 +37,7 @@ namespace AuthClient.tollgate
             return signupUser;
         }
 
-        internal static void InitializeBaseURL(string serverIPPort, bool useHttps = true)
+        internal static void InitializeBaseURL(string serverIP, bool useHttps = true)
         {
             // baseURL 초기화
             baseURL = "";
@@ -55,7 +56,7 @@ namespace AuthClient.tollgate
                 baseURL += "http://";
             }
 
-            baseURL += (serverIPPort + "/");
+            baseURL += (serverIP + ":" + SERVER_PORT + "/");
         }
 
         internal static string GetBaseURL()
@@ -89,11 +90,11 @@ namespace AuthClient.tollgate
 
                     if (secureTransmission.Equals("true"))
                     {
-                        Config.InitializeBaseURL(address + ":" + port, true);
+                        InitializeBaseURL(address, true);
                     }
                     else
                     {
-                        Config.InitializeBaseURL(address + ":" + port, false);
+                        InitializeBaseURL(address, false);
                     }
                     return true;
                 }

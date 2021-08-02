@@ -41,6 +41,8 @@ namespace AuthClient.tollgate.account.dialog
             set { text_id.Fix = value; }
         }
 
+        public bool registeredUserExist = false;
+
         public LoginControl()
         {
             InitializeComponent();

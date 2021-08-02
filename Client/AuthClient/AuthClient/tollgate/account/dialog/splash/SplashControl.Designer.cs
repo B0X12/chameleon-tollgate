@@ -93,6 +93,7 @@ namespace AuthClient.tollgate.account.dialog
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SplashControl";
             this.Size = new System.Drawing.Size(1280, 720);
+            this.Load += SplashControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.img_smile)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

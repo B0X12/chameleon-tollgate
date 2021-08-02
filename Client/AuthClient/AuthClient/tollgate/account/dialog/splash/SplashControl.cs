@@ -24,7 +24,10 @@ namespace AuthClient.tollgate.account.dialog
         public SplashControl()
         {
             InitializeComponent();
+        }
 
+        private void SplashControl_Load(object sender, System.EventArgs e)
+        {
             PrivateFontCollection fonts = new PrivateFontCollection();
             fonts.AddFontFile(Property.FONT_BLACK);
 
