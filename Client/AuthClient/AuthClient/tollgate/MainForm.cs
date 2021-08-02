@@ -21,7 +21,7 @@ namespace AuthClient.tollgate
             MaximizeBox = false;
 
             initcontrol = new InitControl();
-            initcontrol.Login += Initcontrol_Login; ;
+            initcontrol.Login += Initcontrol_Login;
             panel_main.Controls.Add(initcontrol);
 
             splashControl = new SplashControl();

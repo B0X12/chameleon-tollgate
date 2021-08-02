@@ -1,6 +1,7 @@
 ﻿using AuthClient.tollgate.account.dto;
 using AuthClient.tollgate.rest;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
@@ -33,14 +34,16 @@ namespace AuthClient.tollgate.account.service
                 }
             }
             // 존재하지 않는 서버로 연결 시도
-            catch (WebException we)
+            catch (WebException)
             {
-                MessageBox.Show("해당 인증 서버로 연결할 수 없습니다");
-                return false;
+                throw new WebException();
             }
-
+            catch (UriFormatException)
+            {
+                throw new UriFormatException();
+            }
+            
             // 서버 응답 코드가 200이 아닐 경우 / 타임 스탬프 mismatch
-            MessageBox.Show("해당 인증 서버로 연결할 수 없습니다");
             return false;
         }
 
@@ -70,7 +73,6 @@ namespace AuthClient.tollgate.account.service
                 // 타임 스탬프 일치 / 로그인 결과 실패
                 else
                 {
-                    MessageBox.Show("아이디 또는 비밀번호가 일치하지 않습니다");
                     return false;
                 }
             }
@@ -104,13 +106,11 @@ namespace AuthClient.tollgate.account.service
                     // 타임 스탬프 일치 / 회원 가입 결과 성공
                     if (rd.getTimestamp().Equals(currentTimestamp) && (rd.getResult() == true))
                     {
-                        MessageBox.Show("회원가입이 완료 되었습니다");
                         return true;
                     }
                     // 회원 가입 결과 실패
                     else
                     {
-                        MessageBox.Show("이미 등록된 회원입니다");
                         return false;
                     }
                 }
