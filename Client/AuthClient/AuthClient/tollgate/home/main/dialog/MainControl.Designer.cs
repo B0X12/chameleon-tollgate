@@ -30,11 +30,11 @@ namespace AuthClient.tollgate.home.main.dialog
         private void InitializeComponent()
         {
             this.panel_table = new System.Windows.Forms.TableLayoutPanel();
+            this.panel_select_border = new System.Windows.Forms.Panel();
             this.img_select_title = new System.Windows.Forms.PictureBox();
             this.img_list_title = new System.Windows.Forms.PictureBox();
-            this.panel_select_border = new System.Windows.Forms.Panel();
-            this.panel_select_flow = new DoubleBufferPanel();
             this.usingList = new AuthClient.tollgate.home.main.dialog.UsingList();
+            this.panel_select_flow = new AuthClient.tollgate.DoubleBufferPanel();
             this.card_finger = new AuthClient.tollgate.home.main.dialog.SelectCard();
             this.card_face = new AuthClient.tollgate.home.main.dialog.SelectCard();
             this.card_usb = new AuthClient.tollgate.home.main.dialog.SelectCard();
@@ -42,9 +42,9 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_qr = new AuthClient.tollgate.home.main.dialog.SelectCard();
             this.card_pattern = new AuthClient.tollgate.home.main.dialog.SelectCard();
             this.panel_table.SuspendLayout();
+            this.panel_select_border.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_select_title)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_list_title)).BeginInit();
-            this.panel_select_border.SuspendLayout();
             this.panel_select_flow.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +54,7 @@ namespace AuthClient.tollgate.home.main.dialog
             this.panel_table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.panel_table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 9F));
             this.panel_table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panel_table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 115F));
+            this.panel_table.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
             this.panel_table.Controls.Add(this.img_select_title, 2, 5);
             this.panel_table.Controls.Add(this.img_list_title, 2, 1);
             this.panel_table.Controls.Add(this.usingList, 1, 3);
@@ -64,26 +64,37 @@ namespace AuthClient.tollgate.home.main.dialog
             this.panel_table.Margin = new System.Windows.Forms.Padding(0);
             this.panel_table.Name = "panel_table";
             this.panel_table.RowCount = 8;
-            this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 87F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.panel_table.Size = new System.Drawing.Size(998, 720);
             this.panel_table.TabIndex = 0;
+            // 
+            // panel_select_border
+            // 
+            this.panel_table.SetColumnSpan(this.panel_select_border, 2);
+            this.panel_select_border.Controls.Add(this.panel_select_flow);
+            this.panel_select_border.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_select_border.Location = new System.Drawing.Point(74, 379);
+            this.panel_select_border.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_select_border.Name = "panel_select_border";
+            this.panel_select_border.Size = new System.Drawing.Size(812, 341);
+            this.panel_select_border.TabIndex = 3;
             // 
             // img_select_title
             // 
             this.img_select_title.BackColor = System.Drawing.Color.Transparent;
             this.img_select_title.Dock = System.Windows.Forms.DockStyle.Fill;
             this.img_select_title.Image = global::AuthClient.Properties.Resources.mainSelectTitle;
-            this.img_select_title.Location = new System.Drawing.Point(83, 358);
+            this.img_select_title.Location = new System.Drawing.Point(83, 308);
             this.img_select_title.Margin = new System.Windows.Forms.Padding(0);
             this.img_select_title.Name = "img_select_title";
-            this.img_select_title.Size = new System.Drawing.Size(800, 60);
+            this.img_select_title.Size = new System.Drawing.Size(803, 60);
             this.img_select_title.TabIndex = 1;
             this.img_select_title.TabStop = false;
             // 
@@ -92,27 +103,27 @@ namespace AuthClient.tollgate.home.main.dialog
             this.img_list_title.BackColor = System.Drawing.Color.Transparent;
             this.img_list_title.Dock = System.Windows.Forms.DockStyle.Fill;
             this.img_list_title.Image = global::AuthClient.Properties.Resources.mainListTitle;
-            this.img_list_title.Location = new System.Drawing.Point(83, 150);
+            this.img_list_title.Location = new System.Drawing.Point(83, 100);
             this.img_list_title.Margin = new System.Windows.Forms.Padding(0);
             this.img_list_title.Name = "img_list_title";
-            this.img_list_title.Size = new System.Drawing.Size(800, 60);
+            this.img_list_title.Size = new System.Drawing.Size(803, 60);
             this.img_list_title.TabIndex = 0;
             this.img_list_title.TabStop = false;
             // 
-            // panel_select_border
+            // usingList
             // 
-            this.panel_table.SetColumnSpan(this.panel_select_border, 2);
-            this.panel_select_border.Controls.Add(this.panel_select_flow);
-            this.panel_select_border.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_select_border.Location = new System.Drawing.Point(74, 456);
-            this.panel_select_border.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_select_border.Name = "panel_select_border";
-            this.panel_select_border.Size = new System.Drawing.Size(809, 264);
-            this.panel_select_border.TabIndex = 3;
+            this.usingList.BackColor = System.Drawing.Color.Transparent;
+            this.panel_table.SetColumnSpan(this.usingList, 2);
+            this.usingList.Location = new System.Drawing.Point(74, 171);
+            this.usingList.Margin = new System.Windows.Forms.Padding(0);
+            this.usingList.Name = "usingList";
+            this.usingList.Size = new System.Drawing.Size(610, 87);
+            this.usingList.TabIndex = 2;
             // 
             // panel_select_flow
             // 
             this.panel_select_flow.AutoScroll = true;
+            this.panel_select_flow.BackColor = System.Drawing.Color.White;
             this.panel_select_flow.Controls.Add(this.card_finger);
             this.panel_select_flow.Controls.Add(this.card_face);
             this.panel_select_flow.Controls.Add(this.card_usb);
@@ -122,18 +133,8 @@ namespace AuthClient.tollgate.home.main.dialog
             this.panel_select_flow.Location = new System.Drawing.Point(0, 0);
             this.panel_select_flow.Margin = new System.Windows.Forms.Padding(0);
             this.panel_select_flow.Name = "panel_select_flow";
-            this.panel_select_flow.Size = new System.Drawing.Size(826, 264);
+            this.panel_select_flow.Size = new System.Drawing.Size(826, 341);
             this.panel_select_flow.TabIndex = 0;
-            // 
-            // usingList
-            // 
-            this.usingList.BackColor = System.Drawing.Color.Transparent;
-            this.panel_table.SetColumnSpan(this.usingList, 2);
-            this.usingList.Location = new System.Drawing.Point(74, 221);
-            this.usingList.Margin = new System.Windows.Forms.Padding(0);
-            this.usingList.Name = "usingList";
-            this.usingList.Size = new System.Drawing.Size(610, 87);
-            this.usingList.TabIndex = 2;
             // 
             // card_finger
             // 
@@ -142,9 +143,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_finger.Location = new System.Drawing.Point(0, 0);
             this.card_finger.Margin = new System.Windows.Forms.Padding(0);
             this.card_finger.Name = "card_finger";
-            this.card_finger.on = false;
+            this.card_finger.On = false;
             this.card_finger.Size = new System.Drawing.Size(269, 310);
             this.card_finger.TabIndex = 0;
+            this.card_finger.ToggleClick += new System.EventHandler(this.card_finger_ToggleClick);
             // 
             // card_face
             // 
@@ -153,9 +155,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_face.Location = new System.Drawing.Point(269, 0);
             this.card_face.Margin = new System.Windows.Forms.Padding(0);
             this.card_face.Name = "card_face";
-            this.card_face.on = false;
+            this.card_face.On = false;
             this.card_face.Size = new System.Drawing.Size(269, 310);
             this.card_face.TabIndex = 1;
+            this.card_face.ToggleClick += new System.EventHandler(this.card_face_ToggleClick);
             // 
             // card_usb
             // 
@@ -164,9 +167,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_usb.Location = new System.Drawing.Point(538, 0);
             this.card_usb.Margin = new System.Windows.Forms.Padding(0);
             this.card_usb.Name = "card_usb";
-            this.card_usb.on = false;
+            this.card_usb.On = false;
             this.card_usb.Size = new System.Drawing.Size(269, 310);
             this.card_usb.TabIndex = 2;
+            this.card_usb.ToggleClick += new System.EventHandler(this.card_usb_ToggleClick);
             // 
             // card_otp
             // 
@@ -175,9 +179,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_otp.Location = new System.Drawing.Point(0, 310);
             this.card_otp.Margin = new System.Windows.Forms.Padding(0);
             this.card_otp.Name = "card_otp";
-            this.card_otp.on = false;
+            this.card_otp.On = false;
             this.card_otp.Size = new System.Drawing.Size(269, 310);
             this.card_otp.TabIndex = 3;
+            this.card_otp.ToggleClick += new System.EventHandler(this.card_otp_ToggleClick);
             // 
             // card_qr
             // 
@@ -186,9 +191,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_qr.Location = new System.Drawing.Point(269, 310);
             this.card_qr.Margin = new System.Windows.Forms.Padding(0);
             this.card_qr.Name = "card_qr";
-            this.card_qr.on = false;
+            this.card_qr.On = false;
             this.card_qr.Size = new System.Drawing.Size(269, 310);
             this.card_qr.TabIndex = 4;
+            this.card_qr.ToggleClick += new System.EventHandler(this.card_qr_ToggleClick);
             // 
             // card_pattern
             // 
@@ -197,9 +203,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.card_pattern.Location = new System.Drawing.Point(538, 310);
             this.card_pattern.Margin = new System.Windows.Forms.Padding(0);
             this.card_pattern.Name = "card_pattern";
-            this.card_pattern.on = false;
+            this.card_pattern.On = false;
             this.card_pattern.Size = new System.Drawing.Size(269, 310);
             this.card_pattern.TabIndex = 5;
+            this.card_pattern.ToggleClick += new System.EventHandler(this.card_pattern_ToggleClick);
             // 
             // MainControl
             // 
@@ -207,13 +214,14 @@ namespace AuthClient.tollgate.home.main.dialog
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.panel_table);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "MainControl";
             this.Size = new System.Drawing.Size(998, 720);
             this.panel_table.ResumeLayout(false);
+            this.panel_select_border.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.img_select_title)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_list_title)).EndInit();
-            this.panel_select_border.ResumeLayout(false);
             this.panel_select_flow.ResumeLayout(false);
             this.ResumeLayout(false);
 

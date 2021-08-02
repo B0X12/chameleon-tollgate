@@ -29,29 +29,27 @@ namespace AuthClient.tollgate.home.main.dialog
         /// </summary>
         private void InitializeComponent()
         {
-            this.button = new System.Windows.Forms.Button();
+            this.button = new System.Windows.Forms.PictureBox();
             this.SuspendLayout();
             // 
             // button
             // 
-            this.button.BackgroundImage = global::AuthClient.Properties.Resources.mainToggleOn;
-            this.button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button.Image = global::AuthClient.Properties.Resources.mainToggleOn;
             this.button.Location = new System.Drawing.Point(0, 0);
             this.button.Margin = new System.Windows.Forms.Padding(0);
             this.button.Name = "button";
             this.button.Size = new System.Drawing.Size(72, 29);
             this.button.TabIndex = 0;
-            this.button.UseVisualStyleBackColor = true;
             this.button.Click += new System.EventHandler(this.button_Click);
             // 
-            // MainTogle
+            // MainToggle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.button);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "MainTogle";
+            this.Name = "MainToggle";
             this.Size = new System.Drawing.Size(72, 29);
             this.ResumeLayout(false);
 
@@ -59,6 +57,6 @@ namespace AuthClient.tollgate.home.main.dialog
 
         #endregion
 
-        private System.Windows.Forms.Button button;
+        private System.Windows.Forms.PictureBox button;
     }
 }
