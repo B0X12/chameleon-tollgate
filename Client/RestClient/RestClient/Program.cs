@@ -49,13 +49,15 @@ namespace RestClient
 
         static int Main(string[] args)
         {
+            int retCode = (int)ReturnCode.RESULT_UNKNOWN_ERROR;
+
             // 인자 체크
             if(!CheckArgumentByOption(args))
             {
                 /*
                  * TODO: 로그 기록
                  */
-                return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
+                retCode = (int)ReturnCode.RESULT_UNKNOWN_ERROR;
             }
 
             // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
@@ -64,7 +66,7 @@ namespace RestClient
                 /*
                  * TODO: 로그 기록
                  */
-                return (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
+                retCode = (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
             }
             
 
@@ -75,21 +77,22 @@ namespace RestClient
             switch (option)
             {
                 case "--is-server-alive":
-                    return (int)handler.IsServerAlive();
+                    retCode = (int)handler.IsServerAlive();
+                    break;
 
                 case "--get-user":
                     {
                         string uid = args[1];
-                        int retCode = (int)handler.GetUser(uid);
-                        return retCode;
+                        retCode = (int)handler.GetUser(uid);
                     }
+                    break;
 
                 case "--get-auth-factor":
                     {
                         string user = args[1];
-                        int retCode = (int)handler.GetAuthFactor(user);
-                        return retCode;
+                        retCode = (int)handler.GetAuthFactor(user);
                     }
+                    break;
                     
                 case "--verify-usb":
                     {
@@ -97,32 +100,36 @@ namespace RestClient
                         string sid = args[2];
                         string usb_info = args[3];
 
-                        return (int)handler.VerifyUSB(user, sid, usb_info);
+                        retCode = (int)handler.VerifyUSB(user, sid, usb_info);
                     }
+                    break;
                     
                 case "--request-pattern":
                     {
                         string user = args[1];
                         string sid = args[2];
 
-                        return (int)handler.RequestPattern(user, sid);
+                        retCode = (int)handler.RequestPattern(user, sid);
                     }
+                    break;
 
                 case "--request-face":
                     {
                         string user = args[1];
                         string sid = args[2];
 
-                        return (int)handler.RequestFace(user, sid);
+                        retCode = (int)handler.RequestFace(user, sid);
                     }
+                    break;
 
                 case "--request-otp":
                     {
                         string user = args[1];
                         string sid = args[2];
 
-                        return (int)handler.RequestOTP(user, sid);
+                        retCode = (int)handler.RequestOTP(user, sid);
                     }
+                    break;
 
                 case "--verify-otp":
                     {
@@ -130,29 +137,33 @@ namespace RestClient
                         string sid = args[2];
                         string otp = args[3];
 
-                        return (int)handler.VerifyOTP(user, sid, otp);
+                        retCode = (int)handler.VerifyOTP(user, sid, otp);
                     }
+                    break;
 
                 case "--request-fingerprint":
                     {
                         string user = args[1];
                         string sid = args[2];
 
-                        return (int)handler.RequestFingerprint(user, sid);
+                        retCode = (int)handler.RequestFingerprint(user, sid);
                     }
+                    break;
 
                 case "--issue-qrcode":
                     {
                         Application.EnableVisualStyles();
                         Application.Run(new QRForm());
-                        return (int)ReturnCode.RESULT_CONNECTION_SUCCESS;
+                        retCode = (int)ReturnCode.RESULT_CONNECTION_SUCCESS;
                     }
+                    break;
 
                 default:
                     break;
             }
 
-            return (int)ReturnCode.RESULT_UNKNOWN_ERROR;
+            Console.WriteLine(retCode);
+            return retCode;
         }
 
         static bool CheckArgumentByOption(string[] parameters)

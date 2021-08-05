@@ -14,7 +14,6 @@ namespace AuthClient.tollgate
         private const string CONFIG_FILE_PATH = "C:\\Tollgate\\server.cfg";
         private const int SERVER_PORT = 8080;
         private static string currentUser = "";
-        private static string signupUser = "";
         private static string baseURL = "";
         
         internal static void SetCurrentUser(string user)
@@ -25,16 +24,6 @@ namespace AuthClient.tollgate
         internal static string GetCurrentUser()
         {
             return currentUser;
-        }
-
-        internal static void SetSignupUser(string user)
-        {
-            signupUser = user;
-        }
-
-        internal static string GetSignupUser()
-        {
-            return signupUser;
         }
 
         internal static void InitializeBaseURL(string serverIP, bool useHttps = true)
@@ -62,11 +51,6 @@ namespace AuthClient.tollgate
         internal static string GetBaseURL()
         {
             return baseURL;
-        }
-
-        internal static void SetBaseURL(string url)
-        {
-            baseURL = url;
         }
 
         internal static bool InitAuthServerByConfigFile()

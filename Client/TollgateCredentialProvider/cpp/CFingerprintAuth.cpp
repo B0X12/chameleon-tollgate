@@ -1,5 +1,5 @@
 
-#include "CPatternAuth.h"
+#include "CFingerprintAuth.h"
 #include <strsafe.h>
 #include <atlstr.h>
 #include "RestClient.h"
@@ -12,18 +12,18 @@
 #define WM_TIMER_ELAPSE					WM_USER + 2
 
 
-const TCHAR* g_wszPatternClassName = L"Pattern Auth Window Class";
+const TCHAR* g_wszFingerprintClassName = L"Fingerprint Auth Window Class";
 static HWND hTimerWnd = NULL;
 static RestClient* rc = NULL;
 
 
-CPatternAuth::CPatternAuth(void)
+CFingerprintAuth::CFingerprintAuth(void)
 {
 	_hInst = NULL;
 	_pCred = NULL;
 }
 
-CPatternAuth::~CPatternAuth(void)
+CFingerprintAuth::~CFingerprintAuth(void)
 {
 	// If we have an active window, we want to post it an exit message.
 	if (hTimerWnd != NULL)
@@ -40,7 +40,7 @@ CPatternAuth::~CPatternAuth(void)
 }
 
 // Performs the work required to spin off our message so we can listen for events.
-HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
+HRESULT CFingerprintAuth::InitAuthThread(CTollgateCredential* pCredential)
 {
 	HRESULT hr = S_OK;
 
@@ -56,7 +56,7 @@ HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
 	rc = new RestClient();
 
 	// 타이머 스레드 생성
-	HANDLE hTimerThread = ::CreateThread(NULL, 0, CPatternAuth::_TimerThreadProc, (LPVOID)this, 0, NULL);
+	HANDLE hTimerThread = ::CreateThread(NULL, 0, CFingerprintAuth::_TimerThreadProc, (LPVOID)this, 0, NULL);
 	if (hTimerThread == NULL)
 	{
 		hr = HRESULT_FROM_WIN32(::GetLastError());
@@ -68,7 +68,7 @@ HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
 	}
 
 	// 인증 스레드 생성
-	HANDLE hAuthThread = ::CreateThread(NULL, 0, CPatternAuth::_AuthThreadProc, (LPVOID)this, 0, NULL);
+	HANDLE hAuthThread = ::CreateThread(NULL, 0, CFingerprintAuth::_AuthThreadProc, (LPVOID)this, 0, NULL);
 	if (hAuthThread == NULL)
 	{
 		CloseHandle(hThreads[0]);
@@ -90,14 +90,14 @@ HRESULT CPatternAuth::InitAuthThread(CTollgateCredential* pCredential)
 }
 
 
-HRESULT CPatternAuth::_MyRegisterClass()
+HRESULT CFingerprintAuth::_MyRegisterClass()
 {
 	HRESULT hr = S_OK;
 
 	WNDCLASS wc = { 0 };
-	wc.lpfnWndProc = CPatternAuth::_WndProc;  // 윈proc 설정
+	wc.lpfnWndProc = CFingerprintAuth::_WndProc;  // 윈proc 설정
 	wc.hInstance = GetModuleHandle(NULL);   // 인스턴스 널값 설정
-	wc.lpszClassName = ::g_wszPatternClassName;    // 클래스 네임명 설정
+	wc.lpszClassName = ::g_wszFingerprintClassName;    // 클래스 네임명 설정
 
 	if (!RegisterClass(&wc))
 	{
@@ -108,14 +108,14 @@ HRESULT CPatternAuth::_MyRegisterClass()
 }
 
 
-HRESULT CPatternAuth::_InitInstance()
+HRESULT CFingerprintAuth::_InitInstance()
 {
 	HRESULT hr = S_OK;
 
 	// Create our window to receive events.
 	hTimerWnd = ::CreateWindow(
-		::g_wszPatternClassName,           // Class name
-		::g_wszPatternClassName,           // Title bar text
+		::g_wszFingerprintClassName,           // Class name
+		::g_wszFingerprintClassName,           // Title bar text
 		WS_DLGFRAME,
 		200, 200, 200, 80,
 		NULL,                       // Parent window 
@@ -133,7 +133,7 @@ HRESULT CPatternAuth::_InitInstance()
 }
 
 
-BOOL CPatternAuth::_ProcessNextMessage()
+BOOL CFingerprintAuth::_ProcessNextMessage()
 {
 	// Grab, translate, and process the message.
 	MSG msg;
@@ -151,8 +151,8 @@ BOOL CPatternAuth::_ProcessNextMessage()
 	{
 	case WM_TIMER_ELAPSE:
 		nTime = (unsigned int)msg.wParam;
-		StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"패턴 인증 진행 중.. %d", nTime);
-		_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, wszTimeoutMessage);
+		StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"지문 인증 진행 중.. %d", nTime);
+		_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, wszTimeoutMessage);
 		break;
 
 	case WM_EXIT_THREAD:
@@ -165,7 +165,7 @@ BOOL CPatternAuth::_ProcessNextMessage()
 
 
 // Manages window messages on the window thread.
-LRESULT CALLBACK CPatternAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK CFingerprintAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	static unsigned int nTimeout;
 
@@ -199,9 +199,9 @@ LRESULT CALLBACK CPatternAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, 
 
 
 // 타이머용 윈도우 생성 스레드
-DWORD WINAPI CPatternAuth::_TimerThreadProc(LPVOID lpParameter)
+DWORD WINAPI CFingerprintAuth::_TimerThreadProc(LPVOID lpParameter)
 {
-	CPatternAuth* pThis = static_cast<CPatternAuth*>(lpParameter);
+	CFingerprintAuth* pThis = static_cast<CFingerprintAuth*>(lpParameter);
 	if (pThis == NULL)
 	{
 		// TODO: What's the best way to raise this error?
@@ -242,18 +242,17 @@ DWORD WINAPI CPatternAuth::_TimerThreadProc(LPVOID lpParameter)
 }
 
 
-DWORD WINAPI CPatternAuth::_AuthThreadProc(LPVOID lpParameter)
+DWORD WINAPI CFingerprintAuth::_AuthThreadProc(LPVOID lpParameter)
 {
-	CPatternAuth* pThis = static_cast<CPatternAuth*>(lpParameter);
+	CFingerprintAuth* pThis = static_cast<CFingerprintAuth*>(lpParameter);
 	if (pThis == NULL)
 	{
 		// TODO: What's the best way to raise this error?
 		return 0;
 	}
 
-
-	// --------------- 서버로부터 패턴 정보 요청 ---------------
-	if (rc->RequestPatternInformation(pThis->_pCred->wszUserName, pThis->_pCred->wszSystemIdentifier))
+	// --------------- 서버로부터 얼굴 인식 정보 요청 ---------------
+	if (rc->RequestFingerprintInformation(pThis->_pCred->wszUserName, pThis->_pCred->wszSystemIdentifier))
 	{
 		// 타이머 윈도우 종료 이벤트 보냄
 		PostMessage(hTimerWnd, WM_EXIT_THREAD, 0, 0);
@@ -276,43 +275,42 @@ DWORD WINAPI CPatternAuth::_AuthThreadProc(LPVOID lpParameter)
 			// 인증 실패
 			else
 			{
-				pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 정보가 일치하지 않습니다");
-				pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+				pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"안면 인증에 실패하였습니다");
+				pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			}
 			break;
 
-			// 패턴 입력 시간 타임아웃
+			// 안면 인증 시간 타임아웃
 		case rc->RESULT_CONNECTION_TIMEOUT:
-			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"패턴 입력 시간이 초과되었습니다");
-			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"안면 인증에 실패하였습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 
 			// 서버와 연결 실패
 		case rc->RESULT_CONNECTION_FAILED:
-			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 응답이 없습니다");
-			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"서버에서 응답이 없습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 
 			// 설정 파일이 존재하지 않음
 		case rc->RESULT_CONFIG_FILE_COMPROMISED:
-			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
-			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 
 			// 정상적인 클라이언트 프로그램이 아님 / 타임 스탬프 일치하지 않음
 		case rc->RESULT_UNAUTHORIZED_ACCESS:
 		case rc->RESULT_TIMESTAMP_MISMATCH:
-			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
-			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 
 		case rc->RESULT_UNKNOWN_ERROR:
-			pThis->_pCred->SetAuthMessage(SFI_PATTERN_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
-			pThis->_pCred->EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 		}
 	}
-	
 
 	return 0;
 }

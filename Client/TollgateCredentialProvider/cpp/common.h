@@ -31,6 +31,10 @@ enum SAMPLE_FIELD_ID
     SFI_PATTERN_MESSAGE         ,
     SFI_PATTERN_REQUEST         ,
 
+    /* --------------- QR 인증 관련 --------------- */
+    SFI_QR_MESSAGE,
+    SFI_QR_REQUEST,
+
     /* --------------- 지문 인증 관련 --------------- */
     SFI_FINGERPRINT_MESSAGE     ,
     SFI_FINGERPRINT_REQUEST     ,
@@ -40,11 +44,11 @@ enum SAMPLE_FIELD_ID
     SFI_FACE_REQUEST            ,
 
     /* --------------- 패스워드 인증 및 OTP 관련 --------------- */
-    SFI_OTP_MESSAGE,
+    SFI_OTP_MESSAGE             ,
     SFI_PASSWORD_INPUT          ,
     SFI_PASSWORD_VERIFY         ,
-    SFI_OTP_INPUT,
-    SFI_OTP_REQUEST,
+    SFI_OTP_INPUT               ,
+    SFI_OTP_REQUEST             ,
 
     SFI_NUM_FIELDS              ,  // Note: if new fields are added, keep NUM_FIELDS last.  This is used as a count of the number of fields
 };
@@ -78,6 +82,10 @@ static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
     /* --------------- 패턴 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PATTERN_MESSAGE
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PATTERN_REQUEST
+
+    /* --------------- QR 인증 관련 --------------- */
+    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_QR_MESSAGE
+    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_QR_REQUEST
 
     /* --------------- 지문 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FINGERPRINT_MESSAGE
@@ -113,6 +121,10 @@ static const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR s_rgCredProvFieldDescriptors[]
     /* --------------- 패턴 인증 관련 --------------- */
     { SFI_PATTERN_MESSAGE,      CPFT_LARGE_TEXT,        L"패턴 메시지"                                     },
     { SFI_PATTERN_REQUEST,      CPFT_COMMAND_LINK,      L"패턴 요청",       CPFG_STYLE_LINK_AS_BUTTON      },
+
+    /* --------------- QR 인증 관련 --------------- */
+    { SFI_QR_MESSAGE,           CPFT_LARGE_TEXT,        L"QR 메시지"                                     },
+    { SFI_QR_REQUEST,           CPFT_COMMAND_LINK,      L"QR 요청",       CPFG_STYLE_LINK_AS_BUTTON      },
 
     /* --------------- 지문 인증 관련 --------------- */
     { SFI_FINGERPRINT_MESSAGE,  CPFT_LARGE_TEXT,        L"지문 메시지"                                     },
