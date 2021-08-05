@@ -14,6 +14,13 @@ namespace AuthClient.tollgate.account.dialog
         }
 
         [Category("Tollgate")]
+        public event KeyEventHandler TextKeyDown
+        {
+            add { text_serverIP.KeyDown += value; }
+            remove { text_serverIP.KeyDown -= value; }
+        }
+
+        [Category("Tollgate")]
         public string IP
         {
             get { return text_serverIP.Text; }
@@ -23,8 +30,8 @@ namespace AuthClient.tollgate.account.dialog
         [Category("Tollgate")]
         public bool Fix
         {
-            get { return text_serverIP.Fix; }
-            set { text_serverIP.Fix = value; }
+            get { return text_serverIP.Enabled; }
+            set { text_serverIP.Enabled = value; }
         }
 
         public InitServerControl()

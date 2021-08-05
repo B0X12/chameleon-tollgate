@@ -30,12 +30,12 @@ namespace AuthClient.tollgate.home.main.dialog
         private void InitializeComponent()
         {
             this.panel_table = new System.Windows.Forms.TableLayoutPanel();
-            this.panel_list = new System.Windows.Forms.Panel();
-            this.img_bg = new System.Windows.Forms.PictureBox();
             this.img_title = new System.Windows.Forms.PictureBox();
+            this.img_bg = new System.Windows.Forms.PictureBox();
+            this.panel_list = new System.Windows.Forms.Panel();
             this.panel_table.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.img_bg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.img_bg)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_table
@@ -60,15 +60,16 @@ namespace AuthClient.tollgate.home.main.dialog
             this.panel_table.Size = new System.Drawing.Size(800, 443);
             this.panel_table.TabIndex = 0;
             // 
-            // panel_list
+            // img_title
             // 
-            this.panel_list.AutoScroll = true;
-            this.panel_list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_list.Location = new System.Drawing.Point(67, 190);
-            this.panel_list.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_list.Name = "panel_list";
-            this.panel_list.Size = new System.Drawing.Size(446, 241);
-            this.panel_list.TabIndex = 4;
+            this.img_title.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.img_title.Image = global::AuthClient.Properties.Resources.checkTitle;
+            this.img_title.Location = new System.Drawing.Point(67, 70);
+            this.img_title.Margin = new System.Windows.Forms.Padding(0);
+            this.img_title.Name = "img_title";
+            this.img_title.Size = new System.Drawing.Size(446, 60);
+            this.img_title.TabIndex = 1;
+            this.img_title.TabStop = false;
             // 
             // img_bg
             // 
@@ -82,16 +83,15 @@ namespace AuthClient.tollgate.home.main.dialog
             this.img_bg.TabIndex = 3;
             this.img_bg.TabStop = false;
             // 
-            // img_title
+            // panel_list
             // 
-            this.img_title.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.img_title.Image = global::AuthClient.Properties.Resources.checkTitle;
-            this.img_title.Location = new System.Drawing.Point(67, 70);
-            this.img_title.Margin = new System.Windows.Forms.Padding(0);
-            this.img_title.Name = "img_title";
-            this.img_title.Size = new System.Drawing.Size(446, 60);
-            this.img_title.TabIndex = 1;
-            this.img_title.TabStop = false;
+            this.panel_list.AutoScroll = true;
+            this.panel_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_list.Location = new System.Drawing.Point(67, 190);
+            this.panel_list.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_list.Name = "panel_list";
+            this.panel_list.Size = new System.Drawing.Size(446, 241);
+            this.panel_list.TabIndex = 4;
             // 
             // CheckDialog
             // 
@@ -103,9 +103,10 @@ namespace AuthClient.tollgate.home.main.dialog
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "CheckDialog";
             this.Text = "CheckDialog";
+            this.Load += new System.EventHandler(this.CheckDialog_Load);
             this.panel_table.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.img_bg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.img_bg)).EndInit();
             this.ResumeLayout(false);
 
         }

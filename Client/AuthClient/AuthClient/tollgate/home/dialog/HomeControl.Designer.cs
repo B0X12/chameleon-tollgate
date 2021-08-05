@@ -31,10 +31,10 @@ namespace AuthClient.tollgate.home.dialog
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeControl));
             this.panel_main = new System.Windows.Forms.TableLayoutPanel();
-            this.img_logo = new System.Windows.Forms.PictureBox();
-            this.panel_content = new System.Windows.Forms.Panel();
             this.btn_side_main = new AuthClient.tollgate.home.SideBarMain();
+            this.img_logo = new System.Windows.Forms.PictureBox();
             this.btn_side_setting = new AuthClient.tollgate.home.main.dialog.SidebarSetting();
+            this.panel_content = new AuthClient.tollgate.DoubleBufferPanel();
             this.card_user = new AuthClient.tollgate.home.main.dialog.UserCard();
             this.panel_main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_logo)).BeginInit();
@@ -73,27 +73,6 @@ namespace AuthClient.tollgate.home.dialog
             this.panel_main.Size = new System.Drawing.Size(1280, 720);
             this.panel_main.TabIndex = 0;
             // 
-            // img_logo
-            // 
-            this.img_logo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.img_logo.Image = global::AuthClient.Properties.Resources.logo;
-            this.img_logo.Location = new System.Drawing.Point(56, 57);
-            this.img_logo.Margin = new System.Windows.Forms.Padding(0);
-            this.img_logo.Name = "img_logo";
-            this.img_logo.Size = new System.Drawing.Size(176, 41);
-            this.img_logo.TabIndex = 1;
-            this.img_logo.TabStop = false;
-            // 
-            // panel_content
-            // 
-            this.panel_content.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_content.Location = new System.Drawing.Point(282, 0);
-            this.panel_content.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_content.Name = "panel_content";
-            this.panel_main.SetRowSpan(this.panel_content, 9);
-            this.panel_content.Size = new System.Drawing.Size(998, 720);
-            this.panel_content.TabIndex = 3;
-            // 
             // btn_side_main
             // 
             this.btn_side_main.BackColor = System.Drawing.Color.Transparent;
@@ -106,6 +85,17 @@ namespace AuthClient.tollgate.home.dialog
             this.btn_side_main.TabIndex = 0;
             this.btn_side_main.Click += new System.EventHandler(this.btn_side_main_Click);
             // 
+            // img_logo
+            // 
+            this.img_logo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.img_logo.Image = global::AuthClient.Properties.Resources.logo;
+            this.img_logo.Location = new System.Drawing.Point(56, 57);
+            this.img_logo.Margin = new System.Windows.Forms.Padding(0);
+            this.img_logo.Name = "img_logo";
+            this.img_logo.Size = new System.Drawing.Size(176, 41);
+            this.img_logo.TabIndex = 1;
+            this.img_logo.TabStop = false;
+            // 
             // btn_side_setting
             // 
             this.btn_side_setting.BackColor = System.Drawing.Color.Transparent;
@@ -117,6 +107,16 @@ namespace AuthClient.tollgate.home.dialog
             this.btn_side_setting.Size = new System.Drawing.Size(182, 42);
             this.btn_side_setting.TabIndex = 2;
             this.btn_side_setting.Click += new System.EventHandler(this.btn_side_setting_Click);
+            // 
+            // panel_content
+            // 
+            this.panel_content.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_content.Location = new System.Drawing.Point(282, 0);
+            this.panel_content.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_content.Name = "panel_content";
+            this.panel_main.SetRowSpan(this.panel_content, 9);
+            this.panel_content.Size = new System.Drawing.Size(998, 720);
+            this.panel_content.TabIndex = 3;
             // 
             // card_user
             // 
@@ -151,7 +151,7 @@ namespace AuthClient.tollgate.home.dialog
         private SideBarMain btn_side_main;
         private System.Windows.Forms.PictureBox img_logo;
         private main.dialog.SidebarSetting btn_side_setting;
-        private System.Windows.Forms.Panel panel_content;
+        private DoubleBufferPanel panel_content;
         private main.dialog.UserCard card_user;
     }
 }

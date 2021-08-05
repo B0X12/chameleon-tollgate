@@ -21,6 +21,13 @@ namespace AuthClient.tollgate.account.dialog
         }
 
         [Category("Tollgate")]
+        public event KeyEventHandler PwdKeyDown
+        {
+            add { text_pwd.KeyDown += value; }
+            remove { text_pwd.KeyDown -= value; }
+        }
+
+        [Category("Tollgate")]
         public string ID
         {
             get { return text_id.Text; }
@@ -37,8 +44,8 @@ namespace AuthClient.tollgate.account.dialog
         [Category("Tollgate")]
         public bool FixID
         {
-            get { return text_id.Fix; }
-            set { text_id.Fix = value; }
+            get { return text_id.Enabled; }
+            set { text_id.Enabled = value; }
         }
 
         public bool registeredUserExist = false;

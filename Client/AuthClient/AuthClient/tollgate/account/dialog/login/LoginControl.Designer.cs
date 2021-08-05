@@ -30,8 +30,8 @@ namespace AuthClient.tollgate.account.dialog
         private void InitializeComponent()
         {
             this.panel_base_server = new System.Windows.Forms.TableLayoutPanel();
-            this.text_id = new AuthClient.tollgate.account.dialog.LoginID();
-            this.text_pwd = new AuthClient.tollgate.account.dialog.LoginPwd();
+            this.text_id = new AuthClient.tollgate.home.setting.TG_TextBox();
+            this.text_pwd = new AuthClient.tollgate.home.setting.TG_TextBox();
             this.img_title = new AuthClient.tollgate.account.dialog.LoginTitle();
             this.btn_login = new AuthClient.tollgate.account.dialog.LoginButton();
             this.panel_base_server.SuspendLayout();
@@ -65,22 +65,29 @@ namespace AuthClient.tollgate.account.dialog
             // text_id
             // 
             this.text_id.BackColor = System.Drawing.Color.Transparent;
-            this.text_id.Fix = true;
             this.text_id.Font = new System.Drawing.Font("새굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.text_id.Hint = "아이디";
+            this.text_id.IsCheck = false;
             this.text_id.Location = new System.Drawing.Point(95, 292);
             this.text_id.Margin = new System.Windows.Forms.Padding(0);
             this.text_id.Name = "text_id";
+            this.text_id.PasswordChar = '\0';
             this.text_id.Size = new System.Drawing.Size(341, 41);
             this.text_id.TabIndex = 1;
+            this.text_id.UseCheck = false;
             // 
             // text_pwd
             // 
             this.text_pwd.BackColor = System.Drawing.Color.Transparent;
+            this.text_pwd.Hint = "비밀번호";
+            this.text_pwd.IsCheck = false;
             this.text_pwd.Location = new System.Drawing.Point(95, 341);
             this.text_pwd.Margin = new System.Windows.Forms.Padding(0);
             this.text_pwd.Name = "text_pwd";
+            this.text_pwd.PasswordChar = '●';
             this.text_pwd.Size = new System.Drawing.Size(341, 41);
             this.text_pwd.TabIndex = 2;
+            this.text_pwd.UseCheck = false;
             // 
             // img_title
             // 
@@ -118,8 +125,8 @@ namespace AuthClient.tollgate.account.dialog
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel panel_base_server;
-        private LoginID text_id;
-        private LoginPwd text_pwd;
+        private AuthClient.tollgate.home.setting.TG_TextBox text_id;
+        private AuthClient.tollgate.home.setting.TG_TextBox text_pwd;
         private LoginTitle img_title;
         private LoginButton btn_login;
     }

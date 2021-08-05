@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.main.dialog
@@ -32,13 +33,10 @@ namespace AuthClient.tollgate.home.main.dialog
             img_icon.Left = ClientRectangle.Left + 15;
             img_icon.Top = (ClientSize.Height - img_icon.Height) / 2;
 
-            //PrivateFontCollection fonts = new PrivateFontCollection();
-            //fonts.AddFontFile(Property.FONT_BOLD);
-
-            //Font font = new Font(fonts.Families[0], 10);
-            //label.Font = font;
+            Font font = new Font(MainForm.FONT_BOLD, 11);
+            label.Font = font;
             label.Left = ClientRectangle.Left + 41;
-            label.Top = (ClientSize.Height - label.Height) / 2;
+            label.Top = (ClientSize.Height - label.Height) / 2 - 2;
         }
 
         public void setOn()

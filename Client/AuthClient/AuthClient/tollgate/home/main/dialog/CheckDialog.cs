@@ -60,5 +60,13 @@ namespace AuthClient.tollgate.home.main.dialog
                 y += 93;
             }
         }
+
+        private void CheckDialog_Load(object sender, EventArgs e)
+        {
+            StartPosition = FormStartPosition.Manual;
+            int x = Owner.Location.X + ((Owner.Width - Width) / 2);
+            int y = Owner.Location.Y + ((Owner.Height - Height) / 2);
+            Location = new Point(x, y);
+        }
     }
 }

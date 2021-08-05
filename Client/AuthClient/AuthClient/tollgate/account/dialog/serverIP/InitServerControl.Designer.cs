@@ -32,7 +32,7 @@ namespace AuthClient.tollgate.account.dialog
             this.panel_base_server = new System.Windows.Forms.TableLayoutPanel();
             this.img_title = new System.Windows.Forms.PictureBox();
             this.btn_connect = new AuthClient.tollgate.account.dialog.ConnectButton();
-            this.text_serverIP = new AuthClient.tollgate.account.dialog.TextServerControl();
+            this.text_serverIP = new AuthClient.tollgate.home.setting.TG_TextBox();
             this.panel_base_server.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).BeginInit();
             this.SuspendLayout();
@@ -81,11 +81,15 @@ namespace AuthClient.tollgate.account.dialog
             // text_serverIP
             // 
             this.text_serverIP.BackColor = System.Drawing.Color.Transparent;
+            this.text_serverIP.Hint = "127.xxx.xxx.xxx";
+            this.text_serverIP.IsCheck = false;
             this.text_serverIP.Location = new System.Drawing.Point(95, 312);
             this.text_serverIP.Margin = new System.Windows.Forms.Padding(0);
             this.text_serverIP.Name = "text_serverIP";
+            this.text_serverIP.PasswordChar = '\0';
             this.text_serverIP.Size = new System.Drawing.Size(341, 41);
             this.text_serverIP.TabIndex = 1;
+            this.text_serverIP.UseCheck = false;
             // 
             // InitServerControl
             // 
@@ -104,7 +108,7 @@ namespace AuthClient.tollgate.account.dialog
 
         #endregion
 
-        private TextServerControl text_serverIP;
+        private AuthClient.tollgate.home.setting.TG_TextBox text_serverIP;
         private System.Windows.Forms.PictureBox img_title;
         private System.Windows.Forms.TableLayoutPanel panel_base_server;
         private ConnectButton btn_connect;
