@@ -29,17 +29,19 @@ namespace AuthClient.tollgate.account.dialog
 
         private void InitControl_Load(object sender, EventArgs e)
         {
-            //panel_flow.Width = panel_flow.Parent.Width + SystemInformation.VerticalScrollBarWidth;
             panel_flow.Height = panel_flow.Parent.Height + SystemInformation.HorizontalScrollBarHeight;
 
             initServerControl = new InitServerControl();
+            initServerControl.TextKeyDown += InitServerControl_TextKeyDown;
             initServerControl.ConnectButtonClick += InitServerControl_ConnectButtonClick;
 
             loginCon = new LoginControl();
+            loginCon.PwdKeyDown += LoginCon_PwdKeyDown;
             loginCon.LoginButtonClick += LoginCon_LoginButtonClick;
             loginCon.SignupButtonClick += LoginCon_SignupButtonClick;
 
             signupControl = new SignupControl();
+            signupControl.ConfirmKeyDown += SignupControl_ConfirmKeyDown;
             signupControl.SignupButtonClick += SignupControl_SignupButtonClick;
 
 
@@ -100,6 +102,24 @@ namespace AuthClient.tollgate.account.dialog
                 Config.DeleteConfigFile();
                 MessageBox.Show("인증 서버로부터 데이터를 불러올 수 없습니다");
             }
+        }
+
+        private void SignupControl_ConfirmKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SignupControl_SignupButtonClick(this, new EventArgs());
+        }
+
+        private void LoginCon_PwdKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                LoginCon_LoginButtonClick(this, new EventArgs());
+        }
+
+        private void InitServerControl_TextKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                InitServerControl_ConnectButtonClick(this, new EventArgs());
         }
 
         private void SignupControl_SignupButtonClick(object sender, EventArgs e)

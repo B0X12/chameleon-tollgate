@@ -31,9 +31,7 @@ namespace AuthClient.tollgate.account.dialog
         {
             InitializeComponent();
 
-            PrivateFontCollection fonts = new PrivateFontCollection();
-            fonts.AddFontFile(Property.FONT_BOLD);
-            Font font = new Font(fonts.Families[0], 11);
+            Font font = new Font(MainForm.FONT_BOLD, 11);
             label.Font = font;
 
             label.Left = ((img_back.Width - label.Width) / 2);

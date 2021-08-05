@@ -1,14 +1,19 @@
 ﻿using AuthClient.tollgate.account.dialog;
 using AuthClient.tollgate.home.dialog;
 using System;
+using System.Drawing;
+using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate
 {
     public partial class MainForm : Form
     {
-        private const int FLOW_SIZE = 720;
-        private const int FLOW_INTERVAL = 10;
+        private static PrivateFontCollection fonts;
+
+        public static FontFamily FONT_MEDIUM;
+        public static FontFamily FONT_BOLD;
+        public static FontFamily FONT_BLACK;
 
         private InitControl initcontrol;
         private SplashControl splashControl;
@@ -17,6 +22,14 @@ namespace AuthClient.tollgate
         public MainForm()
         {
             InitializeComponent();
+
+            fonts = new PrivateFontCollection();
+            fonts.AddFontFile(Property.FONT_MEDIUM);
+            fonts.AddFontFile(Property.FONT_BOLD);
+            fonts.AddFontFile(Property.FONT_BLACK);
+            FONT_BLACK = fonts.Families[1];
+            FONT_BOLD = fonts.Families[0];
+            FONT_MEDIUM = fonts.Families[2];
 
             MaximizeBox = false;
 
@@ -36,6 +49,7 @@ namespace AuthClient.tollgate
 
         private void SplashControl_SplashButtonClick(object sender, EventArgs e)
         {
+            homeControl.User = Config.GetCurrentUser();
             ChangePage(2);
         }
 

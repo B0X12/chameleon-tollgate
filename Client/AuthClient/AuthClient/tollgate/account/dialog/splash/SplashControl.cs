@@ -28,10 +28,7 @@ namespace AuthClient.tollgate.account.dialog
 
         private void SplashControl_Load(object sender, System.EventArgs e)
         {
-            PrivateFontCollection fonts = new PrivateFontCollection();
-            fonts.AddFontFile(Property.FONT_BLACK);
-
-            Font font = new Font(fonts.Families[0], 24);
+            Font font = new Font(MainForm.FONT_BLACK, 24);
             label_hello.Font = font;
             label_hello.Text = "안녕하세요, " + user + "님!";
 
@@ -54,14 +51,10 @@ namespace AuthClient.tollgate.account.dialog
             string subM = "TOLLGATE와 함께";
             string subR = "하실 수 있습니다.";
 
-            PrivateFontCollection fonts = new PrivateFontCollection();
-            fonts.AddFontFile(Property.FONT_BOLD);
-            fonts.AddFontFile(Property.FONT_MEDIUM);
-
-            Font fontM = new Font(fonts.Families[0], 10);
+            Font fontM = new Font(MainForm.FONT_BOLD, 10);
             Size sizeM = TextRenderer.MeasureText(subM, fontM);
 
-            Font font = new Font(fonts.Families[1], 10);
+            Font font = new Font(MainForm.FONT_MEDIUM, 10);
             Size sizeL = TextRenderer.MeasureText(subL, font);
             Size sizeR = TextRenderer.MeasureText(subR, font);
 

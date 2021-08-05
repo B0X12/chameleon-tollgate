@@ -29,18 +29,10 @@ namespace AuthClient.tollgate
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel_main = new AuthClient.tollgate.DoubleBufferPanel();
             this.panel_border_main = new System.Windows.Forms.Panel();
+            this.panel_main = new AuthClient.tollgate.DoubleBufferPanel();
             this.panel_border_main.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel_main
-            // 
-            this.panel_main.Location = new System.Drawing.Point(0, 0);
-            this.panel_main.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_main.Name = "panel_main";
-            this.panel_main.Size = new System.Drawing.Size(1280, 720);
-            this.panel_main.TabIndex = 0;
             // 
             // panel_border_main
             // 
@@ -51,10 +43,18 @@ namespace AuthClient.tollgate
             this.panel_border_main.Size = new System.Drawing.Size(1280, 720);
             this.panel_border_main.TabIndex = 1;
             // 
+            // panel_main
+            // 
+            this.panel_main.Location = new System.Drawing.Point(0, 0);
+            this.panel_main.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_main.Name = "panel_main";
+            this.panel_main.Size = new System.Drawing.Size(1280, 720);
+            this.panel_main.TabIndex = 0;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.Controls.Add(this.panel_border_main);

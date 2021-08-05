@@ -34,7 +34,8 @@ namespace AuthClient.tollgate.home.dialog
             this.btn_side_main = new AuthClient.tollgate.home.SideBarMain();
             this.img_logo = new System.Windows.Forms.PictureBox();
             this.btn_side_setting = new AuthClient.tollgate.home.main.dialog.SidebarSetting();
-            this.panel_content = new System.Windows.Forms.Panel();
+            this.panel_content = new AuthClient.tollgate.DoubleBufferPanel();
+            this.card_user = new AuthClient.tollgate.home.main.dialog.UserCard();
             this.panel_main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_logo)).BeginInit();
             this.SuspendLayout();
@@ -42,21 +43,24 @@ namespace AuthClient.tollgate.home.dialog
             // panel_main
             // 
             this.panel_main.BackColor = System.Drawing.Color.Transparent;
-            this.panel_main.ColumnCount = 5;
-            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.panel_main.ColumnCount = 7;
+            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 43F));
+            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 7F));
             this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6F));
             this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 176F));
-            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.panel_main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panel_main.Controls.Add(this.btn_side_main, 1, 3);
-            this.panel_main.Controls.Add(this.img_logo, 2, 1);
-            this.panel_main.Controls.Add(this.btn_side_setting, 1, 5);
-            this.panel_main.Controls.Add(this.panel_content, 4, 0);
+            this.panel_main.Controls.Add(this.btn_side_main, 2, 3);
+            this.panel_main.Controls.Add(this.img_logo, 3, 1);
+            this.panel_main.Controls.Add(this.btn_side_setting, 2, 5);
+            this.panel_main.Controls.Add(this.panel_content, 6, 0);
+            this.panel_main.Controls.Add(this.card_user, 1, 7);
             this.panel_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_main.Location = new System.Drawing.Point(0, 0);
             this.panel_main.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel_main.Name = "panel_main";
-            this.panel_main.RowCount = 7;
+            this.panel_main.RowCount = 9;
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
@@ -64,11 +68,8 @@ namespace AuthClient.tollgate.home.dialog
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
             this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 269F));
+            this.panel_main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.panel_main.Size = new System.Drawing.Size(1280, 720);
             this.panel_main.TabIndex = 0;
             // 
@@ -76,7 +77,7 @@ namespace AuthClient.tollgate.home.dialog
             // 
             this.btn_side_main.BackColor = System.Drawing.Color.Transparent;
             this.btn_side_main.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_side_main.BackgroundImage")));
-            this.panel_main.SetColumnSpan(this.btn_side_main, 2);
+            this.panel_main.SetColumnSpan(this.btn_side_main, 4);
             this.btn_side_main.Location = new System.Drawing.Point(50, 153);
             this.btn_side_main.Margin = new System.Windows.Forms.Padding(0);
             this.btn_side_main.Name = "btn_side_main";
@@ -99,7 +100,7 @@ namespace AuthClient.tollgate.home.dialog
             // 
             this.btn_side_setting.BackColor = System.Drawing.Color.Transparent;
             this.btn_side_setting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_side_setting.BackgroundImage")));
-            this.panel_main.SetColumnSpan(this.btn_side_setting, 2);
+            this.panel_main.SetColumnSpan(this.btn_side_setting, 4);
             this.btn_side_setting.Location = new System.Drawing.Point(50, 203);
             this.btn_side_setting.Margin = new System.Windows.Forms.Padding(0);
             this.btn_side_setting.Name = "btn_side_setting";
@@ -113,16 +114,29 @@ namespace AuthClient.tollgate.home.dialog
             this.panel_content.Location = new System.Drawing.Point(282, 0);
             this.panel_content.Margin = new System.Windows.Forms.Padding(0);
             this.panel_content.Name = "panel_content";
-            this.panel_main.SetRowSpan(this.panel_content, 7);
+            this.panel_main.SetRowSpan(this.panel_content, 9);
             this.panel_content.Size = new System.Drawing.Size(998, 720);
             this.panel_content.TabIndex = 3;
+            // 
+            // card_user
+            // 
+            this.card_user.BackColor = System.Drawing.Color.Transparent;
+            this.card_user.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("card_user.BackgroundImage")));
+            this.panel_main.SetColumnSpan(this.card_user, 4);
+            this.card_user.Location = new System.Drawing.Point(43, 387);
+            this.card_user.Margin = new System.Windows.Forms.Padding(0);
+            this.card_user.Name = "card_user";
+            this.card_user.Size = new System.Drawing.Size(207, 269);
+            this.card_user.TabIndex = 4;
             // 
             // HomeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.BackgroundImage = global::AuthClient.Properties.Resources.mainWallpaper;
             this.Controls.Add(this.panel_main);
+            this.DoubleBuffered = true;
             this.Name = "HomeControl";
             this.Size = new System.Drawing.Size(1280, 720);
             this.panel_main.ResumeLayout(false);
@@ -137,6 +151,7 @@ namespace AuthClient.tollgate.home.dialog
         private SideBarMain btn_side_main;
         private System.Windows.Forms.PictureBox img_logo;
         private main.dialog.SidebarSetting btn_side_setting;
-        private System.Windows.Forms.Panel panel_content;
+        private DoubleBufferPanel panel_content;
+        private main.dialog.UserCard card_user;
     }
 }

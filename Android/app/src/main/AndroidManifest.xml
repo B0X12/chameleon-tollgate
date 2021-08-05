@@ -46,10 +46,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".fingerprint.FingerPrintManager"
             tools:ignore="Instantiatable" />
-        <activity android:name=".fingerprint.FingerPrintActivity" />
+        <activity android:name=".fingerprint.FingerPrintActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTH_FINGERPRINT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".pattern.AuthPatternActivity">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_PATTERN" />

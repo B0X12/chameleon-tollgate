@@ -14,6 +14,13 @@ namespace AuthClient.tollgate.account.dialog
         }
 
         [Category("Tollgate")]
+        public event KeyEventHandler ConfirmKeyDown
+        {
+            add { text_confirm.KeyDown += value; }
+            remove { text_confirm.KeyDown -= value; }
+        }
+
+        [Category("Tollgate")]
         public string ID
         {
             get { return text_id.Text; }

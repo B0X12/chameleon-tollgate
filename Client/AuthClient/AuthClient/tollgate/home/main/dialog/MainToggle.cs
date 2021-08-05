@@ -19,9 +19,9 @@ namespace AuthClient.tollgate.home.main.dialog
             set
             {
                 if (value)
-                    button.BackgroundImage = Properties.Resources.mainToggleOn;
+                    button.Image = Properties.Resources.mainToggleOn;
                 else
-                    button.BackgroundImage = Properties.Resources.mainToggleOff;
+                    button.Image = Properties.Resources.mainToggleOff;
                 on = value;
             }
         }
@@ -49,12 +49,6 @@ namespace AuthClient.tollgate.home.main.dialog
         public MainToggle()
         {
             InitializeComponent();
-
-            button.FlatAppearance.BorderSize = 0;
-            button.FlatAppearance.MouseDownBackColor = Color.Transparent;
-            button.FlatAppearance.MouseOverBackColor = Color.Transparent;
-            button.BackColor = Color.Transparent;
-
         }
 
         private void button_Click(object sender, EventArgs e)

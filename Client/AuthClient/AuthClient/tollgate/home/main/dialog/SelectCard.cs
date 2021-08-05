@@ -51,7 +51,7 @@ namespace AuthClient.tollgate.home.main.dialog
         }
 
         [Category("Tollgate")]
-        public bool on
+        public bool On
         {
             get
             {
