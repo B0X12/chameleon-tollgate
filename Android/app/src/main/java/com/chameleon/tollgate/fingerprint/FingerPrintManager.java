@@ -12,6 +12,8 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.chameleon.tollgate.define.LogTag;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -61,19 +63,19 @@ public class FingerPrintManager {
         switch (biometricManager.canAuthenticate())
         {
             case BiometricManager.BIOMETRIC_SUCCESS:
-                Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
+                Log.d(LogTag.AUTH_FINGERPRINT, "App can authenticate using biometrics.");
                 //Toast.makeText(context, "App can authenticate using biometrics.",Toast.LENGTH_SHORT).show();
                 return true;
 
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 // 적합한 하드웨어가 없음
-                Log.e("MY_APP_TAG", "No biometric features available on this device.");
+                Log.e(LogTag.AUTH_FINGERPRINT, "No biometric features available on this device.");
                 Toast.makeText(context, "No biometric features available on this device.", Toast.LENGTH_SHORT).show();
                 return false;
 
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                 // 하드웨어를 사용할 수 없음
-                Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
+                Log.e(LogTag.AUTH_FINGERPRINT, "Biometric features are currently unavailable.");
                 Toast.makeText(context, "Biometric features are currently unavailable.", Toast.LENGTH_SHORT).show();
                 return false;
 
@@ -83,7 +85,11 @@ public class FingerPrintManager {
                 enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                         BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
 
-                fragmentActivity.startActivityForResult(enrollIntent, REQUEST_CODE);
+                fragmentActivity.startActivity(enrollIntent);
+                // 액티비티를 열어주고 결과값 전달
+
+                Toast.makeText(context, "지문을 등록해주세요.", Toast.LENGTH_SHORT).show();
+                Log.e(LogTag.AUTH_FINGERPRINT, "There are no registered fingerprints.");
                 return false;
         }
         return false;
@@ -140,9 +146,9 @@ public class FingerPrintManager {
     private void showBiometricPrompt()
     {
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Tollgate")
-                .setSubtitle("Chameleon")
-                .setNegativeButtonText("패스워드 사용")
+                .setTitle("Tollgate 지문인증")
+                .setSubtitle("로그인을 원하실 경우에만 인증을 수행해주세요.")
+                .setNegativeButtonText("Chameleon")
                 .build();
     }
 
