@@ -64,7 +64,7 @@ namespace AuthClient.tollgate.usb.dialog
                 usbID = usbID.Replace("\\", "");
                 usbID = usbID.Replace("&", "");
 
-                USBInfo usbInfo = new USBInfo(Config.GetCurrentUser(), usbID, this.usb_alias);
+                USBInfo usbInfo = new USBInfo(Config.GetCurrentUser(), Util.EncryptSHA512(usbID), this.usb_alias);
                 USBService us = new USBService();
 
                 if(us.RegisterUSBInfo(usbInfo))

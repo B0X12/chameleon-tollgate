@@ -36,5 +36,5 @@ public class Path {
 	
 	private static final String DATA = "/data/";
 	public static final String DATA_OTP = DATA + "otp/";
-	
+	public static final String DATA_QR = DATA + "qr/";	
 }

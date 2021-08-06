@@ -9,6 +9,8 @@ import lombok.Getter;
 public class FaceVar {
     public static final String TAG = "FaceAuth";
     public static final int MULTI_PERMISSION_CODE = 200;
+    public static final int DISTANCE = 60;
+    public static final int TRAIN_NUM = 50;
     public enum Camera {BACK, FRONT}
     public enum ActivationMode {
         AUTH("auth"),
@@ -19,5 +21,5 @@ public class FaceVar {
         ActivationMode(String mode){
             this.mode = mode;
         }
-    };
+    }
 }

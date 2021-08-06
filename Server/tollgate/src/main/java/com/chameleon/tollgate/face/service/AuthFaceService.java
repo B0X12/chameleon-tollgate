@@ -3,6 +3,7 @@ package com.chameleon.tollgate.face.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.chameleon.tollgate.database.define.Factor;
 import com.chameleon.tollgate.database.define.Table;
 import com.chameleon.tollgate.face.dao.AuthFaceDAO;
 import com.chameleon.tollgate.face.dto.FacePack;
@@ -55,6 +56,7 @@ public class AuthFaceService implements IAuthFaceService{
 	public boolean SetFace(String id, String hashValue) throws Exception {
 		dao.open();
 		boolean result = dao.setFace(id, hashValue);
+		dao.setInitFactor(id, Factor.FACEID, true);
 		dao.commit();
 		dao.close();
 		

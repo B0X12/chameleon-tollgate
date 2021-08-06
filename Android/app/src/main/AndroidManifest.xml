@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -33,6 +35,8 @@
             android:exported="true" />
         <activity android:name=".pattern.SetPatternActivity" />
         <activity android:name=".faceauth.AuthFaceActivity" >
+        android:theme="@style/Theme.Tollgate"
+        android:requestLegacyExternalStorage="true">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_FACE" />
 
@@ -56,11 +60,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".fingerprint.FingerPrintManager"
             tools:ignore="Instantiatable" />
-        <activity android:name=".fingerprint.FingerPrintActivity" />
-        <activity android:name=".pattern.AuthPatternActivity" >
+        <activity android:name=".fingerprint.FingerPrintActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTH_FINGERPRINT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".pattern.AuthPatternActivity">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_PATTERN" />
 

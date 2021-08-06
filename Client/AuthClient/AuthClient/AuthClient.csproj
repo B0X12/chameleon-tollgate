@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>게시\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +67,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -69,39 +87,202 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Property.cs" />
+    <Compile Include="tollgate\account\dialog\login\LoginButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\login\LoginButton.Designer.cs">
+      <DependentUpon>LoginButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\login\LoginControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\login\LoginControl.Designer.cs">
+      <DependentUpon>LoginControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\login\LoginTitle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\login\LoginTitle.Designer.cs">
+      <DependentUpon>LoginTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\NoWheelFlowPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\serverIP\ConnectButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\serverIP\ConnectButton.Designer.cs">
+      <DependentUpon>ConnectButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="tollgate\account\dialog\InitControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="tollgate\account\dialog\InitControl.Designer.cs">
       <DependentUpon>InitControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="tollgate\account\dialog\Login.cs">
+    <Compile Include="tollgate\account\dialog\serverIP\InitServerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="tollgate\account\dialog\Login.Designer.cs">
-      <DependentUpon>Login.cs</DependentUpon>
+    <Compile Include="tollgate\account\dialog\serverIP\InitServerControl.Designer.cs">
+      <DependentUpon>InitServerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="tollgate\account\dialog\MainForm.cs">
+    <Compile Include="tollgate\account\dialog\signup\SignupButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\signup\SignupButton.Designer.cs">
+      <DependentUpon>SignupButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\splash\SplashButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\splash\SplashButton.Designer.cs">
+      <DependentUpon>SplashButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\splash\SplashControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\splash\SplashControl.Designer.cs">
+      <DependentUpon>SplashControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\define\Define.cs" />
+    <Compile Include="tollgate\DoubleBufferPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\Menu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\Menu.Designer.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\PCEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\PCEntry.Designer.cs">
+      <DependentUpon>PCEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingAccount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingAccount.Designer.cs">
+      <DependentUpon>SettingAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingControl.Designer.cs">
+      <DependentUpon>SettingControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\dialog\HomeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\dialog\HomeControl.Designer.cs">
+      <DependentUpon>HomeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="tollgate\account\dialog\MainForm.Designer.cs">
+    <Compile Include="tollgate\home\main\dialog\CheckDialog.Designer.cs">
+      <DependentUpon>CheckDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\CheckEntry.Designer.cs">
+      <DependentUpon>CheckEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SelectCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SelectCard.Designer.cs">
+      <DependentUpon>SelectCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainControl.Designer.cs">
+      <DependentUpon>MainControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainToggle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\MainToggle.Designer.cs">
+      <DependentUpon>MainToggle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarMain.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarMain.Designer.cs">
+      <DependentUpon>SidebarMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarSetting.Designer.cs">
+      <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\dialog\UserCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\dialog\UserCard.Designer.cs">
+      <DependentUpon>UserCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UsingList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\UsingList.Designer.cs">
+      <DependentUpon>UsingList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingPC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingPC.Designer.cs">
+      <DependentUpon>SettingPC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingUSB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\SettingUSB.Designer.cs">
+      <DependentUpon>SettingUSB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\TG_TextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\TG_TextBox.Designer.cs">
+      <DependentUpon>TG_TextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\setting\USBEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\setting\USBEntry.Designer.cs">
+      <DependentUpon>USBEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tollgate\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\signup\SignupControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\signup\SignupControl.Designer.cs">
+      <DependentUpon>SignupControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\StepControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\account\dialog\StepControl.Designer.cs">
+      <DependentUpon>StepControl.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\Config.cs" />
     <Compile Include="tollgate\account\dto\Account.cs" />
     <Compile Include="tollgate\account\dto\MapPC.cs" />
-    <Compile Include="tollgate\account\dialog\LogIn2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\LogIn2.Designer.cs">
-      <DependentUpon>LogIn2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
     <Compile Include="tollgate\otp\dialog\OtpTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,26 +301,8 @@
     <Compile Include="tollgate\usb\dto\USBInfo.cs" />
     <Compile Include="tollgate\rest\Exception.cs" />
     <Compile Include="tollgate\rest\RestCommunication.cs" />
-    <Compile Include="tollgate\account\dialog\SignUp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\SignUp.Designer.cs">
-      <DependentUpon>SignUp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\CheckServer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\CheckServer.Designer.cs">
-      <DependentUpon>CheckServer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="tollgate\account\dialog\LogInSignUp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\account\dialog\LogInSignUp.Designer.cs">
-      <DependentUpon>LogInSignUp.cs</DependentUpon>
-    </Compile>
     <Compile Include="tollgate\usb\dialog\USBRegister.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,26 +313,102 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogFactor.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogLevel.cs" />
+    <Compile Include="tollgate\util\tollgateLog\dto\LogRecord.cs" />
+    <Compile Include="tollgate\util\tollgateLog\tollgateLog.cs" />
+    <EmbeddedResource Include="tollgate\account\dialog\login\LoginButton.resx">
+      <DependentUpon>LoginButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\login\LoginControl.resx">
+      <DependentUpon>LoginControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\login\LoginTitle.resx">
+      <DependentUpon>LoginTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\serverIP\ConnectButton.resx">
+      <DependentUpon>ConnectButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="tollgate\account\dialog\InitControl.resx">
       <DependentUpon>InitControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\Login.resx">
-      <DependentUpon>Login.cs</DependentUpon>
+    <EmbeddedResource Include="tollgate\account\dialog\serverIP\InitServerControl.resx">
+      <DependentUpon>InitServerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\LogIn2.resx">
-      <DependentUpon>LogIn2.cs</DependentUpon>
+    <EmbeddedResource Include="tollgate\account\dialog\signup\SignupButton.resx">
+      <DependentUpon>SignupButton.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\MainForm.resx">
+    <EmbeddedResource Include="tollgate\account\dialog\splash\SplashButton.resx">
+      <DependentUpon>SplashButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\account\dialog\splash\SplashControl.resx">
+      <DependentUpon>SplashControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\dialog\HomeControl.resx">
+      <DependentUpon>HomeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\CheckDialog.resx">
+      <DependentUpon>CheckDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\CheckEntry.resx">
+      <DependentUpon>CheckEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SelectCard.resx">
+      <DependentUpon>SelectCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\MainControl.resx">
+      <DependentUpon>MainControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\MainToggle.resx">
+      <DependentUpon>MainToggle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SidebarMain.resx">
+      <DependentUpon>SidebarMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SidebarSetting.resx">
+      <DependentUpon>SidebarSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\dialog\UserCard.resx">
+      <DependentUpon>UserCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\UsingList.resx">
+      <DependentUpon>UsingList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\PCEntry.resx">
+      <DependentUpon>PCEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\SettingAccount.resx">
+      <DependentUpon>SettingAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\SettingControl.resx">
+      <DependentUpon>SettingControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\SettingPC.resx">
+      <DependentUpon>SettingPC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\SettingUSB.resx">
+      <DependentUpon>SettingUSB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\TG_TextBox.resx">
+      <DependentUpon>TG_TextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\setting\USBEntry.resx">
+      <DependentUpon>USBEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="tollgate\account\dialog\signup\SignupControl.resx">
+      <DependentUpon>SignupControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\SignUp.resx">
-      <DependentUpon>SignUp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\account\dialog\CheckServer.resx">
-      <DependentUpon>CheckServer.cs</DependentUpon>
+    <EmbeddedResource Include="tollgate\account\dialog\StepControl.resx">
+      <DependentUpon>StepControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\otp\dialog\OtpTest.resx">
       <DependentUpon>OtpTest.cs</DependentUpon>
@@ -182,15 +421,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="tollgate\account\dialog\LogInSignUp.resx">
-      <DependentUpon>LogInSignUp.cs</DependentUpon>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -216,6 +448,260 @@
     <Folder Include="tollgate\pattern\dialog\" />
     <Folder Include="tollgate\pattern\dto\" />
     <Folder Include="tollgate\pattern\service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Font\NotoSansKR-Black.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Font\NotoSansKR-Bold.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Font\NotoSansKR-Medium.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Font\NotoSansKR-Regular.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Init\textbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\tgBotton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\initServerTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\connectButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\stepOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\stepOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\initWallpaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\signupBotton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\signupSubtitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\signupTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\loginButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\loginTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2%28x86 및 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\initButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\splashButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\splashWallpaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\splashSmile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainListBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSelectBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainWallpaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideSettingOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideMainOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideSettingOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSideMainOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainListTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainSelectTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainToggleOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainToggleOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFingerLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainOtpLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainUsbLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainFaceidLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainQrLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\mainPatternLabel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Init\loginTitleNoSignup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkBg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatWait.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatComplete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatDoing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkStatFailed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkLine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkPatternText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkUsbText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkFaceidText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkFingerText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main\checkPhoneText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setting\settingUsbTitle.png" />
+    <None Include="Resources\setting\settingUsbDel.png" />
+    <None Include="Resources\setting\settingUsbAdd.png" />
+    <None Include="Resources\setting\settingUsbUsing.png" />
+    <None Include="Resources\setting\settingUsbNone.png" />
+    <None Include="Resources\setting\settingPcTitle.png" />
+    <None Include="Resources\setting\settingPcSubtitle.png" />
+    <None Include="Resources\setting\settingPcMainPC.png" />
+    <None Include="Resources\setting\settingPC.png" />
+    <None Include="Resources\setting\settingPcCrown.png" />
+    <None Include="Resources\setting\settingPcEdit.png" />
+    <None Include="Resources\uncheck.png" />
+    <None Include="Resources\setting\settingAccountTitle.png" />
+    <None Include="Resources\setting\settingAccountId.png" />
+    <None Include="Resources\setting\settingAccountPasswd.png" />
+    <None Include="Resources\setting\settingAccountEdit.png" />
+    <None Include="Resources\setting\settingUsbOn.png" />
+    <None Include="Resources\setting\settingAccountOff.png" />
+    <None Include="Resources\setting\settingAccountOn.png" />
+    <None Include="Resources\setting\settingPcOff.png" />
+    <None Include="Resources\setting\settingUsbOff.png" />
+    <None Include="Resources\setting\settingPcOn.png" />
+    <None Include="Resources\setting\settingMenuBg.png" />
+    <None Include="Resources\setting\settingWallpaper.png" />
+    <None Include="Resources\main\mainUserIcon.png" />
+    <None Include="Resources\main\mainUserBg.png" />
+    <None Include="Resources\check.png" />
+    <Content Include="icon.ico" />
+    <Content Include="Resources\icon.ico" />
+    <Content Include="Resources\main\mainLogout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
