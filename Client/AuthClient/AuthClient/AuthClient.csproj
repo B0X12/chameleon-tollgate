@@ -109,7 +109,7 @@
       <DependentUpon>OtpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\otp\dto\AuthOtp.cs" />
-    <Compile Include="tollgate\otp\service\ErrorKind.cs" />
+    <Compile Include="tollgate\otp\service\ReturnMessage.cs" />
     <Compile Include="tollgate\otp\service\OtpService.cs" />
     <Compile Include="tollgate\usb\dialog\USBConfig.cs">
       <SubType>Form</SubType>

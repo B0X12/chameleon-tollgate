@@ -2,5 +2,5 @@ package com.chameleon.tollgate.otp.module;
 
 
 public interface IKeyProvider {
-	byte[] ComputeHmac(int hashtype, byte[] data);
+	byte[] ComputeHmac(final int hashtype,final byte[] data);
 }

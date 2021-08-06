@@ -25,6 +25,7 @@ public class Path {
 	public static final String AUTH_FINGERPRINT = AUTH + "finger/";
 	public static final String AUTH_FACEID = AUTH + "face/";
 	public static final String AUTH_OTP = AUTH + "otp/";
+	public static final String AUTH_QR = AUTH + "qr/";
 	
 	public static final String INIT = "/init/";
 	public static final String INIT_AND = INIT + "android/";
@@ -32,4 +33,8 @@ public class Path {
 	public static final String INIT_PATTERN = INIT + "pattern/";
 	public static final String INIT_FINGERPRINT = INIT + "finger/";
 	public static final String INIT_FACE = INIT + "face/";
+	
+	private static final String DATA = "/data/";
+	public static final String DATA_OTP = DATA + "otp/";
+	
 }

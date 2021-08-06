@@ -172,5 +172,9 @@ namespace AuthClient.tollgate.rest
         public const string REGISTER_FINGERPRINT = "register/finger/";
         public const string REGISTER_FACEID = "register/face/";
         public const string REGISTER_OTP = "register/otp/";
+
+        private const string DATA = "/data/";
+        public const string DATA_OTP = DATA + "otp/";
+        public const string DATA_QR = DATA + "qr/";
     }
 }

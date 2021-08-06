@@ -10,12 +10,13 @@ namespace AuthClient.tollgate.otp.service
     {
 		public const string SUCCESS = "SUCCESS";
 		public const string FAIL = "FAIL";
+		public const string UNKNOWN = "UNKNOWN";
 
-		public const string REGISTER_DATABASE = "REGISTER_DATABASE";
 		public const string REGISTER_INFORMATION = "REGISTER_INFORMATION";
+		public const string REGISTER_UNKNOWN = "REGISTER_UNKNOWN";
 
-		public const string VERIFY_DATABASE = "VERIFY_DATABASE";
 		public const string VERIFY_INFORMATION = "VERIFY_INFORMATION";
+		public const string VERIFY_UNKNOWN = "VERIFY_UNKNOWN";
 		public const string VERIFY_TIMEOUT = "VERIFY_TIMEOUT";
 		public const string VERIFY_FAIL = "VERIFY_FAIL";
     }
