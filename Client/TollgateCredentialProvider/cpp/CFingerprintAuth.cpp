@@ -275,14 +275,14 @@ DWORD WINAPI CFingerprintAuth::_AuthThreadProc(LPVOID lpParameter)
 			// 인증 실패
 			else
 			{
-				pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"안면 인증에 실패하였습니다");
+				pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"지문 인증에 실패하였습니다");
 				pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			}
 			break;
 
-			// 안면 인증 시간 타임아웃
+			// 지문 인증 시간 타임아웃
 		case rc->RESULT_CONNECTION_TIMEOUT:
-			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"안면 인증에 실패하였습니다");
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"지문 인증 시간이 만료되었습니다");
 			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 
@@ -314,3 +314,5 @@ DWORD WINAPI CFingerprintAuth::_AuthThreadProc(LPVOID lpParameter)
 
 	return 0;
 }
+
+

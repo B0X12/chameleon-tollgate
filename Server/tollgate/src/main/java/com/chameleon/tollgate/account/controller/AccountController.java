@@ -1,6 +1,7 @@
 package com.chameleon.tollgate.account.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 public class AccountController {
 	@Autowired
 	private AccountService accountService;
-	
+
 	// --------------- 로그인 ---------------
 	@PostMapping(path = Path.LOGIN)
 	public ResponseEntity<Response<Boolean>> logIn(@RequestHeader(value = "User-Agent") String userAgent,
@@ -131,7 +133,7 @@ public class AccountController {
 	}
 
 	// --------------- 사용자 아이디를 이용하여 Factor Flag 불러옴 ---------------
-	@GetMapping(path = "/account/factor/" + "{user}")
+	@GetMapping(path = Path.FACTOR_FLAG + "{user}")
 	public ResponseEntity<Response<Integer>> getFactorFlagByUser(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("user") String user, long timestamp) throws UnauthorizedUserAgentException, SQLException {
 		// User-Agent 값 검사
@@ -140,6 +142,53 @@ public class AccountController {
 
 			// 성공/실패는 모든 응답 OK로 처리, 결과 값(검색된 UID 문자열)로 탐색 여부 판단
 			Response<Integer> resp = new Response<Integer>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+
+	// --------------- 사용자 아이디의 Factor Flag 값 업데이트 ---------------
+	@PutMapping(path = Path.FACTOR_FLAG + "{user}/{flag}/{enable}")
+	public ResponseEntity<Response<Boolean>> updateFactorFlag(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("user") String user, @PathVariable("flag") int flag, @PathVariable("enable") boolean enable,
+			long timestamp) throws UnauthorizedUserAgentException, SQLException {
+		// User-Agent 값 검사
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = accountService.updateFactorFlag(user, flag, enable);
+
+			// 성공/실패는 모든 응답 OK로 처리, 결과 값(검색된 UID 문자열)로 탐색 여부 판단
+			Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+
+	// --------------- 사용자와 연동된 PC의 목록을 리턴함 ---------------
+	@GetMapping(path = Path.MAP_PCLIST + "{user}")
+	public ResponseEntity<Response<List<MapPC>>> getRegisteredPCList(
+			@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("user") String user, long timestamp)
+			throws UnauthorizedUserAgentException, SQLException {
+
+		if (userAgent.equals("Tollgate-client")) {
+			List<MapPC> result = accountService.getRegisteredPCList(user);
+			Response<List<MapPC>> resp = new Response<List<MapPC>>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+
+	// --------------- PC의 별명 변경 ---------------
+	@PutMapping(path = Path.UPDATE_PC_ALIAS)
+	public ResponseEntity<Response<Boolean>> updatePCAlias(@RequestHeader(value = "User-Agent") String userAgent,
+			@RequestBody MapPC mapPC, long timestamp) throws SQLException, UnauthorizedUserAgentException {
+
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = accountService.updatePCAlias(mapPC);
+			Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} else {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);

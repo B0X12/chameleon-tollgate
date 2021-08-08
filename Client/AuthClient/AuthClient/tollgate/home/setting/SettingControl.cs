@@ -24,6 +24,7 @@ namespace AuthClient.tollgate.home
             settingAccount = new SettingAccount();
             settingPC = new SettingPC();
             settingUSB = new SettingUSB();
+            settingPC.Visible = settingUSB.Visible = false;
 
             panel_content.Controls.Add(settingAccount);
             panel_content.Controls.Add(settingPC);

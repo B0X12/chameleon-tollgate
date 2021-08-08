@@ -57,7 +57,6 @@ public:
     BOOL RequestPatternInformation(WCHAR* user, WCHAR* sys_id);
     BOOL RequestFaceInformation(WCHAR* user, WCHAR* sys_id);
     BOOL RequestFingerprintInformation(WCHAR* user, WCHAR* sys_id);
-    BOOL RequestOTPIssue(WCHAR* user, WCHAR* sys_id);
     BOOL RequestOTPVerification(WCHAR* user, WCHAR* sys_id, WCHAR* otp);
     BOOL RequestQRIssue(WCHAR* user, WCHAR* sys_id);
     

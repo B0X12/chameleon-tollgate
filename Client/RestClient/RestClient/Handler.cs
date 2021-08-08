@@ -520,7 +520,6 @@ namespace RestClient
                     // 타임 스탬프 불일치
                     else
                     {
-                        Console.WriteLine("Timestamp mismatch");
                         return ReturnCode.RESULT_TIMESTAMP_MISMATCH;
                     }
                 }
@@ -545,9 +544,8 @@ namespace RestClient
             }
 
             // 존재하지 않는 서버로 연결 시도
-            catch (WebException e)
+            catch (WebException)
             {
-                Console.WriteLine(e.Message);
                 return ReturnCode.RESULT_CONNECTION_FAILED;
             }
         }

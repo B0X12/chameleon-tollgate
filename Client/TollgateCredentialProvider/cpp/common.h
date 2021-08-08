@@ -48,7 +48,6 @@ enum SAMPLE_FIELD_ID
     SFI_PASSWORD_INPUT          ,
     SFI_PASSWORD_VERIFY         ,
     SFI_OTP_INPUT               ,
-    SFI_OTP_REQUEST             ,
 
     SFI_NUM_FIELDS              ,  // Note: if new fields are added, keep NUM_FIELDS last.  This is used as a count of the number of fields
 };
@@ -77,30 +76,29 @@ static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
 
     /* --------------- USB 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_USB_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_USB_VERIFY
+    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_USB_VERIFY
 
     /* --------------- 패턴 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PATTERN_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PATTERN_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_PATTERN_REQUEST
 
     /* --------------- QR 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_QR_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_QR_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_QR_REQUEST
 
     /* --------------- 지문 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FINGERPRINT_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FINGERPRINT_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_FINGERPRINT_REQUEST
 
     /* --------------- 안면 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FACE_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FACE_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_FACE_REQUEST
 
     /* --------------- 패스워드 인증 및 OTP 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_OTP_MESSAGE
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PASSWORD_INPUT
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PASSWORD_VERIFY
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_OTP_INPUT
-    { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_OTP_REQUEST
 };
 
 // Field descriptors for unlock and logon.
@@ -139,8 +137,6 @@ static const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR s_rgCredProvFieldDescriptors[]
     { SFI_PASSWORD_INPUT,       CPFT_PASSWORD_TEXT,     L"패스워드 입력"                                   },
     { SFI_PASSWORD_VERIFY,      CPFT_SUBMIT_BUTTON,     L"Submit"                                        },
     { SFI_OTP_INPUT,            CPFT_EDIT_TEXT,         L"OTP 입력",                                      },
-    { SFI_OTP_REQUEST,          CPFT_COMMAND_LINK,      L"OTP 요청",       CPFG_STYLE_LINK_AS_BUTTON      },
-    
 };
 
 static const PWSTR s_rgComboBoxStrings[] =

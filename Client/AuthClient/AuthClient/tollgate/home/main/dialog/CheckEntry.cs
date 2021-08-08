@@ -20,6 +20,13 @@ namespace AuthClient.tollgate.home.main.dialog
             FAIL
         }
 
+        private CheckFlag flag;
+        public CheckFlag Flag
+        {
+            get { return flag; }
+            set { flag = value; }
+        }
+
         private CheckStat stat;
         public CheckStat Stat
         {
@@ -48,6 +55,8 @@ namespace AuthClient.tollgate.home.main.dialog
         public CheckEntry(CheckFlag kind)
         {
             InitializeComponent();
+
+            this.Flag = kind;
 
             switch (kind)
             {

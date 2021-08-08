@@ -19,6 +19,7 @@
 #include "CUSBAuth.h"
 #include "CPatternAuth.h"
 #include "CFaceAuth.h"
+#include "CFingerprintAuth.h"
 #include "CQRAuth.h"
 #include "RestClient.h"
 
@@ -170,10 +171,6 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	{
 		hr = SHStrDupW(L"", &_rgFieldStrings[SFI_OTP_INPUT]);
 	}
-	if (SUCCEEDED(hr))
-	{
-		hr = SHStrDupW(L"OTP 발급 요청", &_rgFieldStrings[SFI_OTP_REQUEST]);
-	}
 
 
 	if (SUCCEEDED(hr))
@@ -190,6 +187,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	_pUSBAuth = new CUSBAuth();
 	_pPatternAuth = new CPatternAuth();
 	_pFaceAuth = new CFaceAuth();
+	_pFingerprintAuth = new CFingerprintAuth();
 	_pQRAuth = new CQRAuth();
 
 	return hr;
@@ -305,6 +303,13 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 		}
 
 		delete rc;
+
+		// 모든 버튼 활성화
+		EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_FACE_REQUEST, TRUE);
 	}
 
 	return hr;
@@ -630,6 +635,13 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 
 			// --------------- 지문 인식 정보 요청 버튼 ---------------
 		case SFI_FINGERPRINT_REQUEST:
+
+			EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, FALSE);
+
+			if (_pFingerprintAuth != nullptr) {
+				_pFingerprintAuth->InitAuthThread(this);
+			}
+
 			//GoToNextAuthStage();
 			break;
 
@@ -1121,7 +1133,6 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PASSWORD_INPUT, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PASSWORD_VERIFY, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_INPUT, CPFS_HIDDEN);
-	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_REQUEST, CPFS_HIDDEN);
 
 
 	// ---------- 플래그 값 검사 후, 플래그에 해당하는 인증 요소 활성화 ----------
@@ -1159,7 +1170,6 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	{
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_MESSAGE, CPFS_DISPLAY_IN_BOTH);
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_INPUT, CPFS_DISPLAY_IN_BOTH);
-		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_REQUEST, CPFS_DISPLAY_IN_BOTH);
 	}
 
 	if (bFlag & AUTH_FACTOR_PASSWORD)

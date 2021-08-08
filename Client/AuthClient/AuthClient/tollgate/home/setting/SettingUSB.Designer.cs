@@ -29,10 +29,12 @@ namespace AuthClient.tollgate.home.setting
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel_table = new System.Windows.Forms.TableLayoutPanel();
             this.img_title = new System.Windows.Forms.PictureBox();
             this.panel_border = new System.Windows.Forms.Panel();
             this.panel_list = new System.Windows.Forms.FlowLayoutPanel();
+            this.usbRecognitionTimer = new System.Windows.Forms.Timer(this.components);
             this.panel_table.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).BeginInit();
             this.panel_border.SuspendLayout();
@@ -91,6 +93,11 @@ namespace AuthClient.tollgate.home.setting
             this.panel_list.Size = new System.Drawing.Size(680, 363);
             this.panel_list.TabIndex = 1;
             // 
+            // usbRecognitionTimer
+            // 
+            this.usbRecognitionTimer.Interval = 1000;
+            this.usbRecognitionTimer.Tick += new System.EventHandler(this.usbRecognitionTimer_Tick);
+            // 
             // SettingUSB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -100,6 +107,7 @@ namespace AuthClient.tollgate.home.setting
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SettingUSB";
             this.Size = new System.Drawing.Size(689, 720);
+            this.VisibleChanged += new System.EventHandler(this.SettingUSB_VisibleChanged);
             this.panel_table.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).EndInit();
             this.panel_border.ResumeLayout(false);
@@ -113,5 +121,6 @@ namespace AuthClient.tollgate.home.setting
         private System.Windows.Forms.PictureBox img_title;
         private System.Windows.Forms.FlowLayoutPanel panel_list;
         private System.Windows.Forms.Panel panel_border;
+        private System.Windows.Forms.Timer usbRecognitionTimer;
     }
 }

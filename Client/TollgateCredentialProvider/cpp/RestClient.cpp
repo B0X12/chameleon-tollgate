@@ -128,6 +128,20 @@ BOOL RestClient::RequestFaceInformation(WCHAR* user, WCHAR* sys_id)
     return _ExecuteRestClientProcess(wcCommandLine);
 }
 
+BOOL RestClient::RequestFingerprintInformation(WCHAR* user, WCHAR* sys_id)
+{
+    WCHAR wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --request-fingerprint [user] [sys_id]
+    wcscpy_s(wcCommandLine, 2048, L" --request-fingerprint ");
+    wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
 
 BOOL RestClient::RequestQRIssue(WCHAR* user, WCHAR* sys_id)
 {

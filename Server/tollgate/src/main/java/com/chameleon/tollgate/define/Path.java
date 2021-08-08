@@ -5,6 +5,8 @@ public class Path {
 	public static final String LOGIN = ACCOUNT + "login/";
 	public static final String SIGNUP = ACCOUNT + "signup/";
 	public static final String MAP_PC = ACCOUNT + "map/pc/";
+	public static final String MAP_PCLIST = ACCOUNT + "map/pclist/";
+	public static final String FACTOR_FLAG = ACCOUNT + "factor/";
 	
 	private static final String AD_ACCOUNT = ACCOUNT + "android/";
 	public static final String AD_LOGIN = AD_ACCOUNT + "login/";
@@ -32,4 +34,10 @@ public class Path {
 	public static final String INIT_PATTERN = INIT + "pattern/";
 	public static final String INIT_FINGERPRINT = INIT + "finger/";
 	public static final String INIT_FACE = INIT + "face/";
+	
+	public static final String UPDATE = "/update/";
+	public static final String UPDATE_PC_ALIAS = UPDATE + "pc/alias/";
+	public static final String UPDATE_USB_ALIAS = UPDATE + "usb/alias/";
+	
+	
 }

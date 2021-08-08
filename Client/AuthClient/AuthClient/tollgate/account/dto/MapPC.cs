@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuthClient.tollgate.account.dto
 {
-    class MapPC
+    public class MapPC
     {
         public string id { get; set; }
         public string pc { get; set; }

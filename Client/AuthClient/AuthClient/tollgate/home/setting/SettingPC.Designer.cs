@@ -30,10 +30,10 @@ namespace AuthClient.tollgate.home.setting
         private void InitializeComponent()
         {
             this.panel_table = new System.Windows.Forms.TableLayoutPanel();
-            this.panel_list = new System.Windows.Forms.FlowLayoutPanel();
             this.img_title = new System.Windows.Forms.PictureBox();
             this.img_subtitle = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_list = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_table.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_subtitle)).BeginInit();
@@ -64,16 +64,6 @@ namespace AuthClient.tollgate.home.setting
             this.panel_table.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.panel_table.Size = new System.Drawing.Size(689, 720);
             this.panel_table.TabIndex = 0;
-            // 
-            // panel_list
-            // 
-            this.panel_list.AutoScroll = true;
-            this.panel_list.BackColor = System.Drawing.Color.Transparent;
-            this.panel_list.Location = new System.Drawing.Point(0, 0);
-            this.panel_list.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_list.Name = "panel_list";
-            this.panel_list.Size = new System.Drawing.Size(678, 331);
-            this.panel_list.TabIndex = 2;
             // 
             // img_title
             // 
@@ -108,6 +98,16 @@ namespace AuthClient.tollgate.home.setting
             this.panel1.Size = new System.Drawing.Size(665, 331);
             this.panel1.TabIndex = 3;
             // 
+            // panel_list
+            // 
+            this.panel_list.AutoScroll = true;
+            this.panel_list.BackColor = System.Drawing.Color.Transparent;
+            this.panel_list.Location = new System.Drawing.Point(0, 0);
+            this.panel_list.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_list.Name = "panel_list";
+            this.panel_list.Size = new System.Drawing.Size(678, 331);
+            this.panel_list.TabIndex = 2;
+            // 
             // SettingPC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -117,6 +117,7 @@ namespace AuthClient.tollgate.home.setting
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "SettingPC";
             this.Size = new System.Drawing.Size(689, 720);
+            this.VisibleChanged += new System.EventHandler(this.SettingPC_VisibleChanged);
             this.panel_table.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.img_title)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_subtitle)).EndInit();

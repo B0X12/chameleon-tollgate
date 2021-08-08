@@ -30,7 +30,7 @@
 class CUSBAuth;
 class CPatternAuth;
 class CFaceAuth;
-//class CFingerprintAuth;
+class CFingerprintAuth;
 //class COTPAuth;
 class CQRAuth;
 
@@ -168,11 +168,11 @@ public:
     int _nAuthFactorProcessCount = 0;
 
 
-    CUSBAuth*            _pUSBAuth = nullptr;
-    CPatternAuth*        _pPatternAuth = nullptr;
-    CFaceAuth*           _pFaceAuth = nullptr;
-    //CFingerprintAuth*  _pFingerprintAuth = nullptr;
-    //COTPAuth*          _pOTPAuth = nullptr;
+    CUSBAuth*           _pUSBAuth = nullptr;
+    CPatternAuth*       _pPatternAuth = nullptr;
+    CFaceAuth*          _pFaceAuth = nullptr;
+    CFingerprintAuth*   _pFingerprintAuth = nullptr;
+    //COTPAuth*         _pOTPAuth = nullptr;
     CQRAuth*           _pQRAuth = nullptr;
 };
 

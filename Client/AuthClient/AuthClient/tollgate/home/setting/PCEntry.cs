@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuthClient.tollgate.account.dto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,17 +14,22 @@ namespace AuthClient.tollgate.home.setting
 {
     public partial class PCEntry : UserControl
     {
-        public delegate void TextChangeHandler(object sender, string beforeText, string afterText);
+        public delegate void TextChangeHandler(PCEntry sender, string beforeText, string afterText);
 
         [Category("Tollgate")]
         public event TextChangeHandler TextChange;
 
         [Category("Tollgate")]
-        public new string Text
+        public MapPC MapPCInfo
         {
-            get { return label_name.Text; }
-            set { label_name.Text = value; }
+            get { return mapPCInfo; }
+            set
+            {
+                label_name.Text = value.alias;
+                mapPCInfo = value;
+            }
         }
+        private MapPC mapPCInfo;
 
         [Category("Tollgate")]
         public bool MainPC

@@ -141,6 +141,16 @@ namespace AuthClient.tollgate.rest
             return querys;
         }
 
+        public void AddQueryString(string key, bool value)
+        {
+            querys += "&" + key + "=" + value;
+        }
+
+        public void AddQueryString(string key, int value)
+        {
+            querys += "&" + key + "=" + value;
+        }
+
         public void AddQueryString(string key, string value)
         {
             querys += "&" + key + "=" + value;
@@ -156,10 +166,12 @@ namespace AuthClient.tollgate.rest
     {
         public const string SERVER_HELLO = "";
         
+        /*** 계정 관리 관련 Path ***/
         public const string LOGIN = "account/login/";
         public const string SIGNUP = "account/signup/";
         public const string MAP_PC = "account/map/pc/";
-        public const string UNMAP_PC = "account/unmap/pc/";
+        public const string MAP_PCLIST = "account/map/pclist/";
+        public const string FACTOR_FLAG = "account/factor/";
 
         public const string AUTH_USB = "auth/usb/";
         public const string AUTH_PATTERN = "auth/pattern/";
@@ -172,5 +184,8 @@ namespace AuthClient.tollgate.rest
         public const string REGISTER_FINGERPRINT = "register/finger/";
         public const string REGISTER_FACEID = "register/face/";
         public const string REGISTER_OTP = "register/otp/";
+
+        public const string UPDATE_PC_ALIAS = "update/pc/alias/";
+        public const string UPDATE_USB_ALIAS = "update/usb/alias/";
     }
 }
