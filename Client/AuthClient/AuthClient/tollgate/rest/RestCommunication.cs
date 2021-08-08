@@ -187,5 +187,9 @@ namespace AuthClient.tollgate.rest
 
         public const string UPDATE_PC_ALIAS = "update/pc/alias/";
         public const string UPDATE_USB_ALIAS = "update/usb/alias/";
+		
+        private const string DATA = "/data/";
+        public const string DATA_OTP = DATA + "otp/";
+        public const string DATA_QR = DATA + "qr/";
     }
 }

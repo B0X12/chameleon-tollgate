@@ -1,5 +1,6 @@
 ﻿using AuthClient.tollgate.account.dialog;
 using AuthClient.tollgate.home.dialog;
+using AuthClient.tollgate.otp.dialog;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
@@ -22,6 +23,10 @@ namespace AuthClient.tollgate
         public MainForm()
         {
             InitializeComponent();
+
+            //OtpTest
+            //OtpTest ot = new OtpTest();
+            //ot.Show();
 
             fonts = new PrivateFontCollection();
             fonts.AddFontFile(Property.FONT_MEDIUM);

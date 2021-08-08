@@ -14,7 +14,7 @@ public class KeyHash implements IKeyProvider
 	private final byte[] KeyData;
 	private final int SecretKeyLength;
 
-	public KeyHash(byte[] Secretkey)
+	public KeyHash(final byte[] Secretkey)
 	{
 		if (!(Secretkey != null))
 		{

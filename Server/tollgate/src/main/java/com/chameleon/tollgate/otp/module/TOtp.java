@@ -17,8 +17,8 @@ public class TOtp{
 	
 		if(TestDebug)
 		{
-			System.out.println("\r\n #TOTP - SecretKey : " + SecretKey);
-			System.out.println("#TOTP - ByteGenderSecretKey : " + ByteGenderSecretKey);
+			System.out.println("\r\n #TOTP(Module) -  SecretKey : " + SecretKey);
+			System.out.println("#TOTP(Module) -  ByteGenderSecretKey : " + ByteGenderSecretKey);
 		}
 		this.secretKey = new KeyHash(ByteGenderSecretKey);
 		this.CreateCycle = CreateCycle; this.totpSize = totpSize; this.hashType = hashType;
@@ -31,7 +31,7 @@ public class TOtp{
 	
 	private String CreateTotpValue(final long timestamp)
 	{
-		long CalculateTimeStamp = CalculateTimeFromTimestamp(timestamp); //占쎌젟占쎄맒
+		long CalculateTimeStamp = CalculateTimeFromTimestamp(timestamp);
 		
 		return Compute(CalculateTimeStamp, hashType);
 	}
@@ -39,21 +39,21 @@ public class TOtp{
 	private long CalculateTimeFromTimestamp(final long timestamp)
 	{
 		if(TestDebug)
-			System.out.println("#TOTP - CalculateTimeFromTimestamp : " + (timestamp / ticksToSeconds) / CreateCycle);
+			System.out.println("#TOTP(Module) -  CalculateTimeFromTimestamp : " + (timestamp / ticksToSeconds) / CreateCycle);
 		return (timestamp / ticksToSeconds) / CreateCycle;
 	}
 	
-	private String Compute(final long CalculateTimeStamp, int hashType)
+	private String Compute(final long CalculateTimeStamp, final int hashType)
 	{
 		byte[] TimestampLittleBytes = KeyUtil.GetLittleEndianBytes(CalculateTimeStamp);
 		
 		if(TestDebug)
-			System.out.println("#TOTP - Compute = TimestampLittleBytes : " + TimestampLittleBytes);
+			System.out.println("#TOTP(Module) -  Compute = TimestampLittleBytes : " + TimestampLittleBytes);
 
 		long Hashotp = CalculateHashOtp(TimestampLittleBytes);
 		
 		if(TestDebug)
-			System.out.println("#TOTP - Compute = Hashotp : " + Hashotp);
+			System.out.println("#TOTP(Module) -  Compute = Hashotp : " + Hashotp);
 		
 		return CalculateOtp(Hashotp);
 	}
@@ -76,8 +76,7 @@ public class TOtp{
         long truncatedValue = ((int)input % (int)Math.pow(10, this.totpSize)); //EX:) 2116646656 % 1000000(DigitCount) = 646656 -> OTP VALUE
         
         String otp = String.valueOf(truncatedValue);
-        if(otp.length() <= 5)
-        	System.out.println("臾몄젣諛쒖깮. 5湲��옄");
+
         return otp; 
     }
 }

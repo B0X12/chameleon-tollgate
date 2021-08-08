@@ -9,6 +9,7 @@ public class LogTag {
     private static final String _FACEID = "_FaceID";
     private static final String _OTP = "_OTP";
     private static final String _ACCOUNT = "_ACCOUNT";
+    private static final String _QR = "_QR";
 
     public static final String TOLLGATE = "Tollgate";
     public static final String REST = TOLLGATE + _REST;
@@ -20,6 +21,7 @@ public class LogTag {
     public static final String AUTH_FINGERPRINT = TOLLGATE + _FINGERPRINT;
     public static final String AUTH_FACEID = TOLLGATE + _FACEID;
     public static final String AUTH_OTP = TOLLGATE + _OTP;
+    public static final String AUTH_QR = TOLLGATE + _QR;
 
     public static final String REST_USB = REST + _USB;
     public static final String REST_PATTERN = REST + _PATTERN;
@@ -27,4 +29,5 @@ public class LogTag {
     public static final String REST_FACEID = REST + _FACEID;
     public static final String REST_OTP = REST + _OTP;
     public static final String REST_ACCOUNT = REST + _ACCOUNT;
+    public static final String REST_QR = REST + _OTP;
 }

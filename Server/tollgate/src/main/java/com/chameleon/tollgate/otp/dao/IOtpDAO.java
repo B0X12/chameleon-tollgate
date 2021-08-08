@@ -1,14 +1,11 @@
 package com.chameleon.tollgate.otp.dao;
 
-import com.chameleon.tollgate.otp.dto.AuthOtp;
 
-public interface IOtpDAO {
-	long GetUserTimestamp(String UserID);
-	String GetUserOtp(String UserID);
-	int GetUserProcedure(String UserID);
-	String GetUserSid(String UserID);
-	String GetUserToken(String UserID);
-	boolean Register(AuthOtp OCD);
-	boolean Delete(AuthOtp OCD);
-
+public interface IOtpDAO 
+{
+	String GetUserSecretKey(final String userId);
+	Long GetUserRegisterTime(final String userId); // Long = null O || long = null X
+	String GetUserSid(final String userId);
+	String GetUserToken(final String userId);
+	boolean Register(final String userId, final String secertKey, final long registerTimeStamp);
 }

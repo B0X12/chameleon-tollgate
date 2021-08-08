@@ -52,12 +52,13 @@ hash TEXT NOT NULL,
 CONSTRAINT auth_face_fk_id FOREIGN KEY(id)
 REFERENCES account(id));
 
-CREATE TABLE auth_otp(
-id TEXT NOT NULL PRIMARY KEY,
-timestamp INTEGER NOT NULL,
-otp TEXT NULL,
-CONSTRAINT auth_otp_fk_id FOREIGN KEY(id)
-REFERENCES account(id));
+CREATE TABLE "auth_otp" (
+"id" TEXT NOT NULL,
+"secretkey" TEXT NOT NULL,
+"registertime" INTEGER NOT NULL,
+PRIMARY KEY("id"),
+CONSTRAINT "auth_otp_fk_id" FOREIGN KEY("id") REFERENCES "account"("id")
+);
 
 CREATE TABLE history(
 id TEXT NOT NULL,
