@@ -81,10 +81,7 @@ public class FingerPrintManager {
 
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 // 등록 된 생체 인식 또는 장치 자격 증명이 없음
-                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-                enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                        BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
-
+                Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
                 fragmentActivity.startActivity(enrollIntent); // 액티비티를 열어주고 결과값 전달
 
                 Toast.makeText(context, "지문을 등록해주세요.", Toast.LENGTH_SHORT).show();

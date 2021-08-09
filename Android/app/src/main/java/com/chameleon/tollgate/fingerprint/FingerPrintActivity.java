@@ -25,8 +25,8 @@ import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE
 public class FingerPrintActivity extends AppCompatActivity implements FingerPrintManager.Callback
 {
     private int cnt;
-    Button btn_fingerprint;
-    Button btn_fingerprintEnroll;
+    private Button btn_fingerprint;
+    private Button btn_fingerprintEnroll;
 
     private FingerPrintManager manager_fingerprint;
     private final FingerprintHandler handler = new FingerprintHandler(this);
@@ -57,7 +57,6 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
 
         Intent intent = getIntent();
         Context context = this;
-        FingerPrintActivity activity = (FingerPrintActivity) context;
 
         btn_fingerprint.setOnClickListener(new View.OnClickListener()
         {
@@ -69,14 +68,12 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                     // 인증이 가능한 상태면 인증 수행
                     manager_fingerprint.authenticate();
 
+                    /*
                     // 서버로 인증 가능한 상태임을 전송
                     RestTask rest = new RestTask(Long.parseLong(intent.getStringExtra("timestamp"))
                             , AUTH_FINGER_ENROLLED, context, handler);
                     rest.execute();
-                }
-                else
-                {
-                    btn_fingerprint.setEnabled(false); // 버튼 비활성화
+                     */
                 }
             }
         });
@@ -85,9 +82,8 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         {
             @Override public void onClick(View v)
             {
-                // manager_fingerprint.checkIfBiometricFeatureAvailable();
-                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-                startActivity(enrollIntent);
+                Intent finger_enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+                startActivity(finger_enrollIntent);
             }
         });
     }
