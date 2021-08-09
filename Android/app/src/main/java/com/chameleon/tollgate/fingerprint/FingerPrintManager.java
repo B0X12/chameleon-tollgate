@@ -85,11 +85,11 @@ public class FingerPrintManager {
                 enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                         BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
 
-                fragmentActivity.startActivity(enrollIntent);
-                // 액티비티를 열어주고 결과값 전달
+                fragmentActivity.startActivity(enrollIntent); // 액티비티를 열어주고 결과값 전달
 
                 Toast.makeText(context, "지문을 등록해주세요.", Toast.LENGTH_SHORT).show();
                 Log.e(LogTag.AUTH_FINGERPRINT, "There are no registered fingerprints.");
+
                 return false;
         }
         return false;
@@ -111,34 +111,34 @@ public class FingerPrintManager {
         executor = ContextCompat.getMainExecutor(context);
         biometricPrompt = new BiometricPrompt(fragmentActivity
                 , executor, new BiometricPrompt.AuthenticationCallback()
-                {
-                    @SneakyThrows
-                    @Override
-                    public void onAuthenticationError(int errorCode,
-                                                      @NonNull CharSequence errString)
-                    {
-                        super.onAuthenticationError(errorCode, errString);
-                        callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_ERROR, errString);
-                    }
+        {
+            @SneakyThrows
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString)
+            {
+                super.onAuthenticationError(errorCode, errString);
+                callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_ERROR, errString);
+            }
 
-                    @SneakyThrows
-                    @Override
-                    public void onAuthenticationSucceeded(
-                            @NonNull BiometricPrompt.AuthenticationResult result)
-                    {
-                        super.onAuthenticationSucceeded(result);
-                        callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_SUCCESSFUL,
-                                "");
-                    }
+            @SneakyThrows
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result)
+            {
+                super.onAuthenticationSucceeded(result);
+                callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_SUCCESSFUL,
+                        "");
+            }
 
-                    @SneakyThrows
-                    @Override
-                    public void onAuthenticationFailed()
-                    {
-                        super.onAuthenticationFailed();
-                        callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_FAILED, "");
-                    }
-                });
+            @SneakyThrows
+            @Override
+            public void onAuthenticationFailed()
+            {
+                super.onAuthenticationFailed();
+                callback.onBiometricAuthenticationResult(Callback.AUTHENTICATION_FAILED, "");
+            }
+        });
 
         showBiometricPrompt();
     }
@@ -160,9 +160,10 @@ public class FingerPrintManager {
         String AUTHENTICATION_FAILED = "인증 실패";
         String AUTHENTICATION_ERROR = "에러 발생";
 
-        boolean AUTH_SUCCESSFUL = true;
-        boolean AUTH_FAILED = false;
-        boolean AUTH_ERROR = false;
+        int AUTH_SUCCESSFUL = 121;
+        int AUTH_FAILED = 122;
+        int AUTH_ERROR = 123;
+        int AUTH_FINGER_ENROLLED = 131;
     }
 
 }

@@ -24,7 +24,7 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 	public String GetToken(String id)
 	{
 		PreparedStatement pstmt = null;
-	
+		
 		String sql = "SELECT token FROM map_android WHERE id = ?";
 		// String sql = "SELECT token FROM map_android WHERE id = '" + id + "'";
 		
@@ -45,6 +45,7 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 				System.out.println("#GetToken Exception : " + e);
 			}
 		}
+		super.close();
 		return result;
 	}
 }

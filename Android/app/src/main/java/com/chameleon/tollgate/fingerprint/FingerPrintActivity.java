@@ -5,20 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.define.LogTag;
 
 import java.util.concurrent.ExecutionException;
 
+import static android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 public class FingerPrintActivity extends AppCompatActivity implements FingerPrintManager.Callback
 {
+    private int cnt;
     Button btn_fingerprint;
     Button btn_fingerprintEnroll;
 
@@ -39,6 +45,8 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        cnt = 0;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_fingerprint);
 
@@ -46,6 +54,10 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);
 
         manager_fingerprint = FingerPrintManager.getInstance(this);
+
+        Intent intent = getIntent();
+        Context context = this;
+        FingerPrintActivity activity = (FingerPrintActivity) context;
 
         btn_fingerprint.setOnClickListener(new View.OnClickListener()
         {
@@ -56,6 +68,11 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                 {
                     // 인증이 가능한 상태면 인증 수행
                     manager_fingerprint.authenticate();
+
+                    // 서버로 인증 가능한 상태임을 전송
+                    RestTask rest = new RestTask(Long.parseLong(intent.getStringExtra("timestamp"))
+                            , AUTH_FINGER_ENROLLED, context, handler);
+                    rest.execute();
                 }
                 else
                 {
@@ -68,8 +85,9 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         {
             @Override public void onClick(View v)
             {
-                manager_fingerprint.checkIfBiometricFeatureAvailable();
-                // 결과값 반환받기
+                // manager_fingerprint.checkIfBiometricFeatureAvailable();
+                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+                startActivity(enrollIntent);
             }
         });
     }
@@ -77,7 +95,7 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
     @Override public void onBiometricAuthenticationResult(String result, CharSequence errString) throws ExecutionException, InterruptedException {
         Intent intent = getIntent();
         Context context = this;
-        boolean restResult = false;
+        int restResult = 0;
 
         switch (result)
         {
@@ -95,6 +113,8 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                         Toast.LENGTH_SHORT).show();
                 Log.d(LogTag.AUTH_FINGERPRINT, "AUTHENTICATION_FAILED");
                 restResult = AUTH_FAILED;
+
+                if(++cnt < 5) { return; }
                 break;
 
             case AUTHENTICATION_ERROR:

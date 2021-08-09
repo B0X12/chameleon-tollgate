@@ -20,6 +20,7 @@ import com.chameleon.tollgate.rest.exception.NoUserException;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 import com.chameleon.tollgate.fingerprint.service.fingerService;
+import com.chameleon.tollgate.fingerprint.AuthResult;
 import com.chameleon.tollgate.define.Path;
 
 /*
@@ -83,7 +84,7 @@ public class fingerController
 	// 안드로이드 -> 서버로 값을 전송할 때
 	@PostMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> AuthResult(@PathVariable("id") String id
-			, long timestamp, boolean restResult
+			, long timestamp, int restResult
 			, @RequestHeader(value = "User-Agent") String userAgent) throws NoUserException, InvalidRequestException, UnauthorizedUserAgentException
 	{
 		if(!this.sessions.isExist(new SessionTime(id, timestamp)))
@@ -91,22 +92,36 @@ public class fingerController
 		
 		if (userAgent.equals("Tollgate-client")) // 접근제어
 		{
-			this.status.verify(id, restResult); // 해당 사용자의 인증 결과를 설정
-			
-			if (restResult == true)
+			this.status.verify(id, true); // 해당 사용자의 인증 결과를 설정
+					
+			if (restResult == AuthResult.AUTH_SUCCESSFUL)
 			{
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, true, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.OK);
 			}
-			else
+			else if (restResult == AuthResult.AUTH_FAILED)
 			{
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
+			}
+			else if (restResult == AuthResult.AUTH_ERROR)
+			{
+				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
+				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
+			}
+			else if (restResult == AuthResult.AUTH_FINGER_ENROLLED)
+			{
+				try {
+					service.SetFingerEnrolled(id, timestamp);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		else // 다른 곳에서 접속했을 때
 		{
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
+		return null;
 	}	
 }
