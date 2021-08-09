@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivity activity = this;
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, CAMERA}, MODE_PRIVATE);
         tollgateLog.setLogPath(getExternalFilesDir("Tollgate/Logs/").getAbsolutePath());
         tollgateLog.i(LogFactor.LOGIN, faceCode.UNKNOWN_AUTH);
 
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
 
         switch (requestCode){
             case PERMISSIONS_REQUEST:
@@ -178,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         else{
-
                             // 얼굴 등록 기능
                             StartFaceRegisterActivity();
                         }
