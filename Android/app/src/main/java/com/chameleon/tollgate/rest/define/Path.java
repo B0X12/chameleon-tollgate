@@ -15,7 +15,9 @@ public enum Path {
     AD_ID("/account/android/id/"),
 
     REGIST_PATTERN("/register/pattern/"),
-    REGIST_FACE("/register/face/");
+    REGIST_FACE("/register/face/"),
+
+    HISTORY("/history/");
 
     private final String value;
 

@@ -1,75 +1,74 @@
 package com.chameleon.tollgate.login;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chameleon.tollgate.HomeActivity;
+import com.chameleon.tollgate.Activities.HistoryActivity;
 import com.chameleon.tollgate.R;
-import com.chameleon.tollgate.Util;
+import com.chameleon.tollgate.faceauth.AuthFaceActivity;
+import com.chameleon.tollgate.faceauth.FaceVar;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
-import com.chameleon.tollgate.util.tollgateLog.dto.LogLevel;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
 import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
 import com.chameleon.tollgate.pattern.PatternMsg;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.chameleon.tollgate.viewitem.authAdapter;
+import com.chameleon.tollgate.viewitem.authItem;
+import com.chameleon.tollgate.viewitem.regAdapter;
 
 import com.chameleon.tollgate.define.LogTag;
 
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
+import static android.Manifest.permission.CAMERA;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CFGFIlE = "config.cfg";
     public static String USER_ID = null;
     public static String SERVER_IP = null; //10.0.2.2
-    private final LoginHandler handler = new LoginHandler(this);
-
-    private static class LoginHandler extends Handler {
-        //private final WeakReference<MainActivity> reference;
-        MainActivity activity;
-
-        public LoginHandler(MainActivity activity) {
-            super(Looper.getMainLooper());
-            this.activity = activity;
-            //this.reference = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch(msg.what){
-                case PatternMsg.TOAST_MSG:
-                    Toast.makeText(activity, (String)msg.obj, Toast.LENGTH_SHORT).show();
-                    break;
-                case PatternMsg.TOAST_ERROR:
-                    Toast.makeText(activity, "Exception : " + msg.obj, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    }
+    static final int PERMISSIONS_REQUEST = 0x0000001;
 
     public MainActivity(){
     }
 
-    static {
-        System.loadLibrary("opencv_java4");
-        System.loadLibrary("native-lib");
+
+    private RecyclerView authRecyclerView, regRecyclerView, etcRecyclerView;
+    private ArrayList<authItem> authList, regList, etcList;
+
+    private long backPressedTime = 0;
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() > backPressedTime + 2000){
+            backPressedTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), "뒤로가기 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+        else if(System.currentTimeMillis() <= backPressedTime + 2000){
+            finish();
+        }
     }
 
-    Button btn_tmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,127 +78,139 @@ public class MainActivity extends AppCompatActivity {
         MainActivity activity = this;
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
-        tollgateLog.setLogPath(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tollgate/Logs");
+        tollgateLog.setLogPath(getExternalFilesDir("Tollgate/Logs/").getAbsolutePath());
+        tollgateLog.i(LogFactor.LOGIN, faceCode.UNKNOWN_AUTH);
 
-        Button btnLogin = findViewById(R.id.btn_login);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        authRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_auth);
+        regRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_reg);
+
+        UITask uiInit = new UITask();
+        uiInit.execute(activity);
+
+
+
+        TextView userID = findViewById(R.id.text_userID);
+        userID.setText(MainActivity.USER_ID);
+
+        TextView historyUser = findViewById(R.id.history_userID_text);
+        historyUser.setText(MainActivity.USER_ID);
+
+        Button historyButton = findViewById(R.id.history_button);
+        historyButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                try {
-                    EditText editID = findViewById(R.id.edit_id);
-                    MainActivity.USER_ID = editID.getText().toString();
-                    String pwd = Util.getHash(((TextView) findViewById(R.id.edit_pwd)).getText().toString());
-                    LoginTask rest = new LoginTask(activity, handler, pwd, Util.getTimestamp());
-                    Boolean result = rest.execute().get();
-                    if(result == null)
-                        return;
-                    else if(!result) {
-                        Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다.", Toast.LENGTH_LONG).show();
-                        MainActivity.USER_ID = null;
-                        return;
-                    }
-                    if(editID.isEnabled()) {
-                        RegistTokenTask regitTask = new RegistTokenTask(activity, handler, FirebaseMessaging.getInstance().getToken().getResult(), Util.getTimestamp());
-                        Boolean registed = regitTask.execute().get();
-                        if (!registed) {
-                            Toast.makeText(activity, "기기를 등록하지 못했습니다.", Toast.LENGTH_SHORT).show();
-                            MainActivity.USER_ID = null;
-                            return;
+                Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
+                historyIntent.putExtra("userID", MainActivity.USER_ID);
+                startActivity(historyIntent);
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        switch (requestCode){
+            case PERMISSIONS_REQUEST:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    StartFaceRegisterActivity();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean isGranted(String permission){
+        return (ActivityCompat.checkSelfPermission(this, CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    class UITask extends AsyncTask<MainActivity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(MainActivity... activities) {
+            authList = new ArrayList<>();
+            authList.add(new authItem(R.drawable.main_auth_otp_group,
+                    new authItem.OnItemClickListener() {
+                        @Override
+                        public void onClick() {
+                            // otp 기능 실행
+                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+            );
+
+            authList.add(new authItem(R.drawable.main_auth_qr_group,
+                    new authItem.OnItemClickListener() {
+                        @Override
+                        public void onClick() {
+                            // qr 기능 실행
+                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+            );
+            authRecyclerView.setAdapter(new authAdapter(authList));
+            authRecyclerView.setLayoutManager(new LinearLayoutManager(activities[0], RecyclerView.HORIZONTAL, false));
+            authRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+            regList = new ArrayList<>();
+            regList.add(new authItem(R.drawable.main_register_fingerprint_group, new authItem.OnItemClickListener(){
+                @Override
+                public void onClick(){
+                    // 지문 등록 기능
+                    Toast.makeText(getApplicationContext(), "reg test1", Toast.LENGTH_SHORT).show();
+                }
+            }));
+            regList.add(new authItem(R.drawable.main_register_faceid_group, new authItem.OnItemClickListener(){
+                @Override
+                public void onClick(){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        if(!isGranted(CAMERA)){
+                            if(ActivityCompat.shouldShowRequestPermissionRationale(activities[0], CAMERA)){
+                                ActivityCompat.requestPermissions(activities[0], new String[]{CAMERA}, PERMISSIONS_REQUEST);
+                            }
+                            else{
+                                ActivityCompat.requestPermissions(activities[0], new String[]{CAMERA}, PERMISSIONS_REQUEST);
+                            }
+                        }
+                        else{
+
+                            // 얼굴 등록 기능
+                            StartFaceRegisterActivity();
                         }
                     }
-
-                    Intent homeIntent = new Intent(activity, HomeActivity.class);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(homeIntent);
-                } catch (Exception ex) {
-                    Log.d(LogTag.ACCOUNT, "Exception : " + ex.getMessage());
-                    MainActivity.USER_ID = null;
                 }
-            }
-        });
-
-        EditText editPwd = findViewById(R.id.edit_pwd);
-        editPwd.setOnKeyListener(new View.OnKeyListener(){
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode != KeyEvent.KEYCODE_ENTER)
-                    return false;
-                Button btnLogin = findViewById(R.id.btn_login);
-                btnLogin.callOnClick();
-                return false;
-            }
-        });
-
-        EditText editServer = findViewById(R.id.edit_server);
-        editServer.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode != KeyEvent.KEYCODE_ENTER)
-                    return false;
-                LoginService loginService = new LoginService();
-                String ip = ((EditText)v).getText().toString();
-                if(!loginService.checkValidIP(ip)) {
-                    Toast.makeText(activity, "서버 주소의 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
-                    v.requestFocus();
-                    return true;
+            }));
+            regList.add(new authItem(R.drawable.main_register_pattern_group, new authItem.OnItemClickListener(){
+                @Override
+                public void onClick(){
+                    // 패턴 등록 기능
+                    Toast.makeText(getApplicationContext(), "reg test3", Toast.LENGTH_SHORT).show();
                 }
-                loginService.setServerIP(activity, ip);
-                try {
-                    if (!loginService.checkServer(activity, handler)) {
-                        Toast.makeText(activity, "서버와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        loginService.unsetServerIP(activity);
-                        return true;
-                    }
+            }));
+            regRecyclerView.setAdapter(new regAdapter(regList));
+            regRecyclerView.setLayoutManager(new LinearLayoutManager(activities[0]));
+            regRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-                    if(!loginService.saveServerIP(activity)) {
-                        Toast.makeText(activity, "서버 주소를 저장할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        loginService.unsetServerIP(activity);
-                        return true;
-                    }
 
-                    loginService.beforeSetID(activity);
-                    String id = loginService.getID(activity, handler);
-                    if(id == null)
-                        return false;
-                    loginService.setID(activity, id);
-                    return false;
-                } catch (Exception e) {
-                    Toast.makeText(activity, "서버와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                    loginService.unsetServerIP(activity);
-                    return true;
-                }
-            }
-        });
-
-        LoginService loginService = new LoginService();
-        loginService.beforeSetServer(this);
-        try {
-            String ip = loginService.getServerIP(this);
-            if(ip == null)
-                return;
-            loginService.setServerIP(this, ip);
-
-            if(!loginService.checkServer(this, this.handler)) {
-                Toast.makeText(this, "서버와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                loginService.unsetServerIP(this);
-                return;
-            }
-
-            loginService.beforeSetID(this);
-            String id = loginService.getID(this, this.handler);
-            if(id == null)
-                return;
-            loginService.setID(this, id);
-        } catch (IOException e) {
-            Toast.makeText(this, "설정 파일을 열 수 없습니다.", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(this, "서버와 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-            loginService.unsetServerIP(activity);
+            return null;
         }
+    }
+
+    public void StartFaceRegisterActivity(){
+
+        Intent setFace = new Intent(getApplicationContext(), AuthFaceActivity.class);
+        setFace.putExtra("mode", "train");
+        startActivity(setFace);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 }

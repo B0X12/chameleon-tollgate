@@ -8,7 +8,8 @@ public enum HistoryFactor {
     PATTERN("pattern"),
     OTP("otp"),
     FACE("face"),
-    USB("usb");
+    USB("usb"),
+    QR("qr");
 
     private final String factor;
     private HistoryFactor(String factor){ 

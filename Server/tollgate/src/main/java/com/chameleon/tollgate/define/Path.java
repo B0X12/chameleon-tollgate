@@ -32,4 +32,6 @@ public class Path {
 	public static final String INIT_PATTERN = INIT + "pattern/";
 	public static final String INIT_FINGERPRINT = INIT + "finger/";
 	public static final String INIT_FACE = INIT + "face/";
+	
+	public static final String HISTORY = "/history/";
 }

@@ -27,4 +27,6 @@ public class LogTag {
     public static final String REST_FACEID = REST + _FACEID;
     public static final String REST_OTP = REST + _OTP;
     public static final String REST_ACCOUNT = REST + _ACCOUNT;
+
+    public static final String HISTORY = "Tollgate_History";
 }
