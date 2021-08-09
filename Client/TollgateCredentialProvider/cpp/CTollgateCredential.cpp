@@ -15,8 +15,12 @@
 #include <unknwn.h>
 #include "guid.h"
 #include "CTollgateCredential.h"
+
 #include "CUSBAuth.h"
 #include "CPatternAuth.h"
+#include "CFaceAuth.h"
+#include "CFingerprintAuth.h"
+#include "CQRAuth.h"
 #include "RestClient.h"
 
 
@@ -97,7 +101,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"인증 시작", &_rgFieldStrings[SFI_USB_VERIFY]);
+		hr = SHStrDupW(L"USB 인식 시작", &_rgFieldStrings[SFI_USB_VERIFY]);
 	}
 
 	/*
@@ -105,11 +109,23 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	 */
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"버튼을 누른 후 패턴 정보를 요청하십시오", &_rgFieldStrings[SFI_PATTERN_MESSAGE]);
+		hr = SHStrDupW(L"버튼을 눌러 패턴 인증을 요청하십시오", &_rgFieldStrings[SFI_PATTERN_MESSAGE]);
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"패턴 인증 시작", &_rgFieldStrings[SFI_PATTERN_REQUEST]);
+		hr = SHStrDupW(L"Android로 패턴 인증 요청", &_rgFieldStrings[SFI_PATTERN_REQUEST]);
+	}
+
+	/*
+	 *  QR 인증 관련
+	 */
+	if (SUCCEEDED(hr))
+	{
+		hr = SHStrDupW(L"버튼을 눌러 QR 코드를 생성하십시오", &_rgFieldStrings[SFI_QR_MESSAGE]);
+	}
+	if (SUCCEEDED(hr))
+	{
+		hr = SHStrDupW(L"QR 코드 발급", &_rgFieldStrings[SFI_QR_REQUEST]);
 	}
 
 	/*
@@ -117,11 +133,11 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	 */
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"버튼을 누른 후 지문 정보를 요청하십시오", &_rgFieldStrings[SFI_FINGERPRINT_MESSAGE]);
+		hr = SHStrDupW(L"버튼을 눌러 지문 인증을 요청하십시오", &_rgFieldStrings[SFI_FINGERPRINT_MESSAGE]);
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"지문 인증 시작", &_rgFieldStrings[SFI_FINGERPRINT_REQUEST]);
+		hr = SHStrDupW(L"Android로 지문 인증 요청", &_rgFieldStrings[SFI_FINGERPRINT_REQUEST]);
 	}
 
 	/*
@@ -129,11 +145,11 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	 */
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"버튼을 누른 후 안면 정보를 요청하십시오", &_rgFieldStrings[SFI_FACE_MESSAGE]);
+		hr = SHStrDupW(L"버튼을 눌러 안면 인증을 요청하십시오", &_rgFieldStrings[SFI_FACE_MESSAGE]);
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"안면 인증 시작", &_rgFieldStrings[SFI_FACE_REQUEST]);
+		hr = SHStrDupW(L"Android로 안면 인증 요청", &_rgFieldStrings[SFI_FACE_REQUEST]);
 	}
 
 	/*
@@ -141,7 +157,7 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	 */
 	if (SUCCEEDED(hr))
 	{
-		hr = SHStrDupW(L"OTP 요청 후 인증하십시오", &_rgFieldStrings[SFI_OTP_MESSAGE]);
+		hr = SHStrDupW(L"비밀번호와 OTP 값을 입력하십시오", &_rgFieldStrings[SFI_OTP_MESSAGE]);
 	}
 	if (SUCCEEDED(hr))
 	{
@@ -154,10 +170,6 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	if (SUCCEEDED(hr))
 	{
 		hr = SHStrDupW(L"", &_rgFieldStrings[SFI_OTP_INPUT]);
-	}
-	if (SUCCEEDED(hr))
-	{
-		hr = SHStrDupW(L"OTP 요청", &_rgFieldStrings[SFI_OTP_REQUEST]);
 	}
 
 
@@ -174,8 +186,9 @@ HRESULT CTollgateCredential::Initialize(CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus,
 	// 플래그 초기화
 	_pUSBAuth = new CUSBAuth();
 	_pPatternAuth = new CPatternAuth();
-
-	//Sleep(5000);
+	_pFaceAuth = new CFaceAuth();
+	_pFingerprintAuth = new CFingerprintAuth();
+	_pQRAuth = new CQRAuth();
 
 	return hr;
 }
@@ -202,7 +215,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			token = wcstok_s(NULL, L"-", &context);
 		}
 
-		//WCHAR wszSystemIdentifier[50] = { 0, };
 
 		// SID에서 시스템 고유 식별값 추출 및 세팅
 		token = wcstok_s(NULL, L"-", &context);
@@ -216,7 +228,6 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 		token = wcstok_s(NULL, L"-", &context);
 		wcscat_s(wszSystemIdentifier, 50, token);
 
-		//MessageBox(0, wszSystemIdentifier, L"SID 가공", 0);
 
 		// 서버로부터 해당 PC와 매핑된 사용자의 factor flag를 얻어옴
 		RestClient* rc = new RestClient();
@@ -259,9 +270,9 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			{
 				// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
 				wchar_t wcMessageFromServer[2048] = { 0, };
-				DWORD retCode = rc->GetRestClientExitCode();
+				DWORD dwRetCode = rc->GetRestClientExitCode();
 
-				switch (retCode)
+				switch (dwRetCode)
 				{
 					// 서버와 연결 성공
 				case rc->RESULT_CONNECTION_SUCCESS:
@@ -291,9 +302,14 @@ HRESULT CTollgateCredential::Advise(_In_ ICredentialProviderCredentialEvents* pc
 			_bAuthFactorFlag = AUTH_FACTOR_INVALID;
 		}
 
-		
-
 		delete rc;
+
+		// 모든 버튼 활성화
+		EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
+		EnableAuthStartButton(SFI_PATTERN_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
+		EnableAuthStartButton(SFI_FACE_REQUEST, TRUE);
 	}
 
 	return hr;
@@ -592,6 +608,7 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 
 			break;
 
+
 			// --------------- 패턴 정보 요청 버튼 ---------------
 		case SFI_PATTERN_REQUEST:
 
@@ -603,10 +620,6 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 			
 			break;
 
-			// --------------- 지문 정보 요청 버튼 ---------------
-		case SFI_FINGERPRINT_REQUEST:
-			GoToNextAuthStage();
-			break;
 
 			// --------------- 안면 인식 정보 요청 버튼 ---------------
 		case SFI_FACE_REQUEST:
@@ -619,6 +632,30 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 
 			break;
 
+
+			// --------------- 지문 인식 정보 요청 버튼 ---------------
+		case SFI_FINGERPRINT_REQUEST:
+
+			EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, FALSE);
+
+			if (_pFingerprintAuth != nullptr) {
+				_pFingerprintAuth->InitAuthThread(this);
+			}
+
+			//GoToNextAuthStage();
+			break;
+
+
+			// --------------- QR 정보 요청 버튼 ---------------
+		case SFI_QR_REQUEST:
+
+			EnableAuthStartButton(SFI_QR_REQUEST, FALSE);
+
+			if (_pQRAuth != nullptr) {
+				_pQRAuth->InitAuthThread(this);
+			}
+			
+			break;
 
 		default:
 			hr = E_INVALIDARG;
@@ -904,8 +941,28 @@ void CTollgateCredential::GoToNextAuthStage()
 		}
 		break;
 
-		// Pattern -> Fingerprint
+		// Pattern -> QR
 	case AUTH_FACTOR_PATTERN:
+
+		_eCurrentAuthStage = AUTH_FACTOR_QR;
+
+		// 사용자가 Fingerprint 인증 사용 활성화
+		if (_bAuthFactorFlag & AUTH_FACTOR_QR)
+		{
+			_nAuthFactorProcessCount++;
+			StringCchPrintf(wszStageMessage, ARRAYSIZE(wszStageMessage), L"인증 단계 %d/%d 진행 중", _nAuthFactorProcessCount, _nAuthFactorCount);
+			SetAuthMessage(SFI_STAGE_STATUS, wszStageMessage);
+			SetCurrentAuthStage(AUTH_FACTOR_QR);
+		}
+		// 사용자가 Fingerprint 인증 사용 비활성화
+		else
+		{
+			GoToNextAuthStage();
+		}
+		break;
+
+		// QR -> Fingerprint
+	case AUTH_FACTOR_QR:
 
 		_eCurrentAuthStage = AUTH_FACTOR_FINGERPRINT;
 
@@ -978,6 +1035,7 @@ void CTollgateCredential::InitializeAuthStage()
 
 	BOOL bUseUSBFactor = _bAuthFactorFlag & AUTH_FACTOR_USB;
 	BOOL bUsePatternFactor = _bAuthFactorFlag & AUTH_FACTOR_PATTERN;
+	BOOL bUseQRFactor = _bAuthFactorFlag & AUTH_FACTOR_QR;
 	BOOL bUseFingerprintFactor = _bAuthFactorFlag & AUTH_FACTOR_FINGERPRINT;
 	BOOL bUseFaceFactor = _bAuthFactorFlag & AUTH_FACTOR_FACE;
 	BOOL bUseOTPFactor = _bAuthFactorFlag & AUTH_FACTOR_OTP;
@@ -991,6 +1049,10 @@ void CTollgateCredential::InitializeAuthStage()
 		_nAuthFactorCount++;
 	}
 	if (bUsePatternFactor)
+	{
+		_nAuthFactorCount++;
+	}
+	if (bUseQRFactor)
 	{
 		_nAuthFactorCount++;
 	}
@@ -1010,7 +1072,7 @@ void CTollgateCredential::InitializeAuthStage()
 
 	/*
 	 *  초기 스테이지 세팅
-	 *  인증 순서: USB -> Pattern -> Fingerprint -> Face -> OTP & Password
+	 *  인증 순서: USB -> Pattern -> QR -> Fingerprint -> Face -> OTP & Password
 	 */
 	if (bUseUSBFactor)
 	{
@@ -1021,6 +1083,11 @@ void CTollgateCredential::InitializeAuthStage()
 	{
 		_eCurrentAuthStage = AUTH_FACTOR_PATTERN;
 		SetCurrentAuthStage(AUTH_FACTOR_PATTERN);
+	}
+	else if (bUseQRFactor)
+	{
+		_eCurrentAuthStage = AUTH_FACTOR_QR;
+		SetCurrentAuthStage(AUTH_FACTOR_QR);
 	}
 	else if (bUseFingerprintFactor)
 	{
@@ -1056,6 +1123,8 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_USB_VERIFY, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PATTERN_MESSAGE, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PATTERN_REQUEST, CPFS_HIDDEN);
+	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_QR_MESSAGE, CPFS_HIDDEN);
+	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_QR_REQUEST, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_FINGERPRINT_MESSAGE, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_FINGERPRINT_REQUEST, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_FACE_MESSAGE, CPFS_HIDDEN);
@@ -1064,7 +1133,6 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PASSWORD_INPUT, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PASSWORD_VERIFY, CPFS_HIDDEN);
 	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_INPUT, CPFS_HIDDEN);
-	_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_REQUEST, CPFS_HIDDEN);
 
 
 	// ---------- 플래그 값 검사 후, 플래그에 해당하는 인증 요소 활성화 ----------
@@ -1078,6 +1146,12 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	{
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PATTERN_MESSAGE, CPFS_DISPLAY_IN_BOTH);
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_PATTERN_REQUEST, CPFS_DISPLAY_IN_BOTH);
+	}
+
+	if (bFlag & AUTH_FACTOR_QR)
+	{
+		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_QR_MESSAGE, CPFS_DISPLAY_IN_BOTH);
+		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_QR_REQUEST, CPFS_DISPLAY_IN_BOTH);
 	}
 
 	if (bFlag & AUTH_FACTOR_FINGERPRINT)
@@ -1096,7 +1170,6 @@ void CTollgateCredential::SetCurrentAuthStage(BYTE bFlag)
 	{
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_MESSAGE, CPFS_DISPLAY_IN_BOTH);
 		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_INPUT, CPFS_DISPLAY_IN_BOTH);
-		_pCredProvCredentialEvents->SetFieldState(nullptr, SFI_OTP_REQUEST, CPFS_DISPLAY_IN_BOTH);
 	}
 
 	if (bFlag & AUTH_FACTOR_PASSWORD)

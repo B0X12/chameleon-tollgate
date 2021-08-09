@@ -3,6 +3,7 @@ package com.chameleon.tollgate.fingerprint.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.chameleon.tollgate.database.define.Factor;
 import com.chameleon.tollgate.fcm.FCMSender;
 import com.chameleon.tollgate.fingerprint.dao.fingerDAO;
 
@@ -33,6 +34,16 @@ public class fingerService {
 		} catch(Exception e) {
 			System.out.println("FCM Exception : " + e);
 		}
+		
+		return true;
+	}
+	
+	public boolean SetFingerEnrolled(String id, long timestamp) throws Exception
+	{
+		dao.open();
+		dao.setInitFactor(id, Factor.FINGERPRINT, true);
+		dao.commit();
+		dao.close();
 		
 		return true;
 	}

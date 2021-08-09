@@ -11,6 +11,7 @@ public class AuthStatus {
 	private Boolean success;
 	private Timer timer;
 	private TimerTask task;
+	public String data;
 	
 	public AuthStatus(String id) {
 		this.id = id;

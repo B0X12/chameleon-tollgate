@@ -27,14 +27,12 @@ namespace AuthClient.tollgate.otp.dialog
 
         private void button_Login_Click(object sender, EventArgs e)
         {
-            LogOnDialog LOD = new LogOnDialog();
-            LOD.Show();
+
         }
 
         private void button_Register_Click(object sender, EventArgs e)
         {
-            LogOnDialog LOSUD = new LogOnDialog();
-            LOSUD.Show();
+
         }
 
         private void button_OtpCertification_Click(object sender, EventArgs e)
@@ -42,9 +40,9 @@ namespace AuthClient.tollgate.otp.dialog
             OtpService OS = new OtpService();
 
             if (OS.PostOtpRegister(textBox_ID.Text) == ReturnMessageValue.SUCCESS)
-                MessageBox.Show("핸드폰으로 OTP를 발송 했습니다.");
+                MessageBox.Show("성공");
             else
-                MessageBox.Show("서버로부터 전송하지 못했습니다.");
+                MessageBox.Show("실패");
         }
 
         private void button_OtpSend_Click(object sender, EventArgs e)

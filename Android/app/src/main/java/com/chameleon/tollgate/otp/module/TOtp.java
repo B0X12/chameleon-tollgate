@@ -19,7 +19,7 @@ public class TOtp{
     {
         final byte[] ByteGenderSecretKey = SecretKey.getBytes(Charset.forName("UTF-8"));
 
-        if(OtpActivity.DebugTest == true)
+        if(OtpActivity.DEBUGOTP == true)
         {
             Log.d(LogTag.AUTH_OTP, "\r\n #TOTP - SecretKey : " + SecretKey);
             Log.d(LogTag.AUTH_OTP, "#TOTP - ByteGenderSecretKey : " + ByteGenderSecretKey);
@@ -43,7 +43,7 @@ public class TOtp{
     private long CalculateTimeFromTimestamp(final long timestamp)
     {
         final long Result = (timestamp / ticksToSeconds) / CreateCycle;
-        if(OtpActivity.DebugTest == true)
+        if(OtpActivity.DEBUGOTP == true)
             Log.d(LogTag.AUTH_OTP, "#TOTP - CalculateTimeFromTimestamp : " + Result);
         return Result;
     }
@@ -52,12 +52,12 @@ public class TOtp{
     {
         final byte[] TimestampLittleBytes = KeyUtil.GetLittleEndianBytes(CalculateTimeStamp);
 
-        if(OtpActivity.DebugTest == true)
+        if(OtpActivity.DEBUGOTP == true)
             Log.d(LogTag.AUTH_OTP, "#TOTP - Compute = Bytes : " + TimestampLittleBytes);
 
         long HashOtp = CalculateHashOtp(TimestampLittleBytes);
 
-        if(OtpActivity.DebugTest == true)
+        if(OtpActivity.DEBUGOTP == true)
             Log.d(LogTag.AUTH_OTP, "#TOTP - Compute = HashOtp : " + HashOtp);
 
         return CalculateOtp(HashOtp);

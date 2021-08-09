@@ -14,4 +14,10 @@ C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\Res
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\Newtonsoft.Json.dll
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\Newtonsoft.Json.xml
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csproj.CopyComplete
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csproj.GenerateResource.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.QRForm.resources
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.dll
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.presentation.dll
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.xml
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.presentation.xml
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csprojAssemblyReference.cache

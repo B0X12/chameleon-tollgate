@@ -20,9 +20,9 @@ RestClient::RestClient()
     SecureZeroMemory(&_stProcessInfo, sizeof(_stProcessInfo));
 
     _stStartupInfo.cb = sizeof(_stStartupInfo);
+    _stStartupInfo.dwFlags |= STARTF_USESTDHANDLES;
     _stStartupInfo.hStdError = _hWritePipe;           // Rest Client는 표준 에러 출력으로 hWritePipe 사용
     _stStartupInfo.hStdOutput = _hWritePipe;          // Rest Client는 표준 출력으로 hWritePipe 사용
-    _stStartupInfo.dwFlags |= STARTF_USESTDHANDLES;
 
     wcscpy_s(_wcPath, 2048, L"C:\\Tollgate\\");
     wcscat_s(_wcAppName, 2048, _wcPath);
@@ -58,7 +58,7 @@ void RestClient::GetRestClientMessage(WCHAR* wcBuffer, rsize_t nBufferSizeInWord
 
 BOOL RestClient::GetUserBySystemIdentifier(WCHAR* sys_id)
 {
-    wchar_t wcCommandLine[2048] = { 0, };
+    WCHAR wcCommandLine[2048] = { 0, };
 
     // Rest Client 프로그램 인자 초기화: --get-user [sys_uid]
     wcscpy_s(wcCommandLine, 2048, L" --get-user ");
@@ -71,7 +71,7 @@ BOOL RestClient::GetUserBySystemIdentifier(WCHAR* sys_id)
 
 BOOL RestClient::GetAuthFactorByUser(WCHAR* user)
 {
-    wchar_t wcCommandLine[2048] = { 0, };
+    WCHAR wcCommandLine[2048] = { 0, };
 
     // Rest Client 프로그램 인자 초기화: --get-auth-factor [user]
     wcscpy_s(wcCommandLine, 2048, L" --get-auth-factor ");
@@ -84,7 +84,7 @@ BOOL RestClient::GetAuthFactorByUser(WCHAR* user)
 
 BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* sys_id, WCHAR* usb_info)
 {
-    wchar_t wcCommandLine[2048] = { 0, };
+    WCHAR wcCommandLine[2048] = { 0, };
 
     // Rest Client 프로그램 인자 초기화: --verify-usb [user] [sys_id] [usb_info]
     wcscpy_s(wcCommandLine, 2048, L" --verify-usb ");
@@ -99,17 +99,64 @@ BOOL RestClient::RequestUSBVerification(WCHAR* user, WCHAR* sys_id, WCHAR* usb_i
 }
 
 
-BOOL RestClient::RequestPatternInformation(WCHAR* user)
+BOOL RestClient::RequestPatternInformation(WCHAR* user, WCHAR* sys_id)
 {
-    wchar_t wcCommandLine[2048] = { 0, };
+    WCHAR wcCommandLine[2048] = { 0, };
 
-    // Rest Client 프로그램 인자 초기화: --request-pattern [user]
+    // Rest Client 프로그램 인자 초기화: --request-pattern [user] [sys_id]
     wcscpy_s(wcCommandLine, 2048, L" --request-pattern ");
     wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
 
     // Client 프로세스 실행
     return _ExecuteRestClientProcess(wcCommandLine);
 }
+
+
+BOOL RestClient::RequestFaceInformation(WCHAR* user, WCHAR* sys_id)
+{
+    WCHAR wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --request-face [user] [sys_id]
+    wcscpy_s(wcCommandLine, 2048, L" --request-face ");
+    wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
+BOOL RestClient::RequestFingerprintInformation(WCHAR* user, WCHAR* sys_id)
+{
+    WCHAR wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --request-fingerprint [user] [sys_id]
+    wcscpy_s(wcCommandLine, 2048, L" --request-fingerprint ");
+    wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
+
+BOOL RestClient::RequestQRIssue(WCHAR* user, WCHAR* sys_id)
+{
+    WCHAR wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --request-face [user] [sys_id]
+    wcscpy_s(wcCommandLine, 2048, L" --issue-qrcode ");
+    //wcscat_s(wcCommandLine, 2048, user);
+    //wcscat_s(wcCommandLine, 2048, L" ");
+    //wcscat_s(wcCommandLine, 2048, sys_id);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
+
 
 
 BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)
@@ -150,17 +197,18 @@ BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)
                     getline(stream, str);
                     size_t idx = std::string::npos;
 
+                    // Carriage Return 제거
                     if ((idx = str.find(L'\r')) != std::string::npos)
                     {
                         str.erase(idx, 1);
                     }
 
+                    // Line Feed 제거
                     if ((idx = str.find(L'\n')) != std::string::npos)
                     {
                         str.erase(idx, 1);
                     }
 
-                    //mbstowcs_s(&cn, buf, 2048, str.c_str(), strlen(str.c_str()) + 1);
                     MultiByteToWideChar(CP_ACP, 0, str.c_str(), strlen(str.c_str()) + 1, buf, 2048);
                     wcscpy_s(_wcRestClientMessage, 2048, buf);
                 }   

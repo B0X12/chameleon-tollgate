@@ -38,4 +38,10 @@ public class USBService implements IUSBService {
 		return dao.unregisterUSB(user, usb_id);
 	}
 
+
+	@Override
+	public boolean updateUSBAlias(USBInfo usb_info) {
+		return dao.updateUSBAlias(usb_info);
+	}
+
 }

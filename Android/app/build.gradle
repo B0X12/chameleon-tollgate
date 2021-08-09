@@ -73,6 +73,12 @@ dependencies {
     compileOnly "org.projectlombok:lombok:1.18.20"
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+    //otp SecretKey
+    implementation "androidx.security:security-crypto:1.0.0-rc03"
+
+    //qr
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+
     //gson
     implementation 'com.google.code.gson:gson:2.8.7'
 }

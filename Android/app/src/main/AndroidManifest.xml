@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.chameleon.tollgate">
+    package="com.chameleon.tollgate" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
@@ -24,18 +24,22 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tollgate">
-        <activity android:name=".Activities.HistoryActivity"></activity>
+        <activity android:name=".Activities.HistoryActivity"/>
+
         <activity android:name=".Activities.SubMainActivity" />
+
         <activity
             android:name=".Activities.ServerActivity"
             android:theme="@style/Theme.Tollgate"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".Activities.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -45,54 +49,88 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".pattern.SetPatternActivity" />
-        <activity android:name=".faceauth.AuthFaceActivity">
+
+        <activity
+            android:name=".qr.Activity.QrActivity"
+            android:exported="true" />
+
+        <activity android:name=".faceauth.AuthFaceActivity" >
+        android:theme="@style/Theme.Tollgate"
+        android:requestLegacyExternalStorage="true">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_FACE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".HomeActivity"
             android:theme="@style/Theme.Tollgate">
             <intent-filter>
+
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
                 <action android:name="android.intent.action.HOME" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".fingerprint.FingerPrintManager"
-            tools:ignore="Instantiatable" />
-        <activity android:name=".fingerprint.FingerPrintActivity" />
-        <activity android:name=".pattern.AuthPatternActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.AUTH_PATTERN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".login.MainActivity"
+        <activity android:name=".login.MainActivity"
             android:theme="@style/Theme.Tollgate">
             <intent-filter>
                 <action android:name="android.intent.action.LOGIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".fingerprint.FingerPrintManager"
+            tools:ignore="Instantiatable" />
+
+        <activity android:name=".fingerprint.FingerPrintActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTH_FINGERPRINT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".otp.Activity.OtpActivity">
+
+
+
+        <activity android:name=".pattern.AuthPatternActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTH_PATTERN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".otp.Activity.OtpActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.OTP" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
 
+        <!-- com.journeyapps.barcodescanner.CaptureActivity : QR -->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:replace="android:screenOrientation"
+            />
+
+
         <service
             android:name=".fcm.FCMService"
-            android:stopWithTask="false">
+            android:stopWithTask="false" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

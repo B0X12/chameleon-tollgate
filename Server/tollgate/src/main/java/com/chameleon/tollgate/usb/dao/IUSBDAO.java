@@ -13,4 +13,6 @@ public interface IUSBDAO {
 	List<USBInfo> getRegisteredUSBList(String user) throws SQLException;
 
 	boolean unregisterUSB(String user, String usb_id);
+
+	boolean updateUSBAlias(USBInfo usb_info);
 }

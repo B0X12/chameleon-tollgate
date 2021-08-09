@@ -24,20 +24,15 @@
 #include "resource.h"
 #include "Util.h"
 
+/*
+ *  Credential Provider <-> 인증 스레드 간 상호 참조를 위한 클래스 포인터
+ */
 class CUSBAuth;
 class CPatternAuth;
-
-
-enum AUTH_FACTOR
-{
-    AUTH_FACTOR_INVALID = 0x00,
-    AUTH_FACTOR_PASSWORD = 0x01,
-    AUTH_FACTOR_USB = 0x02,
-    AUTH_FACTOR_OTP = 0x04,
-    AUTH_FACTOR_PATTERN = 0x08,
-    AUTH_FACTOR_FINGERPRINT = 0x10,
-    AUTH_FACTOR_FACE = 0x20,
-};
+class CFaceAuth;
+class CFingerprintAuth;
+//class COTPAuth;
+class CQRAuth;
 
 
 class CTollgateCredential : public ICredentialProviderCredential2, ICredentialProviderCredentialWithFieldOptions
@@ -146,24 +141,39 @@ public:
 
     // --------------- 인증 관련 정보 ---------------
 
+    /*
+    *  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
+    *  Field : -     QR    Face  Fingerprint  Pattern  OTP   USB   Password
+    */
+    enum AUTH_FACTOR
+    {
+        AUTH_FACTOR_INVALID = 0x00,
+        AUTH_FACTOR_PASSWORD = 0x01,
+        AUTH_FACTOR_USB = 0x02,
+        AUTH_FACTOR_OTP = 0x04,
+        AUTH_FACTOR_PATTERN = 0x08,
+        AUTH_FACTOR_FINGERPRINT = 0x10,
+        AUTH_FACTOR_FACE = 0x20,
+        AUTH_FACTOR_QR = 0x40,
+    };
+
   public:
     WCHAR wszUserName[100] = { 0, };
     WCHAR wszSystemIdentifier[100] = { 0, };
 
   private:
-    //  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
-    //  Field : -     -     Face  Fingerprint  Pattern  OTP   USB   Password
     BYTE _bAuthFactorFlag = 0;
     int _nAuthFactorCount = 0;
     AUTH_FACTOR _eCurrentAuthStage = AUTH_FACTOR_INVALID;
     int _nAuthFactorProcessCount = 0;
 
 
-    CUSBAuth*            _pUSBAuth = nullptr;
-    CPatternAuth*        _pPatternAuth = nullptr;
-    CFaceAuth*           _pFaceAuth = nullptr;
-    //CFingerprintAuth*  _pFingerprintAuth = nullptr;
-    //COTPAuth*          _pOTPAuth = nullptr;
+    CUSBAuth*           _pUSBAuth = nullptr;
+    CPatternAuth*       _pPatternAuth = nullptr;
+    CFaceAuth*          _pFaceAuth = nullptr;
+    CFingerprintAuth*   _pFingerprintAuth = nullptr;
+    //COTPAuth*         _pOTPAuth = nullptr;
+    CQRAuth*           _pQRAuth = nullptr;
 };
 
 

@@ -6,59 +6,44 @@ import java.sql.ResultSet;
 import org.springframework.stereotype.Component;
 
 import com.chameleon.tollgate.database.SQLiteManager;
-import com.chameleon.tollgate.otp.dto.*;
 
 @Component
-public class OtpDAO extends SQLiteManager implements IOtpDAO {
-
-	public OtpDAO() {
+public class OtpDAO extends SQLiteManager implements IOtpDAO 
+{
+	public OtpDAO() 
+	{
 		if (!super.isOpen()) {
 			super.open(false, true);
-			initializeOTP();
 		}
 	}
 
-	public void initializeOTP() {
-		String Instruct = "DELETE FROM auth_otp";
-		try {
-			SearchUpdate(Instruct);
-			System.out.println("initializeOTP Success");
-		} catch (Exception e) {
-			System.out.println("#initializeOTP Exception : " + e);
-		}
-	}
 
 	@Override
-	public long GetUserTimestamp(String UserID) {
-		long Result = -1;
-		String SqlInstruct = "SELECT timestamp FROM auth_otp WHERE id = '" + UserID + "'";
+	public String GetUserSecretKey(final String userId) 
+	{
+		String Result = null;
+		final String SqlInstruct = "SELECT secretkey FROM auth_otp WHERE id = '" + userId + "'";
+		Result = SearchQuery_string(SqlInstruct);
+
+		return Result;
+	}
+	
+	@Override
+	public Long GetUserRegisterTime(final String userId) 
+	{
+		Long Result = null;
+		final String SqlInstruct = "SELECT registertime FROM auth_otp WHERE id = '" + userId + "'";
 		Result = SearchQuery_long(SqlInstruct);
 
 		return Result;
 	}
 
+
 	@Override
-	public String GetUserOtp(String UserID) {
+	public String GetUserSid(final String userId) 
+	{
 		String Result = null;
-		String SqlInstruct = "SELECT otp FROM auth_otp WHERE id = '" + UserID + "'";
-		Result = SearchQuery_string(SqlInstruct);
-
-		return Result;
-	}
-
-	@Override
-	public int GetUserProcedure(String UserID) {
-		int Result = -1;
-		String SqlInstruct = "SELECT procedure FROM auth_otp WHERE id = '" + UserID + "'";
-		Result = SearchQuery_int(SqlInstruct);
-
-		return Result;
-	}
-
-	@Override
-	public String GetUserSid(String UserID) {
-		String Result = null;
-		String SqlInstruct = "SELECT pc FROM map_pc WHERE id = '" + UserID + "'";
+		final String SqlInstruct = "SELECT pc FROM map_pc WHERE id = '" + userId + "'";
 
 		Result = SearchQuery_string(SqlInstruct);
 
@@ -66,18 +51,22 @@ public class OtpDAO extends SQLiteManager implements IOtpDAO {
 	}
 
 	@Override
-	public String GetUserToken(String UserID) {
+	public String GetUserToken(final String userId) 
+	{
 		String Result = null;
-		String SqlInstruct = "SELECT token FROM map_android WHERE id = '" + UserID + "'";
+		final String SqlInstruct = "SELECT token FROM map_android WHERE id = '" + userId + "'";
 		Result = SearchQuery_string(SqlInstruct);
 
 		return Result;
 	}
+	
+	//------------------------------------------------------------------------------------------------------
 
 	@Override
-	public boolean Register(AuthOtp OCD) {
+	public boolean Register(final String userId, final String secertKey, long registerTimeStamp) 
+	{
 		boolean Result = false;
-		String SqlInstruct = "INSERT INTO auth_otp(id,timestamp,otp) VALUES ('" + OCD.id + "','" + OCD.timestamp + "','" + OCD.otp + "')";
+		final String SqlInstruct = "INSERT INTO auth_otp(id,secretkey,registertime) VALUES ('" + userId + "','" + secertKey + "','" + registerTimeStamp +"')";
 
 		Result = SearchUpdate(SqlInstruct);
 		if (Result == true)
@@ -86,22 +75,11 @@ public class OtpDAO extends SQLiteManager implements IOtpDAO {
 		return Result;
 	}
 
-	@Override
-	public boolean Delete(AuthOtp OCD) {
-		boolean Result = false;
-		String SqlInstruct = "DELETE FROM auth_otp WHERE id = '" + OCD.id + "'";
 
-		Result = SearchUpdate(SqlInstruct);
+	//------------------------------------------------------------------------------------------------------
 
-		if (Result == true)
-			return true;
-
-		return Result;
-	}
-
-	// ------------------------------------------------------------------------
-
-	private boolean SearchUpdate(final String SqlCommand) {
+	private boolean SearchUpdate(final String SqlCommand) 
+	{
 		if (super.isOpen()) {
 			try {
 				PreparedStatement state = super.connection.prepareStatement(SqlCommand);
@@ -115,7 +93,8 @@ public class OtpDAO extends SQLiteManager implements IOtpDAO {
 		return false;
 	}
 
-	private int SearchQuery_int(final String SqlInstruct) {
+	private int SearchQuery_int(final String SqlInstruct) 
+	{
 		int resultValue = -1;
 		ResultSet result = null;
 		if (super.isOpen()) {
@@ -131,7 +110,8 @@ public class OtpDAO extends SQLiteManager implements IOtpDAO {
 		return resultValue;
 	}
 
-	private long SearchQuery_long(final String SqlInstruct) {
+	private long SearchQuery_long(final String SqlInstruct) 
+	{
 		long resultValue = -1;
 		ResultSet result = null;
 		if (super.isOpen()) {
@@ -147,12 +127,13 @@ public class OtpDAO extends SQLiteManager implements IOtpDAO {
 		return resultValue;
 	}
 
-	protected String SearchQuery_string(final String SqlInstruct) {
+	protected String SearchQuery_string(final String sqlInstruct) 
+	{
 		String resultValue = null;
 		ResultSet result = null;
 		if (super.isOpen()) {
 			try {
-				PreparedStatement state = super.connection.prepareStatement(SqlInstruct);
+				PreparedStatement state = super.connection.prepareStatement(sqlInstruct);
 				result = state.executeQuery();
 				resultValue = result.getString(1);
 				result.close();
