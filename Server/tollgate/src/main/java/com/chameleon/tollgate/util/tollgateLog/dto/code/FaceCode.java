@@ -1,6 +1,9 @@
 package com.chameleon.tollgate.util.tollgateLog.dto.code;
 
-public enum faceCode implements LogCode {
+import lombok.Getter;
+
+@Getter
+public enum FaceCode implements LogCode {
 	NO_PRIVILEGE("No authority to access", 1),
 	NO_FACE("Face Model Hash value mismatched", 2),
 	SIGNAL_SENT("FCM Notification Sent to Mobile Device", 3),
@@ -9,21 +12,11 @@ public enum faceCode implements LogCode {
 	STOP_WAIT("Waiting mobile device stop", 6),
 	VERIFY("Verifying authentication information", 7);
 
-	private final String log;
-	private final int code;
-	private faceCode(String log, int code) {
-		this.log = log;
-		this.code = code;
-	}
+	private final String errorMessage;
+	private final int errorCode;
 	
-	@Override
-	public int getErrorCode() {
-		return code;
+	private FaceCode(String errorMessage, int errorCode) {
+		this.errorMessage = errorMessage;
+		this.errorCode = errorCode;
 	}
-	
-	@Override
-	public String getErrorMessage() {
-		return log;
-	}
-
 }

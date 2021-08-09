@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 public class FingerPrintActivity extends AppCompatActivity implements FingerPrintManager.Callback
 {
+    private int count;
     Button btn_fingerprint;
     Button btn_fingerprintEnroll;
 
@@ -41,6 +42,8 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_fingerprint);
+
+        this.count = 0;
 
         btn_fingerprint = findViewById(R.id.btn_fingerprintAuth);
         btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);
@@ -95,6 +98,9 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                         Toast.LENGTH_SHORT).show();
                 Log.d(LogTag.AUTH_FINGERPRINT, "AUTHENTICATION_FAILED");
                 restResult = AUTH_FAILED;
+                count++;
+                if(count < 5)
+                    return;
                 break;
 
             case AUTHENTICATION_ERROR:

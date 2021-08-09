@@ -24,7 +24,7 @@ public class SetPatternTask extends AsyncTask<Void, Void, Boolean> {
     private final Handler handler;
 
     public SetPatternTask(String pattern, long timestamp, Context context, Handler handler) {
-        this.entry = new PatternPack(pattern, timestamp);
+        this.entry = new PatternPack(pattern, timestamp, "");
         this.context = context;
         this.handler = handler;
     }
