@@ -68,12 +68,10 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
                     // 인증이 가능한 상태면 인증 수행
                     manager_fingerprint.authenticate();
 
-                    /*
                     // 서버로 인증 가능한 상태임을 전송
                     RestTask rest = new RestTask(Long.parseLong(intent.getStringExtra("timestamp"))
                             , AUTH_FINGER_ENROLLED, context, handler);
                     rest.execute();
-                     */
                 }
             }
         });
