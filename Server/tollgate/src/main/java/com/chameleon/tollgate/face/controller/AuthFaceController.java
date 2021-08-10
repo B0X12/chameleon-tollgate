@@ -50,7 +50,7 @@ public class AuthFaceController {
 	@PostMapping(path=Path.REGIST_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> registerFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception {
 		if (!userAgent.equals(Property.USER_AGENT)) {
-			TollgateLog.w(req.getRemoteAddr(), LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
+			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 		
@@ -65,24 +65,24 @@ public class AuthFaceController {
 	@GetMapping(path=Path.AUTH_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, long timestamp) throws Exception {
 		if (!userAgent.equals(Property.USER_AGENT)) {
-			TollgateLog.w(req.getRemoteAddr(), LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
+			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 		this.sessions.add(id, timestamp);
 		
 		
-		TollgateLog.i(req.getRemoteAddr(), LogFactor.FACE, FaceCode.SIGNAL_SENT, "Sending FCM notification message to mobile device");
+		TollgateLog.i(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.SIGNAL_SENT, "Sending FCM notification message to mobile device");
 		service.SendSignal(id, timestamp);
 		this.status.add(id);
 
-		TollgateLog.i(req.getRemoteAddr(), LogFactor.FACE, FaceCode.START_WAIT, "Waiting for mobile device to response");
+		TollgateLog.i(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.START_WAIT, "Waiting for mobile device to response");
 		Boolean result = status.waitVerify(id);
-		TollgateLog.i(req.getRemoteAddr(), LogFactor.FACE, FaceCode.STOP_WAIT, "Waiting for response has finished");
+		TollgateLog.i(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.STOP_WAIT, "Waiting for response has finished");
 		this.status.remove(id);
 		this.sessions.remove(id);		
 
 		if(result == null) {
-			TollgateLog.w(req.getRemoteAddr(), LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
+			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
 			return new ResponseEntity<>(
 					new Response<Boolean>(HttpStatus.REQUEST_TIMEOUT, false, timestamp),
 					HttpStatus.REQUEST_TIMEOUT);
@@ -100,14 +100,14 @@ public class AuthFaceController {
 	@PostMapping(path=Path.AUTH_FACEID+"{id}")
 	public ResponseEntity<Response<Boolean>> VerifyFace(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, @RequestBody FacePack entry) throws Exception{
 		if (!userAgent.equals(Property.USER_AGENT)) {
-			TollgateLog.w(req.getRemoteAddr(), LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
+			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
 			
 		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 			
-		TollgateLog.i(req.getRemoteAddr(), LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
+		TollgateLog.i(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
 		boolean result = service.VerifyFace(id, entry);
 		
 		this.status.verify(id, result);

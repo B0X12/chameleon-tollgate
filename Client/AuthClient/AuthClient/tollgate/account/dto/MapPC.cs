@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AuthClient.tollgate.account.dto
+﻿namespace AuthClient.tollgate.account.dto
 {
-    class MapPC
+    public class MapPC
     {
         public string id { get; set; }
         public string pc { get; set; }

@@ -3,10 +3,13 @@ package com.chameleon.tollgate.account.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.chameleon.tollgate.database.SQLiteManager;
+import com.chameleon.tollgate.usb.dto.USBInfo;
 import com.chameleon.tollgate.account.dto.*;
 import com.chameleon.tollgate.account.exception.AccountError;
 import com.chameleon.tollgate.account.exception.UserAlreadyExistException;
@@ -45,7 +48,9 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		try {
 			Result = SearchUpdate(SqlInstruct);
 			if (Result == true)
-				return true;
+				if(SearchUpdate("insert into auth_factor(id) values('" + account.id + "')"))
+					if(SearchUpdate("insert into init_factor(id) values('" + account.id + "')"))
+						return true;
 		} catch (SQLException se) {
 			// 이미 등록된 회원이 있는 경우
 			if (se.getErrorCode() == 19) {
@@ -123,6 +128,64 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		return Result;
 	}
 
+	@Override
+	public List<MapPC> getRegisteredPCList(String user) throws SQLException {
+		PreparedStatement pstmt = null;
+		String SqlInstruct = "SELECT * FROM map_pc WHERE id='" + user + "'";
+		ResultSet rs = null;
+		List<MapPC> mapPCList = new ArrayList<>();
+
+		pstmt = super.connection.prepareStatement(SqlInstruct);
+		rs = pstmt.executeQuery();
+
+		while (rs.next()) {
+			String id = rs.getString("id");
+			String pc = rs.getString("pc");
+			String alias = rs.getString("alias");
+
+			MapPC data = new MapPC();
+			data.id = id;
+			data.pc = pc;
+			data.alias = alias;
+
+			mapPCList.add(data);
+		}
+
+		return mapPCList;
+	}
+
+	@Override
+	public boolean updatePCAlias(MapPC mapPC) {
+		try {
+			String SqlInstruct = "UPDATE map_pc SET alias = '" + mapPC.alias + "' WHERE id = '" + mapPC.id
+					+ "' AND pc = '" + mapPC.pc + "'";
+			SearchUpdate(SqlInstruct);
+			return true;
+		} catch (SQLException se) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updateFactorFlag(String user, int factorFlag, int flagToUpdate, boolean enable) {
+		int calcFlag = factorFlag;
+		
+		// 플래그 enable일 경우
+		if(enable) {
+			calcFlag |= flagToUpdate;
+		} else {
+			calcFlag &= (~flagToUpdate);
+		}
+		
+		try {
+			String SqlInstruct = "UPDATE auth_factor SET factor = " + calcFlag + " WHERE id = '" + user + "'";
+			SearchUpdate(SqlInstruct);
+			return true;
+		} catch (SQLException se) {
+			return false;
+		}
+	}
+
 	// ------------------------------------------------------------------------------------
 
 	private boolean SearchUpdate(final String SqlCommand) throws SQLException {
@@ -174,5 +237,8 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		}
 		return resultValue;
 	}
-
+	
+	public boolean updatePwd(String id, String pwd) throws SQLException {
+		return SearchUpdate("update account set pwd = '" + pwd + "' where id = '" + id + "'");
+	}
 }

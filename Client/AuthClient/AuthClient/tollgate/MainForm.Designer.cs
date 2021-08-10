@@ -39,8 +39,9 @@ namespace AuthClient.tollgate
             this.panel_border_main.Controls.Add(this.panel_main);
             this.panel_border_main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_border_main.Location = new System.Drawing.Point(0, 0);
+            this.panel_border_main.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel_border_main.Name = "panel_border_main";
-            this.panel_border_main.Size = new System.Drawing.Size(1280, 720);
+            this.panel_border_main.Size = new System.Drawing.Size(1600, 900);
             this.panel_border_main.TabIndex = 1;
             // 
             // panel_main
@@ -48,17 +49,18 @@ namespace AuthClient.tollgate
             this.panel_main.Location = new System.Drawing.Point(0, 0);
             this.panel_main.Margin = new System.Windows.Forms.Padding(0);
             this.panel_main.Name = "panel_main";
-            this.panel_main.Size = new System.Drawing.Size(1280, 720);
+            this.panel_main.Size = new System.Drawing.Size(1600, 900);
             this.panel_main.TabIndex = 0;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.ClientSize = new System.Drawing.Size(1600, 900);
             this.Controls.Add(this.panel_border_main);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Tollgate";
             this.panel_border_main.ResumeLayout(false);

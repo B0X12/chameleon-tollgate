@@ -1,14 +1,9 @@
 package com.chameleon.tollgate.otp.service;
-import com.chameleon.tollgate.fcm.FCMSender;
 import com.chameleon.tollgate.otp.OtpConfig;
+import com.chameleon.tollgate.otp.controller.OtpController;
 import com.chameleon.tollgate.otp.dao.*;
 import com.chameleon.tollgate.otp.dto.*;
-import com.chameleon.tollgate.otp.module.HashType;
 import com.chameleon.tollgate.otp.module.TOtp;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,203 +11,153 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OTPService implements IOTPService {
-	private static final boolean TestDebug = true;
 
 	public OTPService() { super(); }
 	
 	@Autowired
 	private OtpDAO dao;
-	
-	//Current Time
-	private long CurrentTime;
-		
-	//Totp SecretKey
-	private String SecretKey = null;
-	//Pc Sid
-	private String PcSid = null;
-	//Phone Token
-	private String PhoneToken = null;
-		
+			
 	//------------------------------------------------------------
 	
 	@Override
-	public String Register(AuthOtp AO) 
-	{
-		CurrentTime = System.currentTimeMillis();
+	public String DbRegister(final String userId) {
+		if (OtpController.DEBUGOTP)
+			System.out.println("#DbRegister - 0  Start Id : " + userId);
 		
-		if (AO.id != null && AO.otp == null) // OTP Certification Click
-		{
-			if(TestDebug)
-				System.out.println("\r\nBeFore -> id : " + AO.id + " otp : " + AO.otp);
-						
-			SecretKey = RandSecretKeyCreate(AO);
-			
-			if(SecretKey == null)
-				return ErrorKind.REGISTER_INFORMATION;
-			
-			if(TestDebug)
-				System.out.println("SecretKey : " + this.SecretKey);
-			
-			AO.timestamp = CurrentTime;
-			
-			//OTP Create
-			TOtp totp = new TOtp(SecretKey,OtpConfig.CreateCycle, OtpConfig.OtpSize, OtpConfig.Hashtype); // TOtp Object Create
-			AO.otp = totp.ComputeTotp(CurrentTime); // Totp Six,Eit Code Create (Hash Calculate)
-			
-			if(TestDebug)
-				System.out.println("After -> id : " + AO.id + " otp : " + AO.otp + "\r\n");
-			
-			
-			try 
-			{
-				if(dao.Register(AO) == false) // DB Register
-				{
-					dao.Delete(AO); // OTP Table Delete
-					return ErrorKind.REGISTER_DATABASE;
-				}				
-				//FCM Send
-				Map<String, String> OtpDTO = new HashMap<String, String>();
-				OtpDTO.put("Type", "OTP");
-				OtpDTO.put("SecretKey", SecretKey);
-				OtpDTO.put("ServerCurrentTime", Long.toString(CurrentTime));
-				OtpDTO.put("CreateCycle",Integer.toString(OtpConfig.CreateCycle));
-				OtpDTO.put("OtpSize", Integer.toString(OtpConfig.OtpSize));
-				OtpDTO.put("HashType", Integer.toString(OtpConfig.Hashtype));
+		final long currentTime = System.currentTimeMillis(); // Get Current Time
+		
+		
+		String secretKey = SecretKeyCreate(userId,currentTime); // Create SecretKey
+		if (OtpController.DEBUGOTP)
+			System.out.println("#DbRegister - 1 Create SecretKey : " + secretKey);
+		if (secretKey == null)
+			return ReturnMessage.REGISTER_INFORMATION;
 
-				
-				FCMSender FS = new FCMSender();
-				FS.send(FCMSender.msgBuilder().setTitle("OTP 인증요청")
-											  .setBody("OTP 값을 확인해서 인증해주세요.")
-											  .setToken(PhoneToken)
-											  .setData(OtpDTO)
-											  .setClickAction("android.intent.action.OTP")
-											  .build());
-				if(TestDebug)
-					System.out.println("#Otp Register Susscess. \r\n");
+		boolean registerResult = dao.Register(userId,secretKey,currentTime); //Otp DB Register
+		if (OtpController.DEBUGOTP)
+			System.out.println("#DbRegister - 2(Final) Otp Register Result : " + registerResult + "\r\n");
 
-				return ErrorKind.SUCCESS;
-				
-
-			} catch (Exception e) {
-				dao.Delete(AO); // OTP Table Delete
-				return ErrorKind.REGISTER_DATABASE;
-			}
-		}
-			
-		dao.Delete(AO); // OTP Table Delete
-		return ErrorKind.REGISTER_INFORMATION;
+		if(! registerResult)
+			return ReturnMessage.REGISTER_UNKNOWN;
+		
+		secretKey = null;
+		return ReturnMessage.SUCCESS;
 	}
-
+	
 	
 	@Override
-	public String Verify(AuthOtp AO)
-	{
-		CurrentTime = System.currentTimeMillis();
+	public String Verify(final AuthExchangeOtp AEO)
+	{		
+		final long currentTime = System.currentTimeMillis(); // Get CurrentTime
+		
+		if (OtpController.DEBUGOTP)
+			System.out.println("\r\n#Verify - 0  Start Id : " + AEO.getUserId() + " Otp : " + AEO.getData() + " timestamp : " + currentTime);
 
-		if (AO.id == null || AO.otp == null)
+
+		if (AEO.getUserId() == null || AEO.getData() == null)
 		{
-			dao.Delete(AO); // OTP Table Delete
-			return ErrorKind.VERIFY_INFORMATION;
-		}
-
-		
-		long TimeCalculate =(TimeUnit.MILLISECONDS.toSeconds(dao.GetUserTimestamp(AO.id)) + OtpConfig.CreateCycle) - TimeUnit.MILLISECONDS.toSeconds(CurrentTime);
-
-		if (TimeCalculate < 0) 
-		{	
-			dao.Delete(AO); // OTP Table Delete
-			System.out.println("#OTP TimeOut (Remaining Seconds : "+TimeCalculate+")");
-			return ErrorKind.VERIFY_TIMEOUT;
+			if (OtpController.DEBUGOTP)
+				System.out.println("#Verify - Fail : Otp Data Information");
+			return ReturnMessage.VERIFY_INFORMATION;		
 		}
 		
-		if (TestDebug)
-			System.out.println("#OTP Time Susscess. (Remaining Seconds : " + TimeCalculate + ")\r\n");
-
-		String DatabaseOTP = dao.GetUserOtp(AO.id); // Get DB User OTP Value
-
-		if(DatabaseOTP == null)
-			return ErrorKind.VERIFY_DATABASE;
-
-
-		if (DatabaseOTP.equals(AO.otp) == false) // OTP Equals
-		{
-			dao.Delete(AO); // OTP Table Delete
-			
-			if (TestDebug)
-				System.out.println("#Otp Certification Failed\r\n");
-			
-			return ErrorKind.VERIFY_FAIL;
-		}
-
-		if (TestDebug)
-			System.out.println("#Otp Certification Susscess\r\n");
+		String userSecretKey = dao.GetUserSecretKey(AEO.getUserId()); // Get User SecretKey
 		
-		dao.Delete(AO); // OTP Table Delete
-		return ErrorKind.SUCCESS;
-
+		TOtp totp = new TOtp(userSecretKey, OtpConfig.CreateCycle, OtpConfig.OtpSize, OtpConfig.Hashtype); // TOtp Object Create
+		String calculateOtpNumber = totp.ComputeTotp(currentTime); // Get Otp value
+		boolean verifyResult = AEO.getData().equals(calculateOtpNumber); // Client Otp Value Equals.(Server Otp Value)
+		
+		if (OtpController.DEBUGOTP)
+			System.out.println("#Verify - 1(Final)  SecretKey : " + userSecretKey + "  Server Otp : " + calculateOtpNumber + " Client Otp : " + AEO.getData());
+		
+		
+		if (verifyResult)
+			return ReturnMessage.SUCCESS;
+		
+		userSecretKey = null;
+		return ReturnMessage.VERIFY_FAIL;
 	}
+	
+	
+	@Override
+	public String AdRequestDataSecretKey(final String userId) // Android Request SecretKey
+	{
+		 final String secretEncryptKey = dao.GetUserSecretKey(userId); // Get User SecretKey
+			if (OtpController.DEBUGOTP)
+				System.out.println("#AdRequestDataSecretKey - 0(Final)  id : " + userId + " SecretKey : " + secretEncryptKey);
+		 return secretEncryptKey;
+	}
+	
 	
 	//----------------------------------------------------------------
 	
 	
-	
-	private String RandSecretKeyCreate(AuthOtp AO)
+	private String SecretKeyCreate(final String userId,final long timeStamp)
 	{
-		PcSid = dao.GetUserSid(AO.id);
-		
-		if(PcSid == null)
+		String pcSid = dao.GetUserSid(userId); // Get User Sid
+		if (OtpController.DEBUGOTP)
+			System.out.println("#SecretKeyCreate - 0  Start pcSid : " + pcSid);
+		if(pcSid == null)
 		{
-			System.out.println("#Not Found Pc Sid");
+			if (OtpController.DEBUGOTP) 
+				System.out.println("#SecretKeyCreate  Fail : pcSid NULL");
+			return null;
+		}
+				
+		String phoneToken = dao.GetUserToken(userId); // Get User PhoneToken
+		if (OtpController.DEBUGOTP)
+			System.out.println("#SecretKeyCreate - 1  phoneToken : " + phoneToken);
+		if(phoneToken == null)
+		{
+			if (OtpController.DEBUGOTP)
+				System.out.println("#SecretKeyCreate  Fail : phoneToken NULL");
 			return null;
 		}
 		
-		if(TestDebug)
-			System.out.println("pc_Sid : " + PcSid);
 		
-		PhoneToken = dao.GetUserToken(AO.id);
+		//Register Create SecretKey - Start
+		StringBuilder secretKey = new StringBuilder();
+		secretKey.append("tollgate-");
 		
-		if(PhoneToken == null)
+		int maximumIndex = 0;
+		maximumIndex = phoneToken.split(":")[0].length();
+		secretKey.append(phoneToken.split(":")[0].substring(maximumIndex-4,maximumIndex)).append("-");
+		
+		final int countMaximum = 3;
+		
+		for(int mainCount=0; mainCount < countMaximum ; mainCount++)
 		{
-			System.out.println("#Not Found Phone Token");
-			return null;
-		}
-		
-		if(TestDebug)
-			System.out.println("PhoneToken : " + PhoneToken);
-
-		
-		int DivisionNumber = 0;
-
-		switch(OtpConfig.Hashtype)
-		{
-		case HashType.SHA256:
-			DivisionNumber = HashType.SHA256_SecretKeyLength/2;
-			break;
+			maximumIndex = pcSid.split("-")[mainCount].length();
+			secretKey.append(pcSid.split("-")[mainCount].charAt(maximumIndex-4)).append(pcSid.split("-")[mainCount].charAt(maximumIndex-1));
+			final int sideValue = SecretKeyTimestampDigit(timeStamp,mainCount);
+			secretKey.append(phoneToken.charAt(phoneToken.length()-sideValue));
+			secretKey.append(pcSid.split("-")[mainCount].charAt(maximumIndex-3)).append(pcSid.split("-")[mainCount].charAt(maximumIndex-2));
 			
-		case HashType.SHA512:
-			DivisionNumber = HashType.SHA512_SecretKeyLength/2;
-			break;
-			
-		default:
-			DivisionNumber = HashType.SHA1/2;				
+			if(mainCount != countMaximum-1)
+				secretKey.append("-");	
 		}
+		//Register Create SecretKey - End
 		
-		StringBuilder SecretKey = new StringBuilder();
-		
-		for(int count = 0; count < DivisionNumber; count++) //sid
+		try 
 		{
-			double RandValue = Math.random();
-			int SelectedIndex = (int)(RandValue * PcSid.length());
-			SecretKey.append(PcSid.charAt(SelectedIndex));
+			if (OtpController.DEBUGOTP)
+				System.out.println("#SecretKeyCreate - 2(Final)  SecretKey : " + secretKey.toString());
+			return secretKey.toString(); //Return Create SecretKey
+		} finally {
+			secretKey = null;
+			pcSid = phoneToken = null; // Data Reset
 		}
-		
-		for(int count = 0; count < DivisionNumber; count++)//token
+	}
+	
+	private int SecretKeyTimestampDigit(final long timeStamp,final int digit)	
+	{ 
+		long result = 0;
+		long tempTimeStamp = timeStamp;
+		for(int mainCount=0; mainCount<digit+1; mainCount++)
 		{
-			double RandValue = Math.random();
-			int SelectedIndex = (int)(RandValue * PhoneToken.length());
-			SecretKey.append(PhoneToken.charAt(SelectedIndex));
+			result = tempTimeStamp % 10;
+			tempTimeStamp /= 10;
 		}
-		
-		return SecretKey.toString();
+		return (int)result;
 	}
 }

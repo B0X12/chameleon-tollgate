@@ -2,9 +2,11 @@
 using AuthClient.tollgate.rest;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using static AuthClient.tollgate.define.Define;
 
 namespace AuthClient.tollgate.account.service
 {
@@ -42,7 +44,7 @@ namespace AuthClient.tollgate.account.service
             {
                 throw new UriFormatException();
             }
-            
+
             // 서버 응답 코드가 200이 아닐 경우 / 타임 스탬프 mismatch
             return false;
         }
@@ -219,6 +221,85 @@ namespace AuthClient.tollgate.account.service
             if (result.statusCode == HttpStatusCode.OK)
             {
                 return true;
+            }
+
+            return false;
+        }
+
+        public List<MapPC> GetRegisteredPCList(string user)
+        {
+            // 통신 준비
+            long currentTimestamp = Util.GetCurrentTimestamp();
+            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            HttpCommunication hc = new HttpCommunication(Method.GET, URLPath.MAP_PCLIST + user, qs);
+
+            RestResult result = hc.SendRequest();
+
+            // 서버 응답 코드가 200일 경우
+            if (result.statusCode == HttpStatusCode.OK)
+            {
+                ResponseData<List<MapPC>> rd = JsonConvert.DeserializeObject<ResponseData<List<MapPC>>>(result.jsonResult);
+                List<MapPC> usbList = rd.getResult();
+
+                // 타임 스탬프 일치 / 해당 컴퓨터와 연동된 컴퓨터(UID) 존재함
+                if (rd.getTimestamp().Equals(currentTimestamp))
+                {
+                    return usbList;
+                }
+            }
+
+            return null;
+        }
+
+        public bool UpdatePCAlias(MapPC mapPCInfo)
+        {
+            // 통신 준비
+            long currentTimestamp = Util.GetCurrentTimestamp();
+            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            HttpCommunication hc = new HttpCommunication(Method.PUT, URLPath.UPDATE_PC_ALIAS, qs, mapPCInfo);
+
+            RestResult result = hc.SendRequest();
+
+            // 서버 응답 코드가 200일 경우
+            if (result.statusCode == HttpStatusCode.OK)
+            {
+                ResponseData<bool> rd = JsonConvert.DeserializeObject<ResponseData<bool>>(result.jsonResult);
+
+                // 타임 스탬프 일치 / 해당 컴퓨터와 연동된 컴퓨터(UID) 존재함
+                if (rd.getTimestamp().Equals(currentTimestamp))
+                {
+                    if (rd.getResult() == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateAuthFactorFlag(string user, AuthFactorFlag af, bool enable)
+        {
+            // 통신 준비
+            long currentTimestamp = Util.GetCurrentTimestamp();
+            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            HttpCommunication hc = new HttpCommunication(Method.PUT, URLPath.FACTOR_FLAG + user + "/" + (int)af + "/" + enable, qs, null);
+
+            RestResult result = hc.SendRequest();
+
+            // 서버 응답 코드가 200일 경우
+            if (result.statusCode == HttpStatusCode.OK)
+            {
+                ResponseData<bool> rd = JsonConvert.DeserializeObject<ResponseData<bool>>(result.jsonResult);
+
+                // 타임 스탬프 일치 / 해당 컴퓨터와 연동된 컴퓨터(UID) 존재함
+                if (rd.getTimestamp().Equals(currentTimestamp))
+                {
+                    if (rd.getResult() == true)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;

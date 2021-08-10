@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows.Forms;
-using System.Net;
-using System.Net.Http;
+﻿using Newtonsoft.Json;
 using System.IO;
-using Newtonsoft.Json;
+using System.Net;
 
 namespace AuthClient.tollgate.rest
 {
@@ -28,7 +20,7 @@ namespace AuthClient.tollgate.rest
         object jsonObject = null;
         string urlArguments = "";
         int timeout = 60000;            // 기본 타임아웃 시간: 1분
-        
+
 
         // --------------- 메소드 ----------------
         public HttpCommunication(Method method, string path, QueryString query)
@@ -43,8 +35,8 @@ namespace AuthClient.tollgate.rest
 
             this.method = method;
             this.urlArguments += path;
-            
-            if(query != null)
+
+            if (query != null)
             {
                 urlArguments += query.GetQueryString();
             }
@@ -88,7 +80,7 @@ namespace AuthClient.tollgate.rest
             req.Method = method.ToString();
 
             // POST 또는 PUT 메소드일 때만 Body 적용 
-            if((this.method == Method.POST) || (this.method == Method.PUT))
+            if ((this.method == Method.POST) || (this.method == Method.PUT))
             {
                 req.ContentType = "application/json";
 
@@ -99,7 +91,7 @@ namespace AuthClient.tollgate.rest
                     sw.Write(serializedJson);
                 }
             }
-            
+
             HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
             StreamReader reader = new StreamReader(resp.GetResponseStream());
             string strFromServer = reader.ReadToEnd();
@@ -141,6 +133,16 @@ namespace AuthClient.tollgate.rest
             return querys;
         }
 
+        public void AddQueryString(string key, bool value)
+        {
+            querys += "&" + key + "=" + value;
+        }
+
+        public void AddQueryString(string key, int value)
+        {
+            querys += "&" + key + "=" + value;
+        }
+
         public void AddQueryString(string key, string value)
         {
             querys += "&" + key + "=" + value;
@@ -155,11 +157,14 @@ namespace AuthClient.tollgate.rest
     class URLPath
     {
         public const string SERVER_HELLO = "";
-        
+
+        /*** 계정 관리 관련 Path ***/
         public const string LOGIN = "account/login/";
         public const string SIGNUP = "account/signup/";
         public const string MAP_PC = "account/map/pc/";
-        public const string UNMAP_PC = "account/unmap/pc/";
+        public const string MAP_PCLIST = "account/map/pclist/";
+        public const string FACTOR_FLAG = "account/factor/";
+        public const string SET_PWD = "account/password/";
 
         public const string AUTH_USB = "auth/usb/";
         public const string AUTH_PATTERN = "auth/pattern/";
@@ -172,5 +177,14 @@ namespace AuthClient.tollgate.rest
         public const string REGISTER_FINGERPRINT = "register/finger/";
         public const string REGISTER_FACEID = "register/face/";
         public const string REGISTER_OTP = "register/otp/";
+
+        public const string UPDATE_PC_ALIAS = "update/pc/alias/";
+        public const string UPDATE_USB_ALIAS = "update/usb/alias/";
+
+        private const string DATA = "/data/";
+        public const string DATA_OTP = DATA + "otp/";
+        public const string DATA_QR = DATA + "qr/";
+
+        public const string CONF_INIT = "init/";
     }
 }

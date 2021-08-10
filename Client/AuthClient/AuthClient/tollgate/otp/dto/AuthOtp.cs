@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AuthClient.tollgate.otp.dto
+﻿namespace AuthClient.tollgate.otp.dto
 {
     class AuthOtp
     {
-        public string id; // private로 바꾸면 서버에서 null로 읽힘
+        public string userId; // private로 바꾸면 서버에서 null로 읽힘
         public long timestamp;
-        public string otp;
+        public string data;
+
         //int? wow=null 하면 null값 쓸수있음.
-        public AuthOtp(in string id, in long timestamp, in string otp = null)
+        public AuthOtp(in string userId, in long timestamp = 0, in string data = null)
         {
-            this.id = id;
+            this.userId = userId;
             this.timestamp = timestamp;
-            this.otp = otp;
+            this.data = data;
         }
     }
 }

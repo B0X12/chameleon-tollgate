@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +42,6 @@ public class USBController {
 			@PathVariable("usb_info") String usb_info, long timestamp, String sid)
 			throws UnauthorizedUserAgentException, SQLException {
 
-		System.out.println(sid);
 		history.write(user, HistoryFactor.USB, sid, HistoryResult.SUCCESS);
 		
 		if (userAgent.equals("Tollgate-client")) {
@@ -90,7 +90,7 @@ public class USBController {
 	 */
 	@PostMapping(path = Path.REGIST_USB)
 	public ResponseEntity<Response<Boolean>> registerUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
-			@RequestBody USBInfo usb_info, long timestamp) throws SQLException, UnauthorizedUserAgentException {
+			@RequestBody USBInfo usb_info, long timestamp) throws Exception {
 
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.registerUSB(usb_info);
@@ -107,7 +107,7 @@ public class USBController {
 	@DeleteMapping(path = Path.REGIST_USB + "{user}/{usb_id}")
 	public ResponseEntity<Response<Boolean>> unregisterUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("user") String user, @PathVariable("usb_id") String usb_id, long timestamp)
-			throws SQLException, UnauthorizedUserAgentException {
+			throws Exception {
 
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.unregisterUSB(user, usb_id);
@@ -121,6 +121,23 @@ public class USBController {
 				Response<Boolean> resp = new Response<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR, false, timestamp);
 				return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		} else {
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+	}
+	
+	/*
+	 * USB 별명 변경
+	 */
+	@PutMapping(path = Path.UPDATE_USB_ALIAS)
+	public ResponseEntity<Response<Boolean>> updateUSBAlias(@RequestHeader(value = "User-Agent") String userAgent,
+			@RequestBody USBInfo usb_info, long timestamp)
+			throws SQLException, UnauthorizedUserAgentException {
+
+		if (userAgent.equals("Tollgate-client")) {
+			boolean result = service.updateUSBAlias(usb_info);
+			Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} else {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}

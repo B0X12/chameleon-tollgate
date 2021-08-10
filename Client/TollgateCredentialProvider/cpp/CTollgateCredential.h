@@ -30,8 +30,9 @@
 class CUSBAuth;
 class CPatternAuth;
 class CFaceAuth;
-//class CFingerprintAuth;
+class CFingerprintAuth;
 //class COTPAuth;
+class CQRAuth;
 
 
 class CTollgateCredential : public ICredentialProviderCredential2, ICredentialProviderCredentialWithFieldOptions
@@ -142,7 +143,7 @@ public:
 
     /*
     *  Offset: 0x80  0x40  0x20  0x10         0x08     0x04  0x02  0x01
-    *  Field : -     -     Face  Fingerprint  Pattern  OTP   USB   Password
+    *  Field : -     QR    Face  Fingerprint  Pattern  OTP   USB   Password
     */
     enum AUTH_FACTOR
     {
@@ -153,6 +154,7 @@ public:
         AUTH_FACTOR_PATTERN = 0x08,
         AUTH_FACTOR_FINGERPRINT = 0x10,
         AUTH_FACTOR_FACE = 0x20,
+        AUTH_FACTOR_QR = 0x40,
     };
 
   public:
@@ -166,11 +168,12 @@ public:
     int _nAuthFactorProcessCount = 0;
 
 
-    CUSBAuth*            _pUSBAuth = nullptr;
-    CPatternAuth*        _pPatternAuth = nullptr;
-    CFaceAuth*           _pFaceAuth = nullptr;
-    //CFingerprintAuth*  _pFingerprintAuth = nullptr;
-    //COTPAuth*          _pOTPAuth = nullptr;
+    CUSBAuth*           _pUSBAuth = nullptr;
+    CPatternAuth*       _pPatternAuth = nullptr;
+    CFaceAuth*          _pFaceAuth = nullptr;
+    CFingerprintAuth*   _pFingerprintAuth = nullptr;
+    //COTPAuth*         _pOTPAuth = nullptr;
+    CQRAuth*           _pQRAuth = nullptr;
 };
 
 

@@ -43,9 +43,13 @@ private:
 public:
     RestClient();
     ~RestClient();
+
+    // --------------- RestClient 프로세스 제어 ---------------/
     DWORD GetRestClientExitCode();
     void GetRestClientMessage(WCHAR* wcBuffer, rsize_t nBufferSizeInWords);
+    
 
+    // --------------- RestClient 요청 목록 ---------------/
     BOOL GetUserBySystemIdentifier(WCHAR* sys_id);
     BOOL GetAuthFactorByUser(WCHAR* user);
 
@@ -53,7 +57,6 @@ public:
     BOOL RequestPatternInformation(WCHAR* user, WCHAR* sys_id);
     BOOL RequestFaceInformation(WCHAR* user, WCHAR* sys_id);
     BOOL RequestFingerprintInformation(WCHAR* user, WCHAR* sys_id);
-    BOOL RequestOTPIssue(WCHAR* user, WCHAR* sys_id);
     BOOL RequestOTPVerification(WCHAR* user, WCHAR* sys_id, WCHAR* otp);
     BOOL RequestQRIssue(WCHAR* user, WCHAR* sys_id);
     

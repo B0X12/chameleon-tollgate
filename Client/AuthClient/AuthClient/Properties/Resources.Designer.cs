@@ -83,6 +83,16 @@ namespace AuthClient.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap checkButton {
+            get {
+                object obj = ResourceManager.GetObject("checkButton", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap checkFaceidText {
             get {
                 object obj = ResourceManager.GetObject("checkFaceidText", resourceCulture);
@@ -823,9 +833,9 @@ namespace AuthClient.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap settingUsbDel {
+        internal static System.Drawing.Bitmap settingUsbBg {
             get {
-                object obj = ResourceManager.GetObject("settingUsbDel", resourceCulture);
+                object obj = ResourceManager.GetObject("settingUsbBg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -833,9 +843,9 @@ namespace AuthClient.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap settingUsbNone {
+        internal static System.Drawing.Bitmap settingUsbDel {
             get {
-                object obj = ResourceManager.GetObject("settingUsbNone", resourceCulture);
+                object obj = ResourceManager.GetObject("settingUsbDel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -866,16 +876,6 @@ namespace AuthClient.Properties {
         internal static System.Drawing.Bitmap settingUsbTitle {
             get {
                 object obj = ResourceManager.GetObject("settingUsbTitle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap settingUsbUsing {
-            get {
-                object obj = ResourceManager.GetObject("settingUsbUsing", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

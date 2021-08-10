@@ -1,6 +1,7 @@
 package com.chameleon.tollgate.account.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,36 @@ public class AccountService implements IAccountService {
 	@Override
 	public int getFactorFlagByUser(String user) throws SQLException {
 		return dao.getFactorFlagByUser(user);
+	}
+
+	@Override
+	public List<MapPC> getRegisteredPCList(String user) throws SQLException {
+		return dao.getRegisteredPCList(user);
+	}
+
+	@Override
+	public boolean updatePCAlias(MapPC mapPC) {
+		return dao.updatePCAlias(mapPC);
+	}
+
+	@Override
+	public boolean updateFactorFlag(String user, int flagToUpdate, boolean enable) {
+		int factorFlag = 0;
+		
+		try 
+		{
+			factorFlag = dao.getFactorFlagByUser(user);
+		} 
+		catch (SQLException se)
+		{
+			return false;
+		}
+		
+		return dao.updateFactorFlag(user, factorFlag, flagToUpdate, enable);
+	}
+	
+	@Override
+	public boolean updatePwd(String id, String pwd) throws SQLException {
+		return dao.updatePwd(id, pwd);
 	}
 }

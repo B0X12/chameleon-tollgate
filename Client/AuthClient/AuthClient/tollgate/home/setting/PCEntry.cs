@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AuthClient.tollgate.account.dto;
+using System;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
 {
     public partial class PCEntry : UserControl
     {
-        public delegate void TextChangeHandler(object sender, string beforeText, string afterText);
+        public delegate void TextChangeHandler(PCEntry sender, string beforeText, string afterText);
 
         [Category("Tollgate")]
         public event TextChangeHandler TextChange;
 
         [Category("Tollgate")]
-        public new string Text
+        public MapPC MapPCInfo
         {
-            get { return label_name.Text; }
-            set { label_name.Text = value; }
+            get { return mapPCInfo; }
+            set
+            {
+                label_name.Text = value.alias;
+                mapPCInfo = value;
+            }
         }
+        private MapPC mapPCInfo;
 
         [Category("Tollgate")]
         public bool MainPC
@@ -80,7 +80,7 @@ namespace AuthClient.tollgate.home.setting
 
         private void text_edit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
             {
                 e.Handled = true;
             }

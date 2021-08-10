@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net;
-using System.IO;
-using Newtonsoft.Json;
-
+﻿using AuthClient.tollgate.otp.dto;
 using AuthClient.tollgate.rest;
-using AuthClient.tollgate.otp.dto;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
 
 namespace AuthClient.tollgate.otp.service
 {
@@ -21,7 +16,7 @@ namespace AuthClient.tollgate.otp.service
             long currentTimestamp = Util.GetCurrentTimestamp();
 
             // DTO 준비
-            AuthOtp authotp = new AuthOtp(id, currentTimestamp);
+            AuthOtp authotp = new AuthOtp(id);
 
             // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);
@@ -47,7 +42,7 @@ namespace AuthClient.tollgate.otp.service
                                 case ReturnMessage.SUCCESS:
                                     Console.WriteLine("성공");
                                     return ReturnMessageValue.SUCCESS;
-                                case ReturnMessage.REGISTER_DATABASE:
+                                case ReturnMessage.REGISTER_UNKNOWN:
                                     Console.WriteLine("실패 - DATABASE");
                                     return ReturnMessageValue.REGISTER_DATABASE;
                                 case ReturnMessage.REGISTER_INFORMATION:
@@ -71,13 +66,13 @@ namespace AuthClient.tollgate.otp.service
             return ReturnMessageValue.FAIL;
         }
 
-        internal int PostOtpVerify(in string id, in string otp)
+        internal int PostOtpVerify(in string id, in string InputOtpData)
         {
             // 통신 TimeStamp
             long currentTimestamp = Util.GetCurrentTimestamp();
 
             // DTO 준비
-            AuthOtp authotp = new AuthOtp(id, currentTimestamp, otp);
+            AuthOtp authotp = new AuthOtp(id, 0, InputOtpData);
 
             // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);
@@ -103,7 +98,7 @@ namespace AuthClient.tollgate.otp.service
                                 case ReturnMessage.SUCCESS:
                                     Console.WriteLine("성공");
                                     return ReturnMessageValue.SUCCESS;
-                                case ReturnMessage.VERIFY_DATABASE:
+                                case ReturnMessage.VERIFY_UNKNOWN:
                                     Console.WriteLine("실패 - DATABASE");
                                     return ReturnMessageValue.VERIFY_DATABASE;
                                 case ReturnMessage.VERIFY_INFORMATION:

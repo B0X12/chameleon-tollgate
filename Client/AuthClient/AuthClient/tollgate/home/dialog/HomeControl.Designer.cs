@@ -128,6 +128,7 @@ namespace AuthClient.tollgate.home.dialog
             this.card_user.Name = "card_user";
             this.card_user.Size = new System.Drawing.Size(207, 269);
             this.card_user.TabIndex = 4;
+            this.card_user.LogoutClick += new System.EventHandler(this.card_user_LogoutClick);
             // 
             // HomeControl
             // 

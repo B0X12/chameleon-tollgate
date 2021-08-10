@@ -1,18 +1,16 @@
 ﻿using AuthClient.tollgate.home.setting;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home
 {
     public partial class SettingControl : UserControl
     {
+        public string User
+        {
+            set { settingAccount.ID = value; }
+        }
+
         SettingAccount settingAccount;
         SettingPC settingPC;
         SettingUSB settingUSB;
@@ -24,6 +22,7 @@ namespace AuthClient.tollgate.home
             settingAccount = new SettingAccount();
             settingPC = new SettingPC();
             settingUSB = new SettingUSB();
+            settingPC.Visible = settingUSB.Visible = false;
 
             panel_content.Controls.Add(settingAccount);
             panel_content.Controls.Add(settingPC);

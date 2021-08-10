@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AuthClient.tollgate
 {
@@ -14,9 +8,8 @@ namespace AuthClient.tollgate
         private const string CONFIG_FILE_PATH = "C:\\Tollgate\\server.cfg";
         private const int SERVER_PORT = 8080;
         private static string currentUser = "";
-        private static string signupUser = "";
         private static string baseURL = "";
-        
+
         internal static void SetCurrentUser(string user)
         {
             currentUser = user;
@@ -25,16 +18,6 @@ namespace AuthClient.tollgate
         internal static string GetCurrentUser()
         {
             return currentUser;
-        }
-
-        internal static void SetSignupUser(string user)
-        {
-            signupUser = user;
-        }
-
-        internal static string GetSignupUser()
-        {
-            return signupUser;
         }
 
         internal static void InitializeBaseURL(string serverIP, bool useHttps = true)
@@ -62,11 +45,6 @@ namespace AuthClient.tollgate
         internal static string GetBaseURL()
         {
             return baseURL;
-        }
-
-        internal static void SetBaseURL(string url)
-        {
-            baseURL = url;
         }
 
         internal static bool InitAuthServerByConfigFile()
@@ -110,10 +88,10 @@ namespace AuthClient.tollgate
             using (StreamWriter configFile = new StreamWriter(CONFIG_FILE_PATH, false))
             {
                 // SecureTransmission 필드
-                if(urlComponents[0].Equals("http"))
+                if (urlComponents[0].Equals("http"))
                 {
                     configFile.WriteLine("SecureTransmission=false");
-                } 
+                }
                 else
                 {
                     configFile.WriteLine("SecureTransmission=true");
@@ -133,6 +111,6 @@ namespace AuthClient.tollgate
             {
                 File.Delete(CONFIG_FILE_PATH);
             }
-        }    
+        }
     }
 }

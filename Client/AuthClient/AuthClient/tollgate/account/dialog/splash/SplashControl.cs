@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.account.dialog
@@ -47,7 +46,7 @@ namespace AuthClient.tollgate.account.dialog
     {
         protected override void OnPaint(PaintEventArgs e)
         {
-            string subL = "이제 언제나 ";
+            string subL = "이제 언제나";
             string subM = "TOLLGATE와 함께";
             string subR = "하실 수 있습니다.";
 

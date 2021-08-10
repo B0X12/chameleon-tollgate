@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AuthClient.tollgate.usb.dto
+﻿namespace AuthClient.tollgate.usb.dto
 {
-    class USBInfo
+    public class USBInfo
     {
         public string id { get; set; }
         public string usb_id { get; set; }

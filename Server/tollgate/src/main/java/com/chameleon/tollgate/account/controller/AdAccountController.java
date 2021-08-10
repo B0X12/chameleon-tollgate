@@ -22,7 +22,6 @@ import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
 import com.chameleon.tollgate.util.tollgateLog.TollgateLog;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
-import com.chameleon.tollgate.util.tollgateLog.dto.code.LoginCode;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.RestCode;
 
 @RestController

@@ -102,6 +102,18 @@ public class USBDAO extends SQLiteManager implements IUSBDAO {
 		}
 	}
 
+	@Override
+	public boolean updateUSBAlias(USBInfo usb_info) {
+		try {
+			String SqlInstruct = "UPDATE auth_usb SET alias = '" + usb_info.alias + "' WHERE id = '" + usb_info.id
+					+ "' AND usb_id = '" + usb_info.usb_id + "'";
+			SearchUpdate(SqlInstruct);
+			return true;
+		} catch (SQLException se) {
+			return false;
+		}
+	}
+
 	// ---------------------------------------------------------
 
 	private boolean SearchUpdate(final String SqlCommand) throws SQLException {

@@ -35,9 +35,9 @@ public class ConfigController {
 				HttpStatus.OK);
 	}
 	
-	@GetMapping(Path.INIT + "{id}")
+	@GetMapping(Path.INIT + "{factor}/{id}")
 	public ResponseEntity<Response<Boolean>> isInit(@RequestHeader(value = "User-Agent") String userAgent,
-			@PathVariable String id, String factor, long timestamp) throws Exception {
+			@PathVariable String factor, @PathVariable String id, long timestamp) throws Exception {
 		if (!userAgent.equals(Property.USER_AGENT))
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		
