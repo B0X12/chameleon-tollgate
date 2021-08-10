@@ -1,6 +1,6 @@
 #pragma once
 
-#define LOGFILE_NAME		"C:\\Tollgate\\log\\log.txt"
+#define LOGFILE_NAME		"C:\\Tollgate\\Logs\\clog.txt"
 
 namespace LOG {
 	enum class ALERT {

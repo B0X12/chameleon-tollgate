@@ -25,8 +25,8 @@ namespace AuthClient.tollgate
             InitializeComponent();
 
             //OtpTest
-            //OtpTest ot = new OtpTest();
-            //ot.Show();
+            OtpTest ot = new OtpTest();
+            ot.Show();
 
             fonts = new PrivateFontCollection();
             fonts.AddFontFile(Property.FONT_MEDIUM);

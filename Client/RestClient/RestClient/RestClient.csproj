@@ -59,6 +59,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Json">
+      <HintPath>dll\System.Net.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -75,13 +78,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="dto\OTPResponseValue.cs" />
-    <Compile Include="dto\OTPInfo.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="dto\AuthQr.cs" />
+    <Compile Include="dto\ResponseMessage.cs" />
+    <Compile Include="dto\AuthOtp.cs" />
+    <Compile Include="QRForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="QRForm.Designer.cs">
+      <DependentUpon>QRForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Handler.cs" />
     <Compile Include="Program.cs" />
@@ -104,8 +108,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="QRForm.resx">
+      <DependentUpon>QRForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
