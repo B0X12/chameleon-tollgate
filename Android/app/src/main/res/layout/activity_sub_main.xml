@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/submain_screen_bg"
+    tools:context=".Activities.SubMainActivity">
+
+
+    <Space
+        android:id="@+id/space13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintWidth_percent="0.04" />
+
+    <Space
+        android:id="@+id/space6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.04" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toStartOf="@+id/space13"
+        app:layout_constraintStart_toEndOf="@+id/space6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/submain_bg_group" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/space13"
+        app:layout_constraintHeight_percent="0.21"
+        app:layout_constraintStart_toEndOf="@+id/space6">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="➜ 매인 화면으로 이동"
+            android:textStyle="bold"
+            android:fontFamily="@font/notosanskr_bold"
+            android:adjustViewBounds="true"
+            android:background="@drawable/tollgate_button_default"
+            android:includeFontPadding="false"
+            app:layout_constraintBottom_toTopOf="@+id/space19"
+            app:layout_constraintEnd_toStartOf="@+id/space18"
+            app:layout_constraintStart_toEndOf="@+id/space17"
+            app:layout_constraintTop_toBottomOf="@+id/space20" />
+
+        <Space
+            android:id="@+id/space17"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.13" />
+
+        <Space
+            android:id="@+id/space18"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.14" />
+
+        <Space
+            android:id="@+id/space19"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/space18"
+            app:layout_constraintHeight_percent="0.46"
+            app:layout_constraintStart_toEndOf="@+id/space17" />
+
+        <Space
+            android:id="@+id/space20"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/space18"
+            app:layout_constraintHeight_percent="0.33"
+            app:layout_constraintStart_toEndOf="@+id/space17"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

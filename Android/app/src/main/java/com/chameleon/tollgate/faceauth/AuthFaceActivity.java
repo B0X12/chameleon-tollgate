@@ -88,6 +88,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
 
         tollgateLog.i(LogFactor.FACE, faceCode.START_AUTH);
 
+
         Intent parentIntent = getIntent();
         if(parentIntent != null){
             String activationMode = parentIntent.getStringExtra("mode");
@@ -211,19 +212,9 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
     protected void onStart(){
         super.onStart();
 
-        ArrayList permissions = new ArrayList();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(!isGranted(CAMERA))
-                permissions.add(CAMERA);
-
-            String[] arr_permissions = (String[]) permissions.toArray(new String[permissions.size()]);
-            if(!permissions.isEmpty())
-                requestPermissions(arr_permissions, FaceVar.MULTI_PERMISSION_CODE);
-
-            if(isGranted(CAMERA)){
-                Log.d(FaceVar.TAG, "onStart : Camera Permission Granted");
-                onCameraPermissionGranted();
-            }
+        if(isGranted(CAMERA)){
+            Log.d(FaceVar.TAG, "onStart : Camera Permission Granted");
+            onCameraPermissionGranted();
         }
     }
 
@@ -273,10 +264,7 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                         tollgateLog.i(LogFactor.FACE, faceCode.FACE_REGISTER);
                         String hashValue = mFaceAS.trainFace();
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-                        String train_timestamp = sdf.format(new Timestamp(System.currentTimeMillis()));
-
-                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, Long.parseLong(train_timestamp)), this, handler);
+                        FaceRestTask faceRest = new FaceRestTask(new FacePack(hashValue, "train", true, System.currentTimeMillis()), this, handler);
                         boolean result = false;
                         try {
                             result = faceRest.execute().get();
@@ -299,7 +287,6 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
                 }
                 else if(mode.equals(FaceVar.ActivationMode.AUTH)){
                     if(mFaceAS.isUser()) {
-                        tollgateLog.i(LogFactor.FACE, faceCode.FACE_VERIFIED);
                         FaceRestTask faceRest = null;
 
                         faceRest = new FaceRestTask(new FacePack(hashValue, "auth", true, Long.parseLong(timestamp)), this, handler);

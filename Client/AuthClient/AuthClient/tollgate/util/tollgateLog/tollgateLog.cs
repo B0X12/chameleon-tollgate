@@ -11,10 +11,17 @@ namespace AuthClient.tollgate.util.tollgateLog
         private static StreamWriter logFile = null;
         private const string separator = ";";
         private static string filePath = "";
+        private static string dirPath = "";
 
         public static void setLogPath(string path)
         {
+            dirPath = path;
             filePath = path + @"\clog.txt";
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
 
             if (!File.Exists(filePath))
             {

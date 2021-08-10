@@ -37,6 +37,7 @@ public class Path {
 	public static final String INIT_FINGERPRINT = INIT + "finger/";
 	public static final String INIT_FACE = INIT + "face/";
 	
+	public static final String HISTORY = "/history/";
 	public static final String UPDATE = "/update/";
 	public static final String UPDATE_PC_ALIAS = UPDATE + "pc/alias/";
 	public static final String UPDATE_USB_ALIAS = UPDATE + "usb/alias/";
