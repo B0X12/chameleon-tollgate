@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class LogRecord {
-
 	private String timestamp;
 	private String ip;
 	private String level;

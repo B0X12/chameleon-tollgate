@@ -90,7 +90,7 @@ public class USBController {
 	 */
 	@PostMapping(path = Path.REGIST_USB)
 	public ResponseEntity<Response<Boolean>> registerUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
-			@RequestBody USBInfo usb_info, long timestamp) throws SQLException, UnauthorizedUserAgentException {
+			@RequestBody USBInfo usb_info, long timestamp) throws Exception {
 
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.registerUSB(usb_info);
@@ -107,7 +107,7 @@ public class USBController {
 	@DeleteMapping(path = Path.REGIST_USB + "{user}/{usb_id}")
 	public ResponseEntity<Response<Boolean>> unregisterUSBInfo(@RequestHeader(value = "User-Agent") String userAgent,
 			@PathVariable("user") String user, @PathVariable("usb_id") String usb_id, long timestamp)
-			throws SQLException, UnauthorizedUserAgentException {
+			throws Exception {
 
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.unregisterUSB(user, usb_id);

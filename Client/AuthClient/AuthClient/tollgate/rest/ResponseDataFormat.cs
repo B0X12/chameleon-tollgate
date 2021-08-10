@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AuthClient.tollgate.rest
+﻿namespace AuthClient.tollgate.rest
 {
-    class ResponseData <T>
+    class ResponseData<T>
     {
         private int httpStatus;
         private T result;

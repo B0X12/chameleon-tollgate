@@ -1,10 +1,12 @@
 ﻿using AuthClient.tollgate.account.dialog;
 using AuthClient.tollgate.home.dialog;
-using AuthClient.tollgate.otp.dialog;
+using AuthClient.tollgate.rest;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using static AuthClient.tollgate.define.Define;
 
 namespace AuthClient.tollgate
 {
@@ -61,12 +63,18 @@ namespace AuthClient.tollgate
         private void Initcontrol_Login()
         {
             splashControl.User = Config.GetCurrentUser();
+
+            QueryString qs = new QueryString("timestamp", Util.GetCurrentTimestamp());
+            RestResult result = new HttpCommunication(Method.GET, URLPath.FACTOR_FLAG + Config.GetCurrentUser(), qs).SendRequest();
+            ResponseData<int> data = JsonConvert.DeserializeObject<ResponseData<int>>(result.jsonResult);
+            homeControl.InitFactor((Factor)data.getResult());
+
             ChangePage(1);
         }
 
         private void ChangePage(int page)
         {
-            for(int i = 0; i < panel_main.Controls.Count; i++)
+            for (int i = 0; i < panel_main.Controls.Count; i++)
             {
                 panel_main.Controls[i].Visible = (i == page);
             }

@@ -1,13 +1,7 @@
 ﻿using AuthClient.tollgate.usb.dto;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
@@ -27,8 +21,7 @@ namespace AuthClient.tollgate.home.setting
             set
             {
                 img_button.Image = value ? Properties.Resources.settingUsbDel : Properties.Resources.settingUsbAdd;
-                img_usb.Image = value ? Properties.Resources.settingUsbUsing : Properties.Resources.settingUsbNone;
-                label_name.BackColor = value ? Color.FromArgb(143, 143, 143) : Color.FromArgb(196, 196, 196);
+                img_edit.Visible = value;
                 isRegistered = value;
             }
         }
@@ -65,21 +58,15 @@ namespace AuthClient.tollgate.home.setting
             label_name.Font = font;
             text_edit.Font = font;
 
-            label_name.Top = text_edit.Top = (ClientSize.Height - label_name.Height) / 2;
-            label_name.Left = img_usb.Left + 45;
+            label_name.Top = text_edit.Top = img_button.Top = img_edit.Top = (ClientSize.Height - label_name.Height) / 2 - 4;
+            label_name.Left = 66;
             text_edit.Left = label_name.Left + 4;
+            img_edit.Left = 340;
         }
 
         private void Img_button_Click(object sender, EventArgs e)
         {
             buttonClick(this);
-        }
-
-        private void label_name_Click(object sender, EventArgs e)
-        {
-            text_edit.Text = label_name.Text;
-            text_edit.Visible = true;
-            text_edit.Focus();
         }
 
         private void text_edit_KeyDown(object sender, KeyEventArgs e)
@@ -102,6 +89,13 @@ namespace AuthClient.tollgate.home.setting
             {
                 e.Handled = true;
             }
+        }
+
+        private void img_edit_Click(object sender, EventArgs e)
+        {
+            text_edit.Text = label_name.Text;
+            text_edit.Visible = true;
+            text_edit.Focus();
         }
     }
 }

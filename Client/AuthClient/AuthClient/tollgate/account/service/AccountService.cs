@@ -2,10 +2,10 @@
 using AuthClient.tollgate.rest;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using System.Collections.Generic;
 using static AuthClient.tollgate.define.Define;
 
 namespace AuthClient.tollgate.account.service
@@ -44,7 +44,7 @@ namespace AuthClient.tollgate.account.service
             {
                 throw new UriFormatException();
             }
-            
+
             // 서버 응답 코드가 200이 아닐 경우 / 타임 스탬프 mismatch
             return false;
         }

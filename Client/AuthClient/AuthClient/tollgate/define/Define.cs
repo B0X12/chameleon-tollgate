@@ -1,15 +1,18 @@
-﻿namespace AuthClient.tollgate.define
+﻿using System;
+
+namespace AuthClient.tollgate.define
 {
     public class Define
     {
-        public enum Factor
+        [Flags]
+        public enum Factor : short
         {
-            FINGER,
-            FACEID,
-            USB,
-            OTP,
-            QR,
-            PATTERN
+            USB = 1 << 1,
+            OTP = USB << 1,
+            PATTERN = OTP << 1,
+            FINGER = PATTERN << 1,
+            FACEID = FINGER << 1,
+            QR = FACEID << 1
         }
 
         public enum AuthFactorFlag

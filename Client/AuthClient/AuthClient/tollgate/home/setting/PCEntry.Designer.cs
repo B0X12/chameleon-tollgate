@@ -30,10 +30,10 @@ namespace AuthClient.tollgate.home.setting
         private void InitializeComponent()
         {
             this.label_name = new System.Windows.Forms.Label();
+            this.text_edit = new System.Windows.Forms.TextBox();
             this.img_edit = new System.Windows.Forms.PictureBox();
             this.img_crown = new System.Windows.Forms.PictureBox();
             this.img_back = new System.Windows.Forms.PictureBox();
-            this.text_edit = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.img_edit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_crown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.img_back)).BeginInit();
@@ -44,12 +44,25 @@ namespace AuthClient.tollgate.home.setting
             this.label_name.AutoSize = true;
             this.label_name.BackColor = System.Drawing.Color.White;
             this.label_name.ForeColor = System.Drawing.Color.Black;
-            this.label_name.Location = new System.Drawing.Point(18, 41);
+            this.label_name.Location = new System.Drawing.Point(18, 35);
             this.label_name.Margin = new System.Windows.Forms.Padding(0);
             this.label_name.Name = "label_name";
             this.label_name.Size = new System.Drawing.Size(25, 12);
             this.label_name.TabIndex = 2;
             this.label_name.Text = "test";
+            // 
+            // text_edit
+            // 
+            this.text_edit.BackColor = System.Drawing.Color.White;
+            this.text_edit.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.text_edit.Location = new System.Drawing.Point(22, 35);
+            this.text_edit.Margin = new System.Windows.Forms.Padding(0);
+            this.text_edit.Name = "text_edit";
+            this.text_edit.Size = new System.Drawing.Size(160, 14);
+            this.text_edit.TabIndex = 4;
+            this.text_edit.Visible = false;
+            this.text_edit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.text_edit_KeyDown);
+            this.text_edit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_edit_KeyPress);
             // 
             // img_edit
             // 
@@ -85,19 +98,6 @@ namespace AuthClient.tollgate.home.setting
             this.img_back.Size = new System.Drawing.Size(203, 148);
             this.img_back.TabIndex = 0;
             this.img_back.TabStop = false;
-            // 
-            // text_edit
-            // 
-            this.text_edit.BackColor = System.Drawing.Color.White;
-            this.text_edit.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.text_edit.Location = new System.Drawing.Point(22, 41);
-            this.text_edit.Margin = new System.Windows.Forms.Padding(0);
-            this.text_edit.Name = "text_edit";
-            this.text_edit.Size = new System.Drawing.Size(167, 14);
-            this.text_edit.TabIndex = 4;
-            this.text_edit.Visible = false;
-            this.text_edit.KeyDown += new System.Windows.Forms.KeyEventHandler(this.text_edit_KeyDown);
-            this.text_edit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_edit_KeyPress);
             // 
             // PCEntry
             // 

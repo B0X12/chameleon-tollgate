@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using AuthClient.tollgate.util.tollgateLog.dto;
+﻿using AuthClient.tollgate.util.tollgateLog.dto;
 using AuthClient.tollgate.util.tollgateLog.dto.code;
+using System;
+using System.IO;
+using System.Text;
 
 namespace AuthClient.tollgate.util.tollgateLog
 {

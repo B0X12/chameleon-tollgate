@@ -33,10 +33,10 @@ namespace AuthClient.tollgate.home.main.dialog
             img_icon.Left = ClientRectangle.Left + 15;
             img_icon.Top = (ClientSize.Height - img_icon.Height) / 2;
 
-            //Font font = new Font(MainForm.FONT_BOLD, 11);
-            //label.Font = font;
-            //label.Left = ClientRectangle.Left + 41;
-            //label.Top = (ClientSize.Height - label.Height) / 2 - 2;
+            Font font = new Font(MainForm.FONT_BOLD, 11);
+            label.Font = font;
+            label.Left = ClientRectangle.Left + 41;
+            label.Top = (ClientSize.Height - label.Height) / 2 - 2;
         }
 
         public void setOn()

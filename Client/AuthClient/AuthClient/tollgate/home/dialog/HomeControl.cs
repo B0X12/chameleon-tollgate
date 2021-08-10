@@ -2,6 +2,7 @@
 using AuthClient.tollgate.home.main.dialog;
 using System;
 using System.Windows.Forms;
+using static AuthClient.tollgate.define.Define;
 
 namespace AuthClient.tollgate.home.dialog
 {
@@ -12,7 +13,11 @@ namespace AuthClient.tollgate.home.dialog
 
         public string User
         {
-            set { card_user.Text = value; }
+            set
+            {
+                card_user.Text = value;
+                settingControl.User = value;
+            }
         }
 
         public HomeControl()
@@ -54,7 +59,7 @@ namespace AuthClient.tollgate.home.dialog
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if(dr == DialogResult.Yes)
+            if (dr == DialogResult.Yes)
             {
                 // --------------- PC와 인증 서버와의 연동 해제 ---------------
                 AccountService accountService = new AccountService();
@@ -65,6 +70,11 @@ namespace AuthClient.tollgate.home.dialog
 
                 Application.Restart();
             }
+        }
+
+        public void InitFactor(Factor factor)
+        {
+            mainControl.InitFactor(factor);
         }
     }
 }
