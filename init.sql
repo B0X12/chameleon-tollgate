@@ -62,6 +62,7 @@ CONSTRAINT "auth_otp_fk_id" FOREIGN KEY("id") REFERENCES "account"("id")
 
 CREATE TABLE history(
 id TEXT NOT NULL,
+timestamp TEXT NOT NULL,
 factor TEXT NOT NULL,
 pc TEXT NOT NULL,
 result INTEGER NOT NULL CHECK(result=0 or result=1),
