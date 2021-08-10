@@ -1,13 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Windows.Forms;
-using AuthClient.tollgate;
-using AuthClient.tollgate.account.dialog;
-using AuthClient.tollgate.account.service;
-using AuthClient.tollgate.otp.dialog;
+﻿using AuthClient.tollgate;
 using AuthClient.tollgate.util.tollgateLog;
 using AuthClient.tollgate.util.tollgateLog.dto;
 using AuthClient.tollgate.util.tollgateLog.dto.code;
+using System;
+using System.Windows.Forms;
 
 namespace AuthClient
 {

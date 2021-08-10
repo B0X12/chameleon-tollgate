@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net;
-using System.IO;
-using Newtonsoft.Json;
-
+﻿using AuthClient.tollgate.otp.dto;
 using AuthClient.tollgate.rest;
-using AuthClient.tollgate.otp.dto;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
 
 namespace AuthClient.tollgate.otp.service
 {
@@ -77,7 +72,7 @@ namespace AuthClient.tollgate.otp.service
             long currentTimestamp = Util.GetCurrentTimestamp();
 
             // DTO 준비
-            AuthOtp authotp = new AuthOtp(id, 0,InputOtpData);
+            AuthOtp authotp = new AuthOtp(id, 0, InputOtpData);
 
             // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);

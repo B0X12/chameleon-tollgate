@@ -15,7 +15,9 @@ public enum Path {
     DATA_OTP("/data/otp/"),
     AUTH_QR("/auth/qr/"),
     REGIST_PATTERN("/register/pattern/"),
-    REGIST_FACE("/register/face/");
+    REGIST_FACE("/register/face/"),
+
+    HISTORY("/history/");
 
     private final String value;
 

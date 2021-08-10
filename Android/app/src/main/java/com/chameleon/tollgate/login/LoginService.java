@@ -6,6 +6,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chameleon.tollgate.Activities.ServerActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.CfgKey;
@@ -20,39 +21,21 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class LoginService {
-    public void beforeSetServer(AppCompatActivity activity) {
-        EditText editServer = activity.findViewById(R.id.edit_server);
-        editServer.setEnabled(true);
-        EditText editID = activity.findViewById(R.id.edit_id);
-        editID.setEnabled(false);
-        EditText editPwd = activity.findViewById(R.id.edit_pwd);
-        editPwd.setEnabled(false);
-    }
-
-    public void beforeSetID(AppCompatActivity activity) {
-        EditText editServer = activity.findViewById(R.id.edit_server);
-        editServer.setEnabled(false);
-        EditText editID = activity.findViewById(R.id.edit_id);
-        editID.setEnabled(true);
-        EditText editPwd = activity.findViewById(R.id.edit_pwd);
-        editPwd.setEnabled(true);
-    }
-
     public void setServerIP(AppCompatActivity activity, String ip) {
-        EditText editServer = activity.findViewById(R.id.edit_server);
+        EditText editServer = activity.findViewById(R.id.edit_IP);
         editServer.setText(ip);
         editServer.setEnabled(false);
         MainActivity.SERVER_IP = ip;
     }
 
     public void unsetServerIP(AppCompatActivity activity) {
-        EditText editServer = activity.findViewById(R.id.edit_server);
+        EditText editServer = activity.findViewById(R.id.edit_IP);
         editServer.setEnabled(true);
         MainActivity.SERVER_IP = null;
     }
 
     public void setID(AppCompatActivity activity, String id) {
-        EditText editID = activity.findViewById(R.id.edit_id);
+        EditText editID = activity.findViewById(R.id.edit_ID);
         editID.setText(id);
         editID.setEnabled(false);
         MainActivity.USER_ID = id;

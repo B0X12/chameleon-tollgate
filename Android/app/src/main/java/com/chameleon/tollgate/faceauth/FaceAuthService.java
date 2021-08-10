@@ -1,17 +1,10 @@
 package com.chameleon.tollgate.faceauth;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import com.chameleon.tollgate.R;
 
@@ -34,13 +27,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import static org.opencv.imgproc.Imgproc.COLOR_BGRA2BGR;
-import static org.opencv.imgproc.Imgproc.FONT_HERSHEY_COMPLEX;
 import static org.opencv.imgproc.Imgproc.FONT_HERSHEY_SIMPLEX;
 import static org.opencv.imgproc.Imgproc.putText;
 import static org.opencv.imgproc.Imgproc.rectangle;
@@ -91,7 +82,7 @@ public class FaceAuthService {
         this.CroppedImage = new Mat();
         this.CropResizedImage = new Mat();
 
-        this.rectColor = new Scalar(255,0,0);
+        this.rectColor = new Scalar(255,208,91);
 
         loadCascade();
     }
@@ -276,16 +267,6 @@ public class FaceAuthService {
         }
 
         try {
-            System.out.println("testtest:  "+path);
-            File file = new File(path);
-
-            if(file.exists()){
-                System.out.println("testtest");
-            }
-            else{
-                System.out.println("testtestjffffffjfskldjflskdfjlsjkdfj");
-            }
-
             FileInputStream fIS = new FileInputStream(path);
 
             byte[] dataBytes = new byte[4096];

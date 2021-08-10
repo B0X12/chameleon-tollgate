@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.chameleon.tollgate.database.define.Factor;
 import com.chameleon.tollgate.fcm.FCMSender;
 import com.chameleon.tollgate.pattern.dao.AuthDAO;
+import com.chameleon.tollgate.util.tollgateLog.TollgateLog;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.ConfigCode;
 
 @Service
 public class AuthService implements IAuthService {
@@ -13,7 +16,7 @@ public class AuthService implements IAuthService {
 	AuthDAO dao;
 	
 	@Override
-	public boolean SendSignal(String id, long timestamp) throws Exception {
+	public boolean SendSignal(String id, long timestamp, String pc) throws Exception {
 		try {
 			dao.open(true);
 			String token = dao.getToken(id);
@@ -29,6 +32,7 @@ public class AuthService implements IAuthService {
 				.setToken(token)
 				.setClickAction(click_action)
 				.putData("timestamp", String.valueOf(timestamp))
+				.putData("pc", pc)
 				.build());
 		
 			return true;
@@ -38,14 +42,16 @@ public class AuthService implements IAuthService {
 	}
 	
 	@Override
-	public boolean SetPattern(String id, String pattern) throws Exception {
+	public boolean SetPattern(String id, String pattern, String ip) throws Exception {
 		try {
 			dao.open();
-			boolean result = dao.setPattern(id, pattern);
-			dao.setInitFactor(id, Factor.PATTERN, true);
+			boolean result = dao.setPattern(id, pattern, ip);
+			if(result) {
+				dao.setInitFactor(id, Factor.PATTERN, true);
+				TollgateLog.i(ip, id, LogFactor.PATTERN, ConfigCode.INIT_PATTERN, "Initialize user's pattern factor.");
+			}
 			dao.commit();
 			dao.close();
-			
 			return result;
 		} finally {
 			this.dao.close();
@@ -53,10 +59,10 @@ public class AuthService implements IAuthService {
 	}
 
 	@Override
-	public boolean VerifyPattern(String id, String pattern) throws Exception {
+	public boolean VerifyPattern(String id, String pattern, String ip) throws Exception {
 		try {
 			dao.open(true);
-			String exist = dao.getPattern(id);
+			String exist = dao.getPattern(id, ip);
 			dao.close();
 			
 			int result = exist.compareTo(pattern);

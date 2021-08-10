@@ -14,7 +14,7 @@ import com.chameleon.tollgate.database.exception.DBError;
 import com.chameleon.tollgate.database.exception.DatabaseConnectException;
 import com.chameleon.tollgate.util.userHistory.dao.exception.HistoryError;
 import com.chameleon.tollgate.util.userHistory.dao.exception.HistoryResultException;
-import com.chameleon.tollgate.util.userHistory.dto.historyRecord;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryRecord;
 
 @Component
 public class HistoryDAO extends SQLiteManager {
@@ -63,7 +63,7 @@ public class HistoryDAO extends SQLiteManager {
 	}
 	
 	// 데이터 한번에 받아올 수 있게
-	public ArrayList<historyRecord> get(String id) throws Exception {
+	public ArrayList<HistoryRecord> get(String id) throws Exception {
 		if(!isOpen()) {
 			throw new DatabaseConnectException(DBError.NO_CONNECTION);
 		}
@@ -72,12 +72,12 @@ public class HistoryDAO extends SQLiteManager {
 		if(count < 1) 
 			throw new HistoryResultException(HistoryError.NO_HISTORY);
 
-		ArrayList<historyRecord> recordList = new ArrayList<historyRecord>();
+		ArrayList<HistoryRecord> recordList = new ArrayList<HistoryRecord>();
 		PreparedStatement state = super.connection.prepareStatement("select * from " + Table.HISTORY + " where id = ?");
 		state.setString(1, id);
 		ResultSet rs = state.executeQuery();
 		do {
-			recordList.add(new historyRecord(rs));
+			recordList.add(new HistoryRecord(rs));
 		} while (rs.next());
 			
 			

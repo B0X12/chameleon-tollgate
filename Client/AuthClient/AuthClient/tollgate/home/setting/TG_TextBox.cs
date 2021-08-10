@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
@@ -87,6 +82,13 @@ namespace AuthClient.tollgate.home.setting
         {
             add { textBox.KeyDown += value; }
             remove { textBox.KeyDown -= value; }
+        }
+
+        [Category("Tollgate")]
+        public new event KeyPressEventHandler KeyPress
+        {
+            add { textBox.KeyPress += value; }
+            remove { textBox.KeyPress -= value; }
         }
 
         public TG_TextBox()

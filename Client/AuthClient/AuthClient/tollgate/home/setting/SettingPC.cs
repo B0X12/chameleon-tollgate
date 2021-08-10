@@ -2,20 +2,12 @@
 using AuthClient.tollgate.account.service;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
 {
     public partial class SettingPC : UserControl
     {
-        
-
         public SettingPC()
         {
             InitializeComponent();
@@ -26,7 +18,7 @@ namespace AuthClient.tollgate.home.setting
         private void SettingPC_VisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
-            {    
+            {
                 return;
             }
 
@@ -40,8 +32,8 @@ namespace AuthClient.tollgate.home.setting
                 PCEntry temp = new PCEntry();
                 temp.MapPCInfo = mp;
                 temp.TextChange += PCEntry_TextChange;
-                
-                if(mp.pc == Util.GetSystemUniqueIdentifier())
+
+                if (mp.pc == Util.GetSystemUniqueIdentifier())
                 {
                     temp.MainPC = true;
                 }
@@ -58,8 +50,6 @@ namespace AuthClient.tollgate.home.setting
             AccountService service = new AccountService();
             if (service.UpdatePCAlias(mp))
             {
-                MessageBox.Show("별명이 성공적으로 변경되었습니다");
-
                 // PC Entry 항목의 별명 변경
                 sender.MapPCInfo = mp;
             }

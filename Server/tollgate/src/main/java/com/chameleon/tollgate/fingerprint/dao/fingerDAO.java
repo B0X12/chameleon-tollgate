@@ -4,8 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.chameleon.tollgate.database.SQLiteManager;
 
@@ -16,7 +14,7 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 	{
 		if(!super.isOpen())
 			super.open(true, false); // open(read-only, save)
-	}	
+	}
 
 	// DB에서 User를 검색해서 결과를 반환함
 	// 여기서는 id로 token을 받아와야함
@@ -24,7 +22,7 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 	public String GetToken(String id)
 	{
 		PreparedStatement pstmt = null;
-	
+		
 		String sql = "SELECT token FROM map_android WHERE id = ?";
 		// String sql = "SELECT token FROM map_android WHERE id = '" + id + "'";
 		
@@ -45,6 +43,7 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 				System.out.println("#GetToken Exception : " + e);
 			}
 		}
+		super.close();
 		return result;
 	}
 }

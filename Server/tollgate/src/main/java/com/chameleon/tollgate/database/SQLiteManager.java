@@ -99,7 +99,7 @@ public class SQLiteManager {
 		if(!this.isOpened)
 			throw new DatabaseConnectException(DBError.NO_CONNECTION);
 		
-		int count = getCountOf(Table.MAP_ANDROID, "id", "tester");
+		int count = getCountOf(Table.MAP_ANDROID, "id", id);
 		if(count > 1)
 			throw new DatabaseResultException(DBError.MANY_TOKEN);
 		else if(count < 1)

@@ -3,14 +3,14 @@ package com.chameleon.tollgate.util.userHistory;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.chameleon.tollgate.util.userHistory.dao.HistoryDAO;
 import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
 import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
-import com.chameleon.tollgate.util.userHistory.dto.historyRecord;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryRecord;
 
-@Service
+@Component
 public class UserHistory {
 	@Autowired
 	HistoryDAO dao;
@@ -32,9 +32,9 @@ public class UserHistory {
 		return false;
 	}
 	
-	public ArrayList<historyRecord> get(String id) throws Exception {		
+	public ArrayList<HistoryRecord> get(String id) throws Exception {		
 		dao.open(true);
-		ArrayList<historyRecord> recordList = dao.get(id);
+		ArrayList<HistoryRecord> recordList = dao.get(id);
 		dao.close();
 		
 		return recordList;

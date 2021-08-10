@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.ServerFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.16"/>
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/server_title"
+            app:layout_constraintWidth_percent="0.37"
+            app:layout_constraintStart_toEndOf="@+id/space2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Space
+            android:id="@+id/space3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.16"/>
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/server_subtitle"
+            app:layout_constraintStart_toEndOf="@+id/space2"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6"
+            app:layout_constraintWidth_percent="0.55" />
+
+        <Space
+            android:id="@+id/space4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toEndOf="@+id/space2" />
+
+        <Button
+            android:id="@+id/button_server"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:background="@drawable/tollgate_button_default"
+            android:text="연결하기"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
+            android:stateListAnimator="@null"
+            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintBottom_toTopOf="@+id/space4"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintStart_toEndOf="@+id/space2" />
+
+        <Space
+            android:id="@+id/space5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_server"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/space2" />
+
+        <EditText
+            android:id="@+id/edit_IP"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:ems="10"
+            android:hint="IP 주소를 입력해 주세요"
+            android:inputType="phone"
+            android:digits="0123456789."
+            android:selectAllOnFocus="false"
+            android:singleLine="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/notosanskr_bold"
+            app:layout_constraintBottom_toTopOf="@+id/space5"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintStart_toEndOf="@+id/space2" />
+
+        <Space
+            android:id="@+id/space7"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/edit_IP"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintStart_toEndOf="@+id/space2"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+            app:layout_constraintEnd_toStartOf="@+id/space3"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

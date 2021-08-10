@@ -95,6 +95,7 @@ namespace AuthClient.tollgate.home.setting
             this.edit_confirm.Size = new System.Drawing.Size(341, 41);
             this.edit_confirm.TabIndex = 5;
             this.edit_confirm.UseCheck = true;
+            this.edit_confirm.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.edit_confirm_KeyPress);
             // 
             // img_pwd
             // 
@@ -133,6 +134,7 @@ namespace AuthClient.tollgate.home.setting
             // 
             this.edit_id.BackColor = System.Drawing.Color.Transparent;
             this.panel_table.SetColumnSpan(this.edit_id, 3);
+            this.edit_id.Enabled = false;
             this.edit_id.Hint = "아이디";
             this.edit_id.IsCheck = false;
             this.edit_id.Location = new System.Drawing.Point(20, 320);
@@ -156,6 +158,7 @@ namespace AuthClient.tollgate.home.setting
             this.edit_pwd.Size = new System.Drawing.Size(341, 41);
             this.edit_pwd.TabIndex = 4;
             this.edit_pwd.UseCheck = false;
+            this.edit_pwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.edit_pwd_KeyPress);
             // 
             // img_edit
             // 
@@ -166,6 +169,7 @@ namespace AuthClient.tollgate.home.setting
             this.img_edit.Size = new System.Drawing.Size(131, 41);
             this.img_edit.TabIndex = 6;
             this.img_edit.TabStop = false;
+            this.img_edit.Click += new System.EventHandler(this.img_edit_Click);
             // 
             // SettingAccount
             // 

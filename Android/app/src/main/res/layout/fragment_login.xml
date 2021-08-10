@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activities.LoginFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Space
+            android:id="@+id/space8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <Space
+            android:id="@+id/space9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.16" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/login_title"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.15" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="PC에서 가입한 계정으로 로그인 해주세요."
+            android:textSize="11dp"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/notosans_medium"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintWidth_percent="0.55" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+
+        <Space
+            android:id="@+id/space10"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <EditText
+            android:id="@+id/edit_ID"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="16"
+            android:inputType="textPersonName"
+            android:hint="ID"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/notosans_medium"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/space10" />
+
+        <Space
+            android:id="@+id/space11"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/edit_ID" />
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/notosans_medium"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/space11" />
+
+        <Space
+            android:id="@+id/space12"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:background="@drawable/tollgate_button_default"
+            android:text="로그인"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/notosanskr_bold"
+            android:includeFontPadding="false"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/space12" />
+
+        <Space
+            android:id="@+id/space14"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/space9"
+            app:layout_constraintStart_toEndOf="@+id/space8"
+            app:layout_constraintTop_toBottomOf="@+id/button_login" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

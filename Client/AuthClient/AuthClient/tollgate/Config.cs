@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AuthClient.tollgate
 {
@@ -15,7 +9,7 @@ namespace AuthClient.tollgate
         private const int SERVER_PORT = 8080;
         private static string currentUser = "";
         private static string baseURL = "";
-        
+
         internal static void SetCurrentUser(string user)
         {
             currentUser = user;
@@ -94,10 +88,10 @@ namespace AuthClient.tollgate
             using (StreamWriter configFile = new StreamWriter(CONFIG_FILE_PATH, false))
             {
                 // SecureTransmission 필드
-                if(urlComponents[0].Equals("http"))
+                if (urlComponents[0].Equals("http"))
                 {
                     configFile.WriteLine("SecureTransmission=false");
-                } 
+                }
                 else
                 {
                     configFile.WriteLine("SecureTransmission=true");
@@ -117,6 +111,6 @@ namespace AuthClient.tollgate
             {
                 File.Delete(CONFIG_FILE_PATH);
             }
-        }    
+        }
     }
 }

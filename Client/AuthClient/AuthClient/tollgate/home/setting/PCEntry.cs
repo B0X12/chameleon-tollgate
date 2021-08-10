@@ -1,13 +1,7 @@
 ﻿using AuthClient.tollgate.account.dto;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
@@ -86,7 +80,7 @@ namespace AuthClient.tollgate.home.setting
 
         private void text_edit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
             {
                 e.Handled = true;
             }

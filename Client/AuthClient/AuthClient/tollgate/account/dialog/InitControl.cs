@@ -56,7 +56,7 @@ namespace AuthClient.tollgate.account.dialog
                 {
                     //  Server의 데이터베이스에서 map_pc 테이블을 검사하여
                     //  해당 PC와 연동된 유저의 ID 받아 옴
-                    AccountService ac = new AccountService();        
+                    AccountService ac = new AccountService();
                     user = ac.GetRegisteredUserIDBySID();
 
                     // 이 PC와 연동된 사용자가 없음
@@ -75,11 +75,11 @@ namespace AuthClient.tollgate.account.dialog
                         step = 1;
                         view_step.setStep(step);
                         panel_flow.Controls.Add(loginCon);
-                        
+
                         // ID 값 고정
                         loginCon.ID = user;
                         loginCon.FixID = false;
-                        loginCon.registeredUserExist = true;
+                        loginCon.RegisteredUserExist = true;
                     }
                 }
 
@@ -91,7 +91,7 @@ namespace AuthClient.tollgate.account.dialog
                     step = 0;
                     view_step.setStep(step);
                 }
-            } 
+            }
             catch (WebException)
             {
                 // 인증 서버 설정 단계로 이동
@@ -158,7 +158,7 @@ namespace AuthClient.tollgate.account.dialog
                     // ID 값 고정
                     loginCon.ID = signupControl.ID;
                     loginCon.FixID = false;
-                    loginCon.registeredUserExist = true;
+                    loginCon.RegisteredUserExist = true;
 
                     flowPrev();
                 }
@@ -208,14 +208,14 @@ namespace AuthClient.tollgate.account.dialog
                     Config.SetCurrentUser(loginCon.ID);
 
                     // 인증 서버에 등록된 계정이 없을 경우, 해당 계정과 컴퓨터를 인증 서버에 등록함
-                    if (!loginCon.registeredUserExist)
+                    if (!loginCon.RegisteredUserExist)
                     {
                         ac.MappingSIDWithUser(loginCon.ID);
                     }
 
                     if (Login != null)
                         Login();
-                } 
+                }
                 else
                 {
                     MessageBox.Show("아이디 또는 비밀번호가 일치하지 않습니다");
@@ -252,7 +252,7 @@ namespace AuthClient.tollgate.account.dialog
                     {
                         loginCon.ID = user;
                         loginCon.FixID = false;
-                        loginCon.registeredUserExist = true;
+                        loginCon.RegisteredUserExist = true;
                     }
 
                     flowNext();
@@ -262,7 +262,7 @@ namespace AuthClient.tollgate.account.dialog
                 {
                     MessageBox.Show("유효하지 않은 인증 서버입니다");
                 }
-            } 
+            }
 
             // 인증 서버와 통신 문제 발생
             catch (WebException)

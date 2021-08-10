@@ -48,7 +48,17 @@ namespace AuthClient.tollgate.account.dialog
             set { text_id.Enabled = value; }
         }
 
-        public bool registeredUserExist = false;
+        [Category("Tollgate")]
+        public bool RegisteredUserExist
+        {
+            get { return registeredUserExist; }
+            set
+            {
+                img_title.CanSignup = !value;
+                registeredUserExist = value;
+            }
+        }
+        private bool registeredUserExist = false;
 
         public LoginControl()
         {

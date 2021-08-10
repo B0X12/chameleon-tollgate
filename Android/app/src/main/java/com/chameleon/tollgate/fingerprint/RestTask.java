@@ -37,11 +37,11 @@ public class RestTask extends AsyncTask<Void, Void, Boolean>
     public static final int ERROR_MSG = -1;
 
     private final long timestamp;
-    private boolean restResult = false;
+    private int restResult = 0;
     private final Context context;
     private final Handler handler;
 
-    public RestTask(long timestamp, boolean restResult, Context context, Handler handler) // 생성자
+    public RestTask(long timestamp, int restResult, Context context, Handler handler) // 생성자
     {
         this.timestamp = timestamp;
         this.restResult = restResult;
@@ -99,7 +99,7 @@ public class RestTask extends AsyncTask<Void, Void, Boolean>
 
     @Override
     protected void onPostExecute(Boolean result)
-     {
+    {
         super.onPostExecute(result);
     }
 }

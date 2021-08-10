@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tollgate-chameleon",
+  "private_key_id": "d96f83dc5c777409dc792ccac91b9170c61cb65d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC8seI/7iwtb5E5\n4Re+brkCOQc0d81X6t6pXGAljnwAUTuUn4t47LU/6To3yqtotRPxeYl8CtP/oqHu\n/2KtWurGF7DgQJdwcXwO35+yihpc/Lvl1RAK5hutLw6xY5ocbJA7FUTcM6ddzRFK\nJfNBUbGI86EAMW438zaQRkjl+BuH37nvSdLPtVyRrWHotwybfcfg6uRWarPZs2E6\nQodnuBioUOmWLWCo6amc9FiFY9t+DKSpfy/BKtnSYSe9Aa6jmzMfuxNxoLwUFChv\nO1sh8ixGDs9G632vo5OQ5PzMDfGvbDuOjWVotG6F088HcWvnqSuAVXAoFtpKEjCy\nsxwpmxoRAgMBAAECggEAFbbbvDMmmtDus6wrTRMVT8PryBYsR3yEBJXYi6Hes7Ol\naVhF1tPYlML8W9zDBnDmG2D62Q8u78lRnLz/aEcg4sxpopjURJCOr/B8gnGBkKdV\n4SA4cSSjVTXn2TKG0tQMcfwj2TpJfZIidfexi1gBF+s/YRQPJLmkkww/idVYJ7W8\nv/LcyFPHsEJ7oJsgosaa+fKm0m2WCwLQ1+v4XrG4WlO3z0j7drPLo5XjsvvmRvag\nr9d2o9eTI20wJQ4iDtJHvTJ7YemjTYCVkjJcY8JdGWgA/2bH/CAobMBQIWhVociO\ndcdGQlatpiWD7bhQm3Q62g4yCCJW2y2KRspGw+3wBQKBgQDuwn9ZfXZud07EjPgk\nbXIP7Sa1+tRkjWGXqJB+DG63BWgdDggZWNx2BWbfePKOpgy/BsuTcxNDsKrCkqtG\nkq32UMJJW5gQEnPCexSI9fmeqZqzhTZwCmsa53+qYCPAgmHuT5iNDnBgo0x0TJkb\nwYfH6jh1tOu+QEGGSvxTTKl5nQKBgQDKUe5E1jpY2SXsRH5hBEKzLDhQByL8FrNd\njNBUmw58fkXCbL4ay//IK6r+qpyNrHXu+KbzLw0bVn5O472i0SARMv+XsNP5dETf\njMa/Ogpt//DmUqyYtc5Z3DpYClNvbzVaF0r+o1VOkDduCUYPpT/IyCdye6RTQbvG\nQPb2i5KCBQKBgHrFEjzO8a39tUgGALaifGtKE4SxtLL7q/oS2DGobOm5Yv7Fr05x\nTfN19Z7ljzvgkF9NvDJWkspUtomUZ3PDiqZEgpK8AWYKRvHy3e1LJg76wSycTBCy\nmr5b2V6fTuL3aCnlTdkCWrCmZ3LJzFTkX9BhVKTZ4fqTCd5nAnZGzkJVAoGACNXX\nH+5zEdo5y72Z/0aeWxC9TNFi97tODfHOT0OOOGWTSlBRZP4vp2Aw0XpF5/H2HH+D\nWu9dFSqLzYooh+m2Cso9WzR/rU8kitas/0Dbn74jmQtXOjwGTOpPKfUZe65RmCOY\nRNKBMTMfGJETHC/NP0luX5OCs5gVSS0hG9cwiLkCgYEA5ee7jzGNEgSB56YqKFDF\nSkcLe8JCVEiIRbErGpNRN30CU21gqnxtXsnZcupoeu0T/NjThf5zgQQajzc2hZUt\n1ej/TEiwZzDT9zdYAkff1mCmeI0737voxIk3sdd4U53OevO2wi0bOT2yTQ/MtyAG\ne3cA1AHSBJ/4O9Rj9u9J0cg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-ctn3p@tollgate-chameleon.iam.gserviceaccount.com",
+  "client_id": "116179296963984578554",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ctn3p%40tollgate-chameleon.iam.gserviceaccount.com"
+}

@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AuthClient.tollgate.otp.service;
+using System;
 using System.Windows.Forms;
-
-using AuthClient.tollgate.account.service;
-using AuthClient.tollgate.otp.service;
-using AuthClient.tollgate.rest;
-
-using AuthClient.tollgate.account.dialog;
 
 namespace AuthClient.tollgate.otp.dialog
 {
@@ -21,7 +9,7 @@ namespace AuthClient.tollgate.otp.dialog
         public OtpTest()
         {
             InitializeComponent();
-            Config.InitializeBaseURL("localhost:8080",true);
+            Config.InitializeBaseURL("localhost:8080", true);
         }
 
 

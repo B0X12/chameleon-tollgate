@@ -1,5 +1,7 @@
 package com.chameleon.tollgate.util.tollgateLog;
 
+import android.os.Environment;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,8 +28,11 @@ public class tollgateLog {
     public static void setLogPath(String path) {
         String logName = "/log.txt";
 
+        System.out.println(Environment.getExternalStorageState());
+
         File dir = new File(path);
-        if(!dir.exists()) {	dir.mkdirs(); }
+        if(!dir.exists()) { boolean result =	dir.mkdirs();
+        System.out.println(dir.getPath() + ": " + result);}
 
         tollgateLog.logFile = new File(path+logName);
         if(!tollgateLog.logFile.exists()) {

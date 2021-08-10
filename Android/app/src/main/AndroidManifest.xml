@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -27,13 +27,35 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Tollgate" >
+        android:theme="@style/Theme.Tollgate">
+        <activity android:name=".Activities.HistoryActivity"/>
+
+        <activity android:name=".Activities.SubMainActivity" />
+
+        <activity
+            android:name=".Activities.ServerActivity"
+            android:theme="@style/Theme.Tollgate"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".Activities.SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".pattern.SetPatternActivity" />
+
         <activity
             android:name=".qr.Activity.QrActivity"
             android:exported="true" />
-        <activity android:name=".pattern.SetPatternActivity" />
+
         <activity android:name=".faceauth.AuthFaceActivity" >
         android:theme="@style/Theme.Tollgate"
         android:requestLegacyExternalStorage="true">
@@ -43,7 +65,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" >
+
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/Theme.Tollgate">
             <intent-filter>
 
                 <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -53,9 +78,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.MainActivity" >
+
+        <activity android:name=".login.MainActivity"
+            android:theme="@style/Theme.Tollgate">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.LOGIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -64,6 +91,7 @@
         <activity
             android:name=".fingerprint.FingerPrintManager"
             tools:ignore="Instantiatable" />
+
         <activity android:name=".fingerprint.FingerPrintActivity">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_FINGERPRINT" />
@@ -71,10 +99,11 @@
             </intent-filter>
         </activity>
 
+
+
         <activity android:name=".pattern.AuthPatternActivity">
             <intent-filter>
                 <action android:name="android.intent.action.AUTH_PATTERN" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -97,6 +126,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:replace="android:screenOrientation"
             />
+
 
         <service
             android:name=".fcm.FCMService"

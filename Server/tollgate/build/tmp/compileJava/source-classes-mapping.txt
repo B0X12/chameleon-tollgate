@@ -1,62 +1,244 @@
-com/chameleon/tollgate/demo/service/IFCMService.java
- com.chameleon.tollgate.demo.service.IFCMService
 com/chameleon/tollgate/account/dto/Account.java
  com.chameleon.tollgate.account.dto.Account
-com/chameleon/tollgate/face/dto/Test.java
- com.chameleon.tollgate.face.dto.Test
+com/chameleon/tollgate/account/service/IAccountService.java
+ com.chameleon.tollgate.account.service.IAccountService
+com/chameleon/tollgate/face/dao/IAuthFaceDAO.java
+ com.chameleon.tollgate.face.dao.IAuthFaceDAO
+com/chameleon/tollgate/rest/ErrorResponse.java
+ com.chameleon.tollgate.rest.ErrorResponse
+com/chameleon/tollgate/pattern/service/IAuthService.java
+ com.chameleon.tollgate.pattern.service.IAuthService
+com/chameleon/tollgate/pattern/dao/exception/PatternError.java
+ com.chameleon.tollgate.pattern.dao.exception.PatternError
+com/chameleon/tollgate/account/service/IAdAccountService.java
+ com.chameleon.tollgate.account.service.IAdAccountService
+com/chameleon/tollgate/database/exception/DatabaseResultException.java
+ com.chameleon.tollgate.database.exception.DatabaseResultException
+com/chameleon/tollgate/fingerprint/dao/IfingerDAO.java
+ com.chameleon.tollgate.fingerprint.dao.IfingerDAO
+com/chameleon/tollgate/account/dao/AdAccountDAO.java
+ com.chameleon.tollgate.account.dao.AdAccountDAO
+com/chameleon/tollgate/demo/service/IDemoService.java
+ com.chameleon.tollgate.demo.service.IDemoService
+com/chameleon/tollgate/otp/module/TOtp.java
+ com.chameleon.tollgate.otp.module.TOtp
+com/chameleon/tollgate/rest/controller/ExceptionController.java
+ com.chameleon.tollgate.rest.controller.ExceptionController
+com/chameleon/tollgate/face/utils.java
+ com.chameleon.tollgate.face.utils
+com/chameleon/tollgate/database/exception/InitFactorException.java
+ com.chameleon.tollgate.database.exception.InitFactorException
+com/chameleon/tollgate/util/userHistory/dto/HistoryFactor.java
+ com.chameleon.tollgate.util.userHistory.dto.HistoryFactor
+com/chameleon/tollgate/otp/OtpConfig.java
+ com.chameleon.tollgate.otp.OtpConfig
+com/chameleon/tollgate/otp/dto/AuthOtp.java
+ com.chameleon.tollgate.otp.dto.AuthOtp
+com/chameleon/tollgate/fingerprint/AuthResult.java
+ com.chameleon.tollgate.fingerprint.AuthResult
+com/chameleon/tollgate/usb/dao/IUSBDAO.java
+ com.chameleon.tollgate.usb.dao.IUSBDAO
+com/chameleon/tollgate/util/userHistory/dao/exception/HistoryResultException.java
+ com.chameleon.tollgate.util.userHistory.dao.exception.HistoryResultException
+com/chameleon/tollgate/util/tollgateLog/dto/LogDevice.java
+ com.chameleon.tollgate.util.tollgateLog.dto.LogDevice
+com/chameleon/tollgate/rest/Response.java
+ com.chameleon.tollgate.rest.Response
+com/chameleon/tollgate/account/service/AccountService.java
+ com.chameleon.tollgate.account.service.AccountService
+com/chameleon/tollgate/util/tollgateLog/dto/code/LogCode.java
+ com.chameleon.tollgate.util.tollgateLog.dto.code.LogCode
+com/chameleon/tollgate/fingerprint/controller/fingerController.java
+ com.chameleon.tollgate.fingerprint.controller.fingerController
+com/chameleon/tollgate/rest/exception/UnauthorizedUserAgentError.java
+ com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError
+com/chameleon/tollgate/rest/controller/HomeController.java
+ com.chameleon.tollgate.rest.controller.HomeController
+com/chameleon/tollgate/face/dto/FacePack.java
+ com.chameleon.tollgate.face.dto.FacePack
+com/chameleon/tollgate/otp/service/IOTPService.java
+ com.chameleon.tollgate.otp.service.IOTPService
+com/chameleon/tollgate/database/define/Factor.java
+ com.chameleon.tollgate.database.define.Factor
+com/chameleon/tollgate/pattern/dao/IAuthDAO.java
+ com.chameleon.tollgate.pattern.dao.IAuthDAO
+com/chameleon/tollgate/rest/AuthList.java
+ com.chameleon.tollgate.rest.AuthList
+com/chameleon/tollgate/util/userHistory/dao/exception/HistoryError.java
+ com.chameleon.tollgate.util.userHistory.dao.exception.HistoryError
+com/chameleon/tollgate/pattern/dao/AuthDAO.java
+ com.chameleon.tollgate.pattern.dao.AuthDAO
+com/chameleon/tollgate/util/userHistory/dto/HistoryResult.java
+ com.chameleon.tollgate.util.userHistory.dto.HistoryResult
+com/chameleon/tollgate/rest/exception/BaseException.java
+ com.chameleon.tollgate.rest.exception.BaseException
+com/chameleon/tollgate/face/service/IAuthFaceService.java
+ com.chameleon.tollgate.face.service.IAuthFaceService
+com/chameleon/tollgate/otp/controller/OtpController.java
+ com.chameleon.tollgate.otp.controller.OtpController
+com/chameleon/tollgate/otp/dao/OtpDAO.java
+ com.chameleon.tollgate.otp.dao.OtpDAO
+com/chameleon/tollgate/account/controller/AccountController.java
+ com.chameleon.tollgate.account.controller.AccountController
+com/chameleon/tollgate/face/dao/exception/FaceResultException.java
+ com.chameleon.tollgate.face.dao.exception.FaceResultException
+com/chameleon/tollgate/otp/module/KeyHash.java
+ com.chameleon.tollgate.otp.module.KeyHash
+com/chameleon/tollgate/pattern/dao/exception/PatternResultException.java
+ com.chameleon.tollgate.pattern.dao.exception.PatternResultException
+com/chameleon/tollgate/rest/exception/NoUserException.java
+ com.chameleon.tollgate.rest.exception.NoUserException
+com/chameleon/tollgate/account/dao/IConfigDAO.java
+ com.chameleon.tollgate.account.dao.IConfigDAO
+com/chameleon/tollgate/account/dto/FactorPack.java
+ com.chameleon.tollgate.account.dto.FactorPack
+com/chameleon/tollgate/util/tollgateLog/dto/code/faceCode.java
+ com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode
+com/chameleon/tollgate/TollgateApplication.java
+ com.chameleon.tollgate.TollgateApplication
+com/chameleon/tollgate/account/exception/AccountError.java
+ com.chameleon.tollgate.account.exception.AccountError
+com/chameleon/tollgate/demo/service/IFCMService.java
+ com.chameleon.tollgate.demo.service.IFCMService
+com/chameleon/tollgate/account/service/ConfigService.java
+ com.chameleon.tollgate.account.service.ConfigService
+com/chameleon/tollgate/rest/AuthStatus.java
+ com.chameleon.tollgate.rest.AuthStatus
+ com.chameleon.tollgate.rest.AuthStatus$1
 com/chameleon/tollgate/face/AuthFaceStatus.java
  com.chameleon.tollgate.face.AuthFaceStatus
+com/chameleon/tollgate/usb/service/IUSBService.java
+ com.chameleon.tollgate.usb.service.IUSBService
 com/chameleon/tollgate/account/dto/MapPC.java
  com.chameleon.tollgate.account.dto.MapPC
 com/chameleon/tollgate/account/dao/IAccountDAO.java
  com.chameleon.tollgate.account.dao.IAccountDAO
-com/chameleon/tollgate/account/service/IAccountService.java
- com.chameleon.tollgate.account.service.IAccountService
+com/chameleon/tollgate/util/tollgateLog/dto/LogLevel.java
+ com.chameleon.tollgate.util.tollgateLog.dto.LogLevel
 com/chameleon/tollgate/demo/dao/DemoDAO.java
  com.chameleon.tollgate.demo.dao.DemoDAO
+com/chameleon/tollgate/account/dao/ConfigDAO.java
+ com.chameleon.tollgate.account.dao.ConfigDAO
 com/chameleon/tollgate/database/exception/DBError.java
  com.chameleon.tollgate.database.exception.DBError
-com/chameleon/tollgate/account/service/AccountService.java
- com.chameleon.tollgate.account.service.AccountService
-com/chameleon/tollgate/rest/exception/BaseExceptionType.java
- com.chameleon.tollgate.rest.exception.BaseExceptionType
+com/chameleon/tollgate/account/service/IConfigService.java
+ com.chameleon.tollgate.account.service.IConfigService
 com/chameleon/tollgate/account/dao/AccountDAO.java
  com.chameleon.tollgate.account.dao.AccountDAO
+com/chameleon/tollgate/define/Property.java
+ com.chameleon.tollgate.define.Property
+com/chameleon/tollgate/util/userHistory/dto/historyRecord.java
+ com.chameleon.tollgate.util.userHistory.dto.historyRecord
+com/chameleon/tollgate/pattern/controller/AuthController.java
+ com.chameleon.tollgate.pattern.controller.AuthController
+com/chameleon/tollgate/pattern/PatternPack.java
+ com.chameleon.tollgate.pattern.PatternPack
+com/chameleon/tollgate/database/exception/DatabaseConnectException.java
+ com.chameleon.tollgate.database.exception.DatabaseConnectException
+com/chameleon/tollgate/fingerprint/service/IfingerService.java
+ com.chameleon.tollgate.fingerprint.service.IfingerService
+com/chameleon/tollgate/usb/service/USBService.java
+ com.chameleon.tollgate.usb.service.USBService
+com/chameleon/tollgate/fcm/exception/MessageBuildException.java
+ com.chameleon.tollgate.fcm.exception.MessageBuildException
+com/chameleon/tollgate/util/userHistory/UserHistory.java
+ com.chameleon.tollgate.util.userHistory.UserHistory
+com/chameleon/tollgate/demo/dao/IDemoDAO.java
+ com.chameleon.tollgate.demo.dao.IDemoDAO
+com/chameleon/tollgate/util/exception/ParseException.java
+ com.chameleon.tollgate.util.exception.ParseException
+com/chameleon/tollgate/demo/DemoResult.java
+ com.chameleon.tollgate.demo.DemoResult
+com/chameleon/tollgate/rest/exception/UnauthorizedUserAgentException.java
+ com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException
+com/chameleon/tollgate/otp/service/ErrorKind.java
+ com.chameleon.tollgate.otp.service.ErrorKind
+com/chameleon/tollgate/account/dto/TokenPack.java
+ com.chameleon.tollgate.account.dto.TokenPack
+com/chameleon/tollgate/util/Util.java
+ com.chameleon.tollgate.util.Util
+com/chameleon/tollgate/util/tollgateLog/dto/LogFactor.java
+ com.chameleon.tollgate.util.tollgateLog.dto.LogFactor
+com/chameleon/tollgate/fingerprint/dao/fingerDAO.java
+ com.chameleon.tollgate.fingerprint.dao.fingerDAO
+com/chameleon/tollgate/rest/exception/AuthError.java
+ com.chameleon.tollgate.rest.exception.AuthError
+com/chameleon/tollgate/util/tollgateLog/dto/LogRecord.java
+ com.chameleon.tollgate.util.tollgateLog.dto.LogRecord
+com/chameleon/tollgate/account/service/AdAccountService.java
+ com.chameleon.tollgate.account.service.AdAccountService
+com/chameleon/tollgate/rest/SessionTime.java
+ com.chameleon.tollgate.rest.SessionTime
+com/chameleon/tollgate/otp/module/IKeyProvider.java
+ com.chameleon.tollgate.otp.module.IKeyProvider
+com/chameleon/tollgate/rest/exception/CommonError.java
+ com.chameleon.tollgate.rest.exception.CommonError
+com/chameleon/tollgate/otp/module/HashType.java
+ com.chameleon.tollgate.otp.module.HashType
+com/chameleon/tollgate/fcm/exception/FCMError.java
+ com.chameleon.tollgate.fcm.exception.FCMError
+com/chameleon/tollgate/account/exception/UserAlreadyExistException.java
+ com.chameleon.tollgate.account.exception.UserAlreadyExistException
+com/chameleon/tollgate/face/dao/exception/FaceError.java
+ com.chameleon.tollgate.face.dao.exception.FaceError
+com/chameleon/tollgate/otp/dao/IOtpDAO.java
+ com.chameleon.tollgate.otp.dao.IOtpDAO
+com/chameleon/tollgate/account/controller/ConfigController.java
+ com.chameleon.tollgate.account.controller.ConfigController
+com/chameleon/tollgate/account/controller/AdAccountController.java
+ com.chameleon.tollgate.account.controller.AdAccountController
+com/chameleon/tollgate/define/Path.java
+ com.chameleon.tollgate.define.Path
+com/chameleon/tollgate/rest/exception/BaseExceptionType.java
+ com.chameleon.tollgate.rest.exception.BaseExceptionType
 com/chameleon/tollgate/database/SQLiteManager.java
  com.chameleon.tollgate.database.SQLiteManager
-com/chameleon/tollgate/database/exception/DatabaseResultException.java
- com.chameleon.tollgate.database.exception.DatabaseResultException
-com/chameleon/tollgate/face/service/AuthFaceService.java
- com.chameleon.tollgate.face.service.AuthFaceService
-com/chameleon/tollgate/database/define/Factor.java
- com.chameleon.tollgate.database.define.Factor
+com/chameleon/tollgate/rest/SessionList.java
+ com.chameleon.tollgate.rest.SessionList
+com/chameleon/tollgate/util/tollgateLog/tollgateLog.java
+ com.chameleon.tollgate.util.tollgateLog.tollgateLog
+com/chameleon/tollgate/face/service/TrainFaceService.java
+ com.chameleon.tollgate.face.service.TrainFaceService
 com/chameleon/tollgate/demo/service/DemoService.java
  com.chameleon.tollgate.demo.service.DemoService
 com/chameleon/tollgate/face/controller/AuthFaceController.java
  com.chameleon.tollgate.face.controller.AuthFaceController
-com/chameleon/tollgate/database/exception/DatabaseConnectException.java
- com.chameleon.tollgate.database.exception.DatabaseConnectException
-com/chameleon/tollgate/define/url/Register.java
- com.chameleon.tollgate.define.url.Register
-com/chameleon/tollgate/rest/exception/BaseException.java
- com.chameleon.tollgate.rest.exception.BaseException
+com/chameleon/tollgate/face/dao/AuthFaceDAO.java
+ com.chameleon.tollgate.face.dao.AuthFaceDAO
+com/chameleon/tollgate/usb/controller/USBController.java
+ com.chameleon.tollgate.usb.controller.USBController
+com/chameleon/tollgate/rest/exception/BaseRuntimeException.java
+ com.chameleon.tollgate.rest.exception.BaseRuntimeException
 com/chameleon/tollgate/demo/controller/DemoController.java
  com.chameleon.tollgate.demo.controller.DemoController
-com/chameleon/tollgate/face/service/IAuthFaceService.java
- com.chameleon.tollgate.face.service.IAuthFaceService
-com/chameleon/tollgate/define/url/Auth.java
- com.chameleon.tollgate.define.url.Auth
-com/chameleon/tollgate/demo/service/IDemoService.java
- com.chameleon.tollgate.demo.service.IDemoService
-com/chameleon/tollgate/demo/dao/IDemoDAO.java
- com.chameleon.tollgate.demo.dao.IDemoDAO
-com/chameleon/tollgate/account/controller/AccountController.java
- com.chameleon.tollgate.account.controller.AccountController
-com/chameleon/tollgate/demo/DemoResult.java
- com.chameleon.tollgate.demo.DemoResult
-com/chameleon/tollgate/database/exception/InitFactorException.java
- com.chameleon.tollgate.database.exception.InitFactorException
-com/chameleon/tollgate/demo/service/FCMService.java
- com.chameleon.tollgate.demo.service.FCMService
+com/chameleon/tollgate/account/exception/InvalidIDException.java
+ com.chameleon.tollgate.account.exception.InvalidIDException
+com/chameleon/tollgate/otp/module/KeyUtil.java
+ com.chameleon.tollgate.otp.module.KeyUtil
+com/chameleon/tollgate/util/userHistory/dao/HistoryDAO.java
+ com.chameleon.tollgate.util.userHistory.dao.HistoryDAO
+com/chameleon/tollgate/rest/exception/InvalidRequestException.java
+ com.chameleon.tollgate.rest.exception.InvalidRequestException
+com/chameleon/tollgate/account/dao/IAdAccountDAO.java
+ com.chameleon.tollgate.account.dao.IAdAccountDAO
+com/chameleon/tollgate/usb/dto/USBInfo.java
+ com.chameleon.tollgate.usb.dto.USBInfo
+com/chameleon/tollgate/usb/dao/USBDAO.java
+ com.chameleon.tollgate.usb.dao.USBDAO
 com/chameleon/tollgate/database/define/Table.java
  com.chameleon.tollgate.database.define.Table
+com/chameleon/tollgate/usb/AuthStatus.java
+ com.chameleon.tollgate.usb.AuthStatus
+com/chameleon/tollgate/demo/service/FCMService.java
+ com.chameleon.tollgate.demo.service.FCMService
+com/chameleon/tollgate/fcm/FCMSender.java
+ com.chameleon.tollgate.fcm.FCMSender
+ com.chameleon.tollgate.fcm.FCMSender$MsgBuilder
+com/chameleon/tollgate/pattern/service/AuthService.java
+ com.chameleon.tollgate.pattern.service.AuthService
+com/chameleon/tollgate/otp/service/OTPService.java
+ com.chameleon.tollgate.otp.service.OTPService
+com/chameleon/tollgate/fingerprint/service/fingerService.java
+ com.chameleon.tollgate.fingerprint.service.fingerService
+com/chameleon/tollgate/face/service/AuthFaceService.java
+ com.chameleon.tollgate.face.service.AuthFaceService

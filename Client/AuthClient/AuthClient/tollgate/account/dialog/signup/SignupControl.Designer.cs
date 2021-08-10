@@ -118,6 +118,7 @@ namespace AuthClient.tollgate.account.dialog
             this.text_pwd.Size = new System.Drawing.Size(341, 41);
             this.text_pwd.TabIndex = 2;
             this.text_pwd.UseCheck = false;
+            this.text_pwd.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_pwd_KeyPress);
             // 
             // text_confirm
             // 
@@ -131,6 +132,7 @@ namespace AuthClient.tollgate.account.dialog
             this.text_confirm.Size = new System.Drawing.Size(341, 41);
             this.text_confirm.TabIndex = 3;
             this.text_confirm.UseCheck = true;
+            this.text_confirm.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_confirm_KeyPress);
             // 
             // btn_signup
             // 
