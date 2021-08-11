@@ -1,4 +1,5 @@
 ﻿using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.home.history;
 using AuthClient.tollgate.home.main.dialog;
 using System;
 using System.Windows.Forms;
@@ -10,6 +11,7 @@ namespace AuthClient.tollgate.home.dialog
     {
         MainControl mainControl;
         SettingControl settingControl;
+        HistoryControl historyControl;
 
         public string User
         {
@@ -26,19 +28,24 @@ namespace AuthClient.tollgate.home.dialog
 
             btn_side_main.setOn();
             btn_side_setting.setOff();
+            btn_side_history.setOff();
 
             mainControl = new MainControl();
             settingControl = new SettingControl();
+            historyControl = new HistoryControl();
             panel_content.Controls.Add(mainControl);
             panel_content.Controls.Add(settingControl);
+            panel_content.Controls.Add(historyControl);
         }
 
         private void btn_side_main_Click(object sender, EventArgs e)
         {
             btn_side_main.setOn();
             btn_side_setting.setOff();
+            btn_side_history.setOff();
             BackgroundImage = Properties.Resources.mainWallpaper;
             settingControl.Hide();
+            historyControl.Hide();
             mainControl.Show();
         }
 
@@ -46,8 +53,10 @@ namespace AuthClient.tollgate.home.dialog
         {
             btn_side_main.setOff();
             btn_side_setting.setOn();
+            btn_side_history.setOff();
             BackgroundImage = Properties.Resources.settingWallpaper;
             mainControl.Hide();
+            historyControl.Hide();
             settingControl.Show();
         }
 
@@ -75,6 +84,17 @@ namespace AuthClient.tollgate.home.dialog
         public void InitFactor(Factor factor)
         {
             mainControl.InitFactor(factor);
+        }
+
+        private void btn_side_history_Click(object sender, EventArgs e)
+        {
+            btn_side_main.setOff();
+            btn_side_setting.setOff();
+            btn_side_history.setOn();
+            BackgroundImage = Properties.Resources.mainWallpaper;
+            mainControl.Hide();
+            settingControl.Hide();
+            historyControl.Show();
         }
     }
 }

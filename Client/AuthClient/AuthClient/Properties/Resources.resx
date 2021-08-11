@@ -163,6 +163,42 @@
   <data name="connectButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\connectButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="historyBottomLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyBottomLine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyBtnFail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyBtnFail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyBtnSuccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyBtnSuccess.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyFaceidLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyFaceidLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyFingerLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyFingerLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyListBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyListBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyOtpLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyOtpLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyPatternLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyPatternLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyPipeline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyPipeline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyQrLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyQrLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyTitle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyTitle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="historyUsbLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\history\historyUsbLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="initButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Init\initButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -261,6 +297,15 @@
   </data>
   <data name="mainSideBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainSideBg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideHistoryOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideHistoryOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideHistoryOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideHistoryOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mainSideLabel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\main\mainSideLabel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mainSideMainOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\main\mainSideMainOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

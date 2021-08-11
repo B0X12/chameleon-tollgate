@@ -1,20 +1,16 @@
 package com.chameleon.tollgate.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.BoringLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
-import com.chameleon.tollgate.login.MainActivity;
 
 public class LoginFragment extends Fragment {
     @Override
