@@ -1,13 +1,8 @@
-﻿using AuthClient.tollgate.usb.dto;
+﻿using AuthClient.tollgate.rest;
 using AuthClient.tollgate.usb.service;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static AuthClient.tollgate.home.main.dialog.CheckEntry;
 
@@ -25,6 +20,7 @@ namespace AuthClient.tollgate.home.main.dialog
 
     public partial class CheckDialog : Form
     {
+        private bool result = false;
         private int checkFactorCount = 0;
 
         public CheckDialog(CheckFlag checkFlag)
@@ -97,15 +93,15 @@ namespace AuthClient.tollgate.home.main.dialog
             for (int count = 0; count < panel_list.Controls.Count; count++)
             {
                 // 형 변환 검사
-                if(panel_list.Controls[count] is CheckEntry)
+                if (panel_list.Controls[count] is CheckEntry)
                 {
                     CheckEntry ce = (CheckEntry)panel_list.Controls[count];
 
                     // DOING 상태로 전환
                     ce.Stat = CheckStat.DOING;
-                    
+
                     // 체크 결과, 성공했을 경우 통과한 항목 1 카운트
-                    if(CheckListHandler(ce.Flag))
+                    if (CheckListHandler(ce.Flag))
                     {
                         ce.Stat = CheckStat.PASS;
                         passedCheckFactor++;
@@ -120,61 +116,58 @@ namespace AuthClient.tollgate.home.main.dialog
             }
 
             // ---------- 모든 체크 요소가 Pass 상태이면 On 버튼 활성화 ----------
-            if (passedCheckFactor == checkFactorCount)
-            {
-                // TODO: Auth Factor 업데이트
-                MessageBox.Show("모든 항목을 통과했습니다. 해당 인증 요소를 사용할 수 있습니다.");
-                this.DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show("모든 항목을 통과하지 못했습니다. 해당 인증 요소를 사용할 수 없습니다.");
-                this.DialogResult = DialogResult.Cancel;
-            }
+            result = passedCheckFactor == checkFactorCount;
+            img_button.Visible = true;
         }
 
         private bool CheckListHandler(CheckFlag cf)
         {
-            switch(cf)
+            string path = "";
+            switch (cf)
             {
                 // 모바일 기기 연동 체크
                 case CheckFlag.MOBILE:
-                    return false;
+                    path = "android/";
                     break;
 
                 // 등록된 USB가 있는지 체크
                 case CheckFlag.USB:
                     USBService us = new USBService();
-                    List<USBInfo> registeredUSBList = us.GetRegisteredUSBList(Config.GetCurrentUser());
-                    
-                    if(registeredUSBList.Count > 0)
-                    {
-                        return true;
-                    } 
-                    else
-                    {
-                        return false;
-                    }
-                    
-
+                    path = "usb/";
+                    break;
                 // 모바일 기기 연동 체크, 패턴 인증의 Init Factor 체크
                 case CheckFlag.PATTERN:
-                    return false;
+                    path = "pattern/";
                     break;
 
                 // 모바일 기기 연동 체크, 지문 인증의 Init Factor 체크
                 case CheckFlag.FINGER:
-                    return false;
+                    path = "finger_print/";
                     break;
 
                 // 모바일 기기 연동 체크, 안면 인증의 Init Factor 체크
                 case CheckFlag.FACE:
-                    return false;
+                    path = "face/";
                     break;
 
                 default:
                     return false;
             }
+
+            QueryString qs = new QueryString("timestamp", Util.GetCurrentTimestamp());
+            RestResult result = new HttpCommunication(Method.GET, URLPath.CONF_INIT + path + Config.GetCurrentUser(), qs).SendRequest();
+            if (result.statusCode != System.Net.HttpStatusCode.OK)
+            {
+                MessageBox.Show("알 수 없는 오류가 발생했습니다.");
+                return false;
+            }
+            ResponseData<bool> data = JsonConvert.DeserializeObject<ResponseData<bool>>(result.jsonResult);
+            return data.getResult();
+        }
+
+        private void img_button_Click(object sender, EventArgs e)
+        {
+            DialogResult = result ? DialogResult.OK : DialogResult.No;
         }
     }
 }

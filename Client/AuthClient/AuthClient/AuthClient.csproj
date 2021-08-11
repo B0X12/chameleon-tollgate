@@ -284,15 +284,6 @@
     <Compile Include="tollgate\Config.cs" />
     <Compile Include="tollgate\account\dto\Account.cs" />
     <Compile Include="tollgate\account\dto\MapPC.cs" />
-    <Compile Include="tollgate\otp\dialog\OtpTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\otp\dialog\OtpTest.Designer.cs">
-      <DependentUpon>OtpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\otp\dto\AuthOtp.cs" />
-    <Compile Include="tollgate\otp\service\ReturnMessage.cs" />
-    <Compile Include="tollgate\otp\service\OtpService.cs" />
     <Compile Include="tollgate\usb\dto\USBInfo.cs" />
     <Compile Include="tollgate\rest\Exception.cs" />
     <Compile Include="tollgate\rest\RestCommunication.cs" />
@@ -399,9 +390,6 @@
     <EmbeddedResource Include="tollgate\account\dialog\StepControl.resx">
       <DependentUpon>StepControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\otp\dialog\OtpTest.resx">
-      <DependentUpon>OtpTest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -428,9 +416,6 @@
     <Folder Include="tollgate\fingerprint\dialog\" />
     <Folder Include="tollgate\fingerprint\dto\" />
     <Folder Include="tollgate\fingerprint\service\" />
-    <Folder Include="tollgate\pattern\dialog\" />
-    <Folder Include="tollgate\pattern\dto\" />
-    <Folder Include="tollgate\pattern\service\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Font\NotoSansKR-Black.otf">
@@ -655,11 +640,12 @@
     <None Include="Resources\main\checkPhoneText.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\setting\settingUsbOff.png" />
+    <None Include="Resources\setting\settingUsbOn.png" />
+    <None Include="Resources\setting\settingUsbBg.png" />
     <None Include="Resources\setting\settingUsbTitle.png" />
     <None Include="Resources\setting\settingUsbDel.png" />
     <None Include="Resources\setting\settingUsbAdd.png" />
-    <None Include="Resources\setting\settingUsbUsing.png" />
-    <None Include="Resources\setting\settingUsbNone.png" />
     <None Include="Resources\setting\settingPcTitle.png" />
     <None Include="Resources\setting\settingPcSubtitle.png" />
     <None Include="Resources\setting\settingPcMainPC.png" />
@@ -671,11 +657,9 @@
     <None Include="Resources\setting\settingAccountId.png" />
     <None Include="Resources\setting\settingAccountPasswd.png" />
     <None Include="Resources\setting\settingAccountEdit.png" />
-    <None Include="Resources\setting\settingUsbOn.png" />
     <None Include="Resources\setting\settingAccountOff.png" />
     <None Include="Resources\setting\settingAccountOn.png" />
     <None Include="Resources\setting\settingPcOff.png" />
-    <None Include="Resources\setting\settingUsbOff.png" />
     <None Include="Resources\setting\settingPcOn.png" />
     <None Include="Resources\setting\settingMenuBg.png" />
     <None Include="Resources\setting\settingWallpaper.png" />
@@ -683,6 +667,7 @@
     <None Include="Resources\main\mainUserBg.png" />
     <None Include="Resources\check.png" />
     <Content Include="icon.ico" />
+    <None Include="Resources\main\checkButton.png" />
     <Content Include="Resources\icon.ico" />
     <Content Include="Resources\main\mainLogout.png" />
   </ItemGroup>

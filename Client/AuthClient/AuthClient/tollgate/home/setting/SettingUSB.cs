@@ -1,16 +1,10 @@
-﻿using AuthClient.tollgate.usb.dto;
+﻿using AuthClient.tollgate.home.main.dialog;
+using AuthClient.tollgate.usb.dto;
 using AuthClient.tollgate.usb.service;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AuthClient.tollgate.home.setting
@@ -33,12 +27,11 @@ namespace AuthClient.tollgate.home.setting
             // Visible 속성이 False일 경우
             if (!Visible)
             {
-                
-                lastRecognizedUSBCount = 0;
                 usbRecognitionTimer.Enabled = false;
                 return;
             }
 
+            lastRecognizedUSBCount = 0;
             usbList.Clear();
             panel_list.Controls.Clear();
 
@@ -71,9 +64,20 @@ namespace AuthClient.tollgate.home.setting
         private void UsbEntry_ButtonClick(USBEntry sender)
         {
             USBService us = new USBService();
+
             // 등록된 USB일 경우 (-일 경우) : USB 등록 해제
             if (sender.IsRegistered)
-            {   
+            {
+                if ((MainControl.FACTOR & define.Define.Factor.USB) != 0)
+                {
+                    // 등록된 마지막 USB일 경우 등록 해제 불가
+                    if(usbList.Count == 1)
+                    {
+                        MessageBox.Show("현재 USB 인증 요소를 사용하고 있으므로 등록 해제할 수 없습니다");
+                        return;
+                    }
+                }
+
                 if (us.UnregisterUSBInfo(sender.UsbInfo))
                 {
                     MessageBox.Show(sender.UsbInfo.alias + " USB의 등록 해제가 완료되었습니다");
@@ -132,9 +136,9 @@ namespace AuthClient.tollgate.home.setting
         private void usbRecognitionTimer_Tick(object sender, EventArgs e)
         {
             DriveInfo[] driveArray = DriveInfo.GetDrives();
-            
+
             // 현재 인식된 USB의 개수가 변함이 없을 경우 아무 작업도 안 함
-            if(driveArray.Length == lastRecognizedUSBCount)
+            if (driveArray.Length == lastRecognizedUSBCount)
             {
                 return;
             }
@@ -160,7 +164,7 @@ namespace AuthClient.tollgate.home.setting
                 {
                     // USB의 정보를 받아온 후 가공
                     string usbID = GetDriveUniqueInformation(devItem.RootDirectory.Name);
-                    if(usbID.Length == 0)
+                    if (usbID.Length == 0)
                     {
                         continue;
                     }

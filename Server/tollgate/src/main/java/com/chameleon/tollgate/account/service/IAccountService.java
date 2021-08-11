@@ -22,5 +22,7 @@ public interface IAccountService {
 
 	boolean updatePCAlias(MapPC mapPC);
 
-	boolean updateFactorFlag(String user, int flagToUpdate, boolean enable);	
+	boolean updateFactorFlag(String user, int flagToUpdate, boolean enable);
+	
+	boolean updatePwd(String id, String pwd) throws SQLException;
 }

@@ -288,7 +288,7 @@ DWORD WINAPI CFingerprintAuth::_AuthThreadProc(LPVOID lpParameter)
 
 			// 서버와 연결 실패
 		case rc->RESULT_CONNECTION_FAILED:
-			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"서버에서 응답이 없습니다");
+			pThis->_pCred->SetAuthMessage(SFI_FINGERPRINT_MESSAGE, L"서버로부터 응답이 없습니다");
 			pThis->_pCred->EnableAuthStartButton(SFI_FINGERPRINT_REQUEST, TRUE);
 			break;
 

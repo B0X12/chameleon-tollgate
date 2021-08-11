@@ -172,7 +172,6 @@ public:
     CPatternAuth*       _pPatternAuth = nullptr;
     CFaceAuth*          _pFaceAuth = nullptr;
     CFingerprintAuth*   _pFingerprintAuth = nullptr;
-    //COTPAuth*         _pOTPAuth = nullptr;
     CQRAuth*           _pQRAuth = nullptr;
 };
 

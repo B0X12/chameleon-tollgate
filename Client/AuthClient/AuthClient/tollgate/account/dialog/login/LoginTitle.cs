@@ -19,7 +19,8 @@ namespace AuthClient.tollgate.account.dialog
         public bool CanSignup
         {
             get { return canSignup; }
-            set {
+            set
+            {
                 btn_signup.Enabled = value;
                 if (value)
                     img_back.Image = Properties.Resources.loginTitle;

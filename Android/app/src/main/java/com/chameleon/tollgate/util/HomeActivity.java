@@ -14,11 +14,6 @@ import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
 import com.chameleon.tollgate.qr.Activity.QrActivity;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
-import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
-import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -66,16 +61,4 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                String text = result.getContents();
-                Toast.makeText(this,text,Toast.LENGTH_LONG);
-            }
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 }

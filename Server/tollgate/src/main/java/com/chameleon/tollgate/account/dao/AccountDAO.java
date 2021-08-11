@@ -48,7 +48,9 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		try {
 			Result = SearchUpdate(SqlInstruct);
 			if (Result == true)
-				return true;
+				if(SearchUpdate("insert into auth_factor(id) values('" + account.id + "')"))
+					if(SearchUpdate("insert into init_factor(id) values('" + account.id + "')"))
+						return true;
 		} catch (SQLException se) {
 			// 이미 등록된 회원이 있는 경우
 			if (se.getErrorCode() == 19) {
@@ -235,5 +237,8 @@ public class AccountDAO extends SQLiteManager implements IAccountDAO {
 		}
 		return resultValue;
 	}
-
+	
+	public boolean updatePwd(String id, String pwd) throws SQLException {
+		return SearchUpdate("update account set pwd = '" + pwd + "' where id = '" + id + "'");
+	}
 }

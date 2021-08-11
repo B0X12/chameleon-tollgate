@@ -72,7 +72,7 @@ public class AuthPatternActivity extends AppCompatActivity {
                         PatternLockUtils.patternToString(patternView, pattern));
                 try {
                     String resultPattern = PatternLockUtils.patternToString(patternView, pattern);
-                    PatternPack petternPack = new PatternPack(Util.getHash(resultPattern), Long.parseLong(intent.getStringExtra("timestamp")));
+                    PatternPack petternPack = new PatternPack(Util.getHash(resultPattern), Long.parseLong(intent.getStringExtra("timestamp")), intent.getStringExtra("pc"));
                     RestTask rest = new RestTask(petternPack, context, handler, count >= 3);
                     boolean result = rest.execute().get();
                     Log.d(LogTag.AUTH_PATTERN, "Pattern authentication result : " + result);

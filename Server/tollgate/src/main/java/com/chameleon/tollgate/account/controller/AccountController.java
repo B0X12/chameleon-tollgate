@@ -3,6 +3,8 @@ package com.chameleon.tollgate.account.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,14 @@ import com.chameleon.tollgate.account.dto.Account;
 import com.chameleon.tollgate.account.dto.MapPC;
 import com.chameleon.tollgate.account.service.AccountService;
 import com.chameleon.tollgate.define.Path;
+import com.chameleon.tollgate.define.Property;
 import com.chameleon.tollgate.rest.Response;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
+import com.chameleon.tollgate.util.tollgateLog.TollgateLog;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.LoginCode;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.RestCode;
 
 @RestController
 public class AccountController {
@@ -193,5 +200,20 @@ public class AccountController {
 		} else {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
+	}
+	
+	@PutMapping(path = Path.ACCOUNT_PWD + "{id}")
+	public ResponseEntity<Response<Boolean>> updatePwd(@RequestHeader(value = "User-Agent") String userAgent,
+			@PathVariable("id") String id, String pwd, long timestamp, HttpServletRequest req) throws Exception {
+		if (!userAgent.equals(Property.USER_AGENT)) {
+			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.REST, RestCode.INVALID_REQUEST, "Invalid request with user-agent(" + userAgent + ").");
+			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
+		}
+		
+		boolean result = accountService.updatePwd(id, pwd);
+		if(result)
+			TollgateLog.i(req.getRemoteAddr(), id, LogFactor.LOGIN, LoginCode.SET_PWD, "Change user's password.");
+		var response = new Response<Boolean>(HttpStatus.OK, result, timestamp);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

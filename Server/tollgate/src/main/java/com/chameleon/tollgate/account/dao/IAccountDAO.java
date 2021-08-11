@@ -16,4 +16,5 @@ public interface IAccountDAO {
 	List<MapPC> getRegisteredPCList(String user) throws SQLException;
 	boolean updatePCAlias(MapPC mapPC);
 	boolean updateFactorFlag(String user, int factorFlag, int flagToUpdate, boolean enable);
+	boolean updatePwd(String id, String pwd) throws SQLException;
 }

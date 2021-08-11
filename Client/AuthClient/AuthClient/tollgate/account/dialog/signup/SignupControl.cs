@@ -45,5 +45,15 @@ namespace AuthClient.tollgate.account.dialog
         {
             InitializeComponent();
         }
+
+        private void text_confirm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            text_confirm.IsCheck = text_pwd.Text == text_confirm.Text + e.KeyChar;
+        }
+
+        private void text_pwd_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            text_confirm.IsCheck = text_confirm.Text == text_pwd.Text + e.KeyChar;
+        }
     }
 }

@@ -174,7 +174,7 @@ BOOL CUSBAuth::_ProcessNextMessage()
 		break;
 
 	case WM_SERVER_NOT_RESPOND:
-		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"서버에서 응답이 없습니다");
+		_pCred->SetAuthMessage(SFI_USB_MESSAGE, L"서버로부터 응답이 없습니다");
 		_pCred->EnableAuthStartButton(SFI_USB_VERIFY, TRUE);
 		break;
 

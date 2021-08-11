@@ -7,6 +7,7 @@ public class Path {
 	public static final String MAP_PC = ACCOUNT + "map/pc/";
 	public static final String MAP_PCLIST = ACCOUNT + "map/pclist/";
 	public static final String FACTOR_FLAG = ACCOUNT + "factor/";
+	public static final String ACCOUNT_PWD = ACCOUNT + "password/";
 	
 	private static final String AD_ACCOUNT = ACCOUNT + "android/";
 	public static final String AD_LOGIN = AD_ACCOUNT + "login/";

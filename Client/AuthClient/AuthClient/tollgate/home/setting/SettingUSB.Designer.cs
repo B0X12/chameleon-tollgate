@@ -87,11 +87,13 @@ namespace AuthClient.tollgate.home.setting
             // 
             this.panel_list.AutoScroll = true;
             this.panel_list.BackColor = System.Drawing.Color.Transparent;
+            this.panel_list.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.panel_list.Location = new System.Drawing.Point(0, 0);
             this.panel_list.Margin = new System.Windows.Forms.Padding(0);
             this.panel_list.Name = "panel_list";
             this.panel_list.Size = new System.Drawing.Size(680, 363);
             this.panel_list.TabIndex = 1;
+            this.panel_list.WrapContents = false;
             // 
             // usbRecognitionTimer
             // 

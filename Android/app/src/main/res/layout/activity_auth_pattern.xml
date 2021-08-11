@@ -27,6 +27,7 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:dotNormalSize="77px"
         app:normalStateColor="@color/black"
         app:correctStateColor="@color/purple_700"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,4 +80,9 @@ public class AccountService implements IAccountService {
 		
 		return dao.updateFactorFlag(user, factorFlag, flagToUpdate, enable);
 	}
+	
+	@Override
+	public boolean updatePwd(String id, String pwd) throws SQLException {
+		return dao.updatePwd(id, pwd);
+	}
 }
