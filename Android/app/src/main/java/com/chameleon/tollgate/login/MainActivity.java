@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(){
                     // 지문 등록 기능
                     Toast.makeText(getApplicationContext(), "reg test1", Toast.LENGTH_SHORT).show();
+                    StartFingerRegisterActivity();
                 }
             }));
             regList.add(new authItem(R.drawable.main_register_faceid_group, new authItem.OnItemClickListener(){
@@ -204,6 +206,12 @@ public class MainActivity extends AppCompatActivity {
         Intent setFace = new Intent(getApplicationContext(), AuthFaceActivity.class);
         setFace.putExtra("mode", "train");
         startActivity(setFace);
+    }
+
+    public void StartFingerRegisterActivity(){
+
+        Intent FingerEnroll = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+        startActivity(FingerEnroll);
     }
 
     @Override

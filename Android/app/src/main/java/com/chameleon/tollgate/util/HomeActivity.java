@@ -1,4 +1,4 @@
-package com.chameleon.tollgate;
+package com.chameleon.tollgate.util;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
 import com.chameleon.tollgate.qr.Activity.QrActivity;

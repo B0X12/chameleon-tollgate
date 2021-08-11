@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
-import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;
