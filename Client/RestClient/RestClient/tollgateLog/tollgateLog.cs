@@ -45,6 +45,9 @@ namespace AuthClient.tollgate.util.tollgateLog
             }
         }
 
+
+        // 시간;서버IP;위험도;코드
+        //2019-12-08 18:23:45;192.168.2.41;WARN;10201
         public static void i(LogFactor factor, LogCode code)
         {
             StringBuilder sb = new StringBuilder();
