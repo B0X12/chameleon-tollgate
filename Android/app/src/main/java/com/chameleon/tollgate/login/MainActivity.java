@@ -29,6 +29,8 @@ import com.chameleon.tollgate.Activities.HistoryActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.chameleon.tollgate.faceauth.FaceVar;
+import com.chameleon.tollgate.otp.Activity.OtpActivity;
+import com.chameleon.tollgate.qr.Activity.QrActivity;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
 import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
@@ -138,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     new authItem.OnItemClickListener() {
                         @Override
                         public void onClick() {
-                            // otp 기능 실행
-                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                            startActivity(intent);
                         }
                     })
             );
@@ -148,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     new authItem.OnItemClickListener() {
                         @Override
                         public void onClick() {
-                            // qr 기능 실행
-                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), QrActivity.class);
+                            startActivity(intent);
                         }
                     })
             );

@@ -53,46 +53,47 @@ public class QrActivity extends AppCompatActivity { //AppCompatActivity
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(intentResult != null)
         {
-            if(intentResult.getContents() == null)
+            if(intentResult.getContents() == null) // Cancel
             {
                 Toast.makeText(this, "취소하였습니다.", Toast.LENGTH_LONG).show();
             } else {
                 try
                 {
-                    JSONObject obj = new JSONObject(intentResult.getContents());
+                    JSONObject obj = new JSONObject(intentResult.getContents()); // QR Data Json Type
 
                     if(DEBUGQR)
                         Log.d(LogTag.AUTH_QR, "#QR onActivityResult - 0  Scanned = userId : " + obj.getString("userId") + " data : " + obj.getString("data"));
 
-                    if(!MainActivity.USER_ID.equals(obj.getString("userId")))
+                    if(! MainActivity.USER_ID.equals(obj.getString("userId"))) //App Login Id Equals QR Data Id
                     {
                         Toast.makeText(this, "맞지 않는 QR 입니다. 다시시도 해주세요.", Toast.LENGTH_LONG).show();
                         onBackPressed();
                     }
 
+                    // Server Send QrData
                     final String result = SendData(obj.getString("data"));
 
                     if(DEBUGQR)
                         Log.d(LogTag.AUTH_QR, "#QR onActivityResult - 1  SendData Result : " + result);
 
-                    if(result.equals(ReturnMessage.SUCCESS))
+                    if(result.equals(ReturnMessage.SUCCESS)) // Success
                     {
                         Toast.makeText(this, "QR 인증에 성공하였습니다.", Toast.LENGTH_LONG).show();
                         onBackPressed();
                         return;
                     }
-                    else if(result.equals(ReturnMessage.UNKNOWN))
+                    else if(result.equals(ReturnMessage.UNKNOWN)) // Client Wait Not Found
                     {
                         Toast.makeText(this, "유효하지 않은 QR 입니다.", Toast.LENGTH_LONG).show();
                         onBackPressed();
                         return;
                     }
-                    else {
+                    else { // Server Data Send Fail
                         Toast.makeText(this, "QR 인증에 실패하였습니다.", Toast.LENGTH_LONG).show();
                         onBackPressed();
                         return;
                     }
-                } catch(JSONException e) {
+                } catch(JSONException e) { // Json Data UserId Not Found
                     Toast.makeText(this, "맞지 않는 QR 입니다. 다시시도 해주세요.", Toast.LENGTH_LONG).show();
                     onBackPressed();
                 };
@@ -100,11 +101,10 @@ public class QrActivity extends AppCompatActivity { //AppCompatActivity
         }
         else
             super.onActivityResult(requestCode, resultCode, data);
-
-
     }
 
-    private String SendData(final String decryptData)
+
+    private String SendData(final String decryptData) // Server Send QrData
     {
         String returnValue = null;
         try
@@ -113,7 +113,7 @@ public class QrActivity extends AppCompatActivity { //AppCompatActivity
             RestQrTask ROT = new RestQrTask(ROP, context, handler, Path.AUTH_QR);
             returnValue = ROT.execute().get();
 
-        } catch(Exception e) { return "SendData Exception"; };
+        } catch(Exception e) { };
 
         return returnValue;
     }
