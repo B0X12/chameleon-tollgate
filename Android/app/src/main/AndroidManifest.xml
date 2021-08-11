@@ -66,6 +66,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".util.HomeActivity"
+            android:theme="@style/Theme.Tollgate">
+            <intent-filter>
+
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+                <action android:name="android.intent.action.HOME" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
         <activity android:name=".login.MainActivity"
             android:theme="@style/Theme.Tollgate">
             <intent-filter>

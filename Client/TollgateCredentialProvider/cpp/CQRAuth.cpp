@@ -10,16 +10,15 @@
 // Custom messages for managing the behavior of the window thread.
 #define WM_EXIT_THREAD					WM_USER + 1
 #define WM_TIMER_ELAPSE					WM_USER + 2
-#define WM_TIMER_TIMEOUT				WM_USER + 3
 
 
 const TCHAR* g_wszQRClassName = L"QR Auth Window Class";
+static HWND hTimerWnd = NULL;
+static RestClient* rc = NULL;
 
-static RestClient* rc = nullptr;
 
 CQRAuth::CQRAuth(void)
 {
-	_hWnd = NULL;
 	_hInst = NULL;
 	_pCred = NULL;
 }
@@ -27,10 +26,10 @@ CQRAuth::CQRAuth(void)
 CQRAuth::~CQRAuth(void)
 {
 	// If we have an active window, we want to post it an exit message.
-	if (_hWnd != NULL)
+	if (hTimerWnd != NULL)
 	{
-		::PostMessage(_hWnd, WM_EXIT_THREAD, 0, 0);
-		_hWnd = NULL;
+		::PostMessage(hTimerWnd, WM_EXIT_THREAD, 0, 0);
+		hTimerWnd = NULL;
 	}
 
 	if (_pCred != NULL)
@@ -53,45 +52,45 @@ HRESULT CQRAuth::InitAuthThread(CTollgateCredential* pCredential)
 	_pCred->AddRef();
 
 
-	// QR 생성
+	HANDLE hThreads[2] = { 0, };
 	rc = new RestClient();
-
-	if (rc->RequestQRIssue(NULL, NULL))
-	{
-		// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
-		DWORD retCode = rc->GetRestClientExitCode();
-
-		switch (retCode)
-		{
-		case rc->RESULT_CONNECTION_SUCCESS:
-			pCredential->GoToNextAuthStage();
-			break;
-		default:
-			return hr;
-		}
-	}
-
 
 	// 타이머 스레드 생성
 	HANDLE hTimerThread = ::CreateThread(NULL, 0, CQRAuth::_TimerThreadProc, (LPVOID)this, 0, NULL);
 	if (hTimerThread == NULL)
 	{
 		hr = HRESULT_FROM_WIN32(::GetLastError());
+		return hr;
 	}
 	else
 	{
-		CloseHandle(hTimerThread);
+		hThreads[0] = hTimerThread;
 	}
 
+	// 인증 스레드 생성
+	HANDLE hAuthThread = ::CreateThread(NULL, 0, CQRAuth::_AuthThreadProc, (LPVOID)this, 0, NULL);
+	if (hAuthThread == NULL)
+	{
+		CloseHandle(hThreads[0]);
+		hr = HRESULT_FROM_WIN32(::GetLastError());
+		return hr;
+	}
+	else
+	{
+		hThreads[1] = hAuthThread;
+	}
 
-	// QR 인증
-
+	// 타이머 스레드, 인증 스레드 종료 후 스레드 핸들 반환 및 RestClient 할당 해제
+	WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
+	CloseHandle(hThreads[0]);
+	CloseHandle(hThreads[1]);
+	delete rc;
 
 	return hr;
 }
 
 
-HRESULT CQRAuth::_MyRegisterClass(void)
+HRESULT CQRAuth::_MyRegisterClass()
 {
 	HRESULT hr = S_OK;
 
@@ -114,20 +113,20 @@ HRESULT CQRAuth::_InitInstance()
 	HRESULT hr = S_OK;
 
 	// Create our window to receive events.
-	_hWnd = ::CreateWindow(
+	hTimerWnd = ::CreateWindow(
 		::g_wszQRClassName,           // Class name
 		::g_wszQRClassName,           // Title bar text
 		WS_DLGFRAME,
 		200, 200, 200, 80,
 		NULL,                       // Parent window 
 		NULL, _hInst, NULL);        // Menu, Instance handle, Additional Application Data
-	if (_hWnd == NULL)
+	if (hTimerWnd == NULL)
 	{
 		hr = HRESULT_FROM_WIN32(::GetLastError());
 	}
 	else
 	{
-		::ShowWindow(_hWnd, SW_HIDE);
+		::ShowWindow(hTimerWnd, SW_HIDE);
 	}
 
 	return hr;
@@ -138,7 +137,7 @@ BOOL CQRAuth::_ProcessNextMessage()
 {
 	// Grab, translate, and process the message.
 	MSG msg;
-	(void) ::GetMessage(&(msg), _hWnd, 0, 0);
+	(void) ::GetMessage(&(msg), hTimerWnd, 0, 0);
 	(void) ::TranslateMessage(&(msg));
 	(void) ::DispatchMessage(&(msg));
 
@@ -152,19 +151,13 @@ BOOL CQRAuth::_ProcessNextMessage()
 	{
 	case WM_TIMER_ELAPSE:
 		nTime = (unsigned int)msg.wParam;
-		StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"QR 코드 만료까지 %d 초", nTime);
+		StringCchPrintf(wszTimeoutMessage, ARRAYSIZE(wszTimeoutMessage), L"QR 스캔 대기 중.. %d", nTime);
 		_pCred->SetAuthMessage(SFI_QR_MESSAGE, wszTimeoutMessage);
 		break;
 
-	case WM_TIMER_TIMEOUT:
-		// 해당 윈도우가 인증 프로세스를 종료
-		
-		_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"인증 시간이 만료되었습니다");
-		_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
-		break;
-
 	case WM_EXIT_THREAD:
-		return FALSE;   // Return to the thread loop and let it know to exit.
+		DestroyWindow(hTimerWnd);
+		return FALSE;   // 메시지 해석 루프 End
 	}
 
 	return TRUE;
@@ -192,11 +185,9 @@ LRESULT CALLBACK CQRAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 		}
 		else
 		{
-			::PostMessage(hWnd, WM_TIMER_TIMEOUT, 0, 0);
 			::KillTimer(hWnd, 0);
 			::PostMessage(hWnd, WM_EXIT_THREAD, 0, 0);
 		}
-
 		break;
 
 	default:
@@ -204,6 +195,7 @@ LRESULT CALLBACK CQRAuth::_WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 	}
 	return 0;
 }
+
 
 
 // 타이머용 윈도우 생성 스레드
@@ -240,12 +232,87 @@ DWORD WINAPI CQRAuth::_TimerThreadProc(LPVOID lpParameter)
 	}
 	else
 	{
-		if (pThis->_hWnd != NULL)
+		if (hTimerWnd != NULL)
 		{
-			pThis->_hWnd = NULL;
+			hTimerWnd = NULL;
 		}
 	}
 
 	return 0;
 }
 
+
+DWORD WINAPI CQRAuth::_AuthThreadProc(LPVOID lpParameter)
+{
+	CQRAuth* pThis = static_cast<CQRAuth*>(lpParameter);
+	if (pThis == NULL)
+	{
+		// TODO: What's the best way to raise this error?
+		return 0;
+	}
+
+
+	// --------------- 서버로부터 패턴 정보 요청 ---------------
+	if (rc->RequestQRIssue(pThis->_pCred->wszUserName, pThis->_pCred->wszSystemIdentifier))
+	{
+		// 타이머 윈도우 종료 이벤트 보냄
+		PostMessage(hTimerWnd, WM_EXIT_THREAD, 0, 0);
+
+		// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
+		DWORD retCode = rc->GetRestClientExitCode();
+		wchar_t wcMessageFromServer[2048] = { 0, };
+
+		switch (retCode)
+		{
+			// 서버와 연결 성공
+		case rc->RESULT_CONNECTION_SUCCESS:
+			rc->GetRestClientMessage(wcMessageFromServer, 2048);
+
+			// 인증 성공
+			if (!wcscmp(wcMessageFromServer, L"Verified"))
+			{
+				pThis->_pCred->GoToNextAuthStage();
+			}
+			// 인증 실패
+			else
+			{
+				pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"QR 스캔 정보가 일치하지 않습니다");
+				pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			}
+			break;
+
+			// 패턴 입력 시간 타임아웃
+		case rc->RESULT_CONNECTION_TIMEOUT:
+			pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"QR 스캔 시간이 초과되었습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			break;
+
+			// 서버와 연결 실패
+		case rc->RESULT_CONNECTION_FAILED:
+			pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"서버로부터 값을 받아오는 데 실패했습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			break;
+
+			// 설정 파일이 존재하지 않음
+		case rc->RESULT_CONFIG_FILE_COMPROMISED:
+			pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			break;
+
+			// 정상적인 클라이언트 프로그램이 아님 / 타임 스탬프 일치하지 않음
+		case rc->RESULT_UNAUTHORIZED_ACCESS:
+		case rc->RESULT_TIMESTAMP_MISMATCH:
+			pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			break;
+
+		case rc->RESULT_UNKNOWN_ERROR:
+			pThis->_pCred->SetAuthMessage(SFI_QR_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+			pThis->_pCred->EnableAuthStartButton(SFI_QR_REQUEST, TRUE);
+			break;
+		}
+	}
+
+
+	return 0;
+}

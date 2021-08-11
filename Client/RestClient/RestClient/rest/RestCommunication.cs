@@ -163,5 +163,7 @@ namespace RestClient.rest
         public const string REQUEST_FACE = "auth/face/";
         public const string REQUEST_OTP = "register/otp/";
         public const string VERIFY_OTP = "auth/otp/";
+        public const string DATA_QR = "data/qr/";
+        public const string AUTH_QR = "auth/qr/";
     }
 }

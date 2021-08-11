@@ -304,15 +304,6 @@
     <Compile Include="tollgate\Config.cs" />
     <Compile Include="tollgate\account\dto\Account.cs" />
     <Compile Include="tollgate\account\dto\MapPC.cs" />
-    <Compile Include="tollgate\otp\dialog\OtpTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="tollgate\otp\dialog\OtpTest.Designer.cs">
-      <DependentUpon>OtpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tollgate\otp\dto\AuthOtp.cs" />
-    <Compile Include="tollgate\otp\service\ReturnMessage.cs" />
-    <Compile Include="tollgate\otp\service\OtpService.cs" />
     <Compile Include="tollgate\usb\dto\USBInfo.cs" />
     <Compile Include="tollgate\rest\Exception.cs" />
     <Compile Include="tollgate\rest\RestCommunication.cs" />
@@ -428,9 +419,6 @@
     <EmbeddedResource Include="tollgate\account\dialog\StepControl.resx">
       <DependentUpon>StepControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="tollgate\otp\dialog\OtpTest.resx">
-      <DependentUpon>OtpTest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -457,9 +445,6 @@
     <Folder Include="tollgate\fingerprint\dialog\" />
     <Folder Include="tollgate\fingerprint\dto\" />
     <Folder Include="tollgate\fingerprint\service\" />
-    <Folder Include="tollgate\pattern\dialog\" />
-    <Folder Include="tollgate\pattern\dto\" />
-    <Folder Include="tollgate\pattern\service\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Font\NotoSansKR-Black.otf">

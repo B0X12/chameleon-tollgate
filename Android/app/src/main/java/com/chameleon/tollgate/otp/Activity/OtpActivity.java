@@ -51,18 +51,19 @@ public class OtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Otp Timer
+        secretKey = GetSecretKey();
+        if(! secretKey.contains("tollgate-"))
+        {
+            onBackPressed();
+            ToastMessageShow("정보를 가져오지 못했습니다.");
+        }
+
+        Log.d(LogTag.AUTH_OTP, "#OTP - SecretKey : " + secretKey);
+
         //init
         context = getApplicationContext();
         handler = new Handler();
-
-        //Otp Timer
-        secretKey = GetSecretKey();
-        if(secretKey == ReturnMessage.VERIFY_INFORMATION)
-        {
-            ToastMessageShow("정보를 가져오지 못했습니다. 다시시도 해주세요.");
-            onBackPressed();
-        }
-        Log.d(LogTag.AUTH_OTP, "#OTP - SecretKey : " + secretKey);
 
         timerIsRunning=true;
         OtpTimeOutTimerStart();
@@ -118,27 +119,33 @@ public class OtpActivity extends AppCompatActivity {
     private void OtpTimeOutTimerStart()
     {
         //OTP TimeOut Timer
-        countDownTimer = new CountDownTimer(2147000000,500)
+        countDownTimer = new CountDownTimer(2147000000,1000)
         {
             @Override
             public void onTick(long millisUntilFinished)
             {
-                    GetCurrentTimeTicks = System.currentTimeMillis();
-                    int currentSeconds = Integer.parseInt(new SimpleDateFormat("ss").format(GetCurrentTimeTicks));
-                    timerOtpCycleTime = (OtpConfig.createCycle) - ((currentSeconds < OtpConfig.createCycle) ? currentSeconds+1 : currentSeconds-(OtpConfig.createCycle-1));
-                    textview_CycleTimeText.setText(String.format(Locale.getDefault(),"%d",timerOtpCycleTime));
+                if(timerOtpCycleTime <= 1 )
+                {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {};
+                }
+                GetCurrentTimeTicks = System.currentTimeMillis();
+                int currentSeconds = Integer.parseInt(new SimpleDateFormat("ss").format(GetCurrentTimeTicks));
+                timerOtpCycleTime = (OtpConfig.createCycle) - ((currentSeconds < OtpConfig.createCycle) ? currentSeconds : currentSeconds-(OtpConfig.createCycle));
+                textview_CycleTimeText.setText(String.format(Locale.getDefault(),"%d",timerOtpCycleTime));
 
-                    if(DEBUGOTP)
-                    {
-                        Log.d(LogTag.AUTH_OTP, "#OTP - CurrentTime : " + Long.parseLong(new SimpleDateFormat("ss").format(GetCurrentTimeTicks)));
-                        Log.d(LogTag.AUTH_OTP, "#OTP - timerOtpCycleTime : " + timerOtpCycleTime);
-                        Log.d(LogTag.AUTH_OTP, "#OTP - currentSeconds-60 : " + (currentSeconds - OtpConfig.createCycle));
-                        Log.d(LogTag.AUTH_OTP, "#OTP - SecretKey : " + secretKey);
-                        Log.d(LogTag.AUTH_OTP, "#OTP - timestamp : " + GetCurrentTimeTicks);
-                    }
+                if(DEBUGOTP)
+                {
+                    Log.d(LogTag.AUTH_OTP, "#OTP - CurrentTime : " + Long.parseLong(new SimpleDateFormat("ss").format(GetCurrentTimeTicks)));
+                    Log.d(LogTag.AUTH_OTP, "#OTP - timerOtpCycleTime : " + timerOtpCycleTime);
+                    Log.d(LogTag.AUTH_OTP, "#OTP - currentSeconds-60 : " + (currentSeconds - OtpConfig.createCycle));
+                    Log.d(LogTag.AUTH_OTP, "#OTP - SecretKey : " + secretKey);
+                    Log.d(LogTag.AUTH_OTP, "#OTP - timestamp : " + GetCurrentTimeTicks);
+                }
 
-                    TOtp totp = new TOtp(secretKey, OtpConfig.createCycle, OtpConfig.otpSize, OtpConfig.hashType);
-                    textview_OtpText.setText(String.format(Locale.getDefault(), "%s", totp.ComputeTotp(GetCurrentTimeTicks)));
+                TOtp totp = new TOtp(secretKey, OtpConfig.createCycle, OtpConfig.otpSize, OtpConfig.hashType);
+                textview_OtpText.setText(String.format(Locale.getDefault(), "%s", totp.ComputeTotp(GetCurrentTimeTicks)));
             }
             @Override
             public void onFinish() {
@@ -158,9 +165,9 @@ public class OtpActivity extends AppCompatActivity {
     {
         //Otp TimeOut Message
         AlertDialog.Builder AlertMessageBuilder = new AlertDialog.Builder(OtpActivity.this)
-        .setTitle(Title)
-        .setMessage(Message)
-        .setCancelable(false);// 버튼안누르고 화면눌렀을때 방지
+                .setTitle(Title)
+                .setMessage(Message)
+                .setCancelable(false);// 버튼안누르고 화면눌렀을때 방지
         AlertMessageBuilder.setPositiveButton("확인",
                 new DialogInterface.OnClickListener()
                 {

@@ -147,16 +147,32 @@ BOOL RestClient::RequestQRIssue(WCHAR* user, WCHAR* sys_id)
 {
     WCHAR wcCommandLine[2048] = { 0, };
 
-    // Rest Client 프로그램 인자 초기화: --request-face [user] [sys_id]
+    // Rest Client 프로그램 인자 초기화: --issue-qrcode [user] [sys_id]
     wcscpy_s(wcCommandLine, 2048, L" --issue-qrcode ");
-    //wcscat_s(wcCommandLine, 2048, user);
-    //wcscat_s(wcCommandLine, 2048, L" ");
-    //wcscat_s(wcCommandLine, 2048, sys_id);
+    wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
 
     // Client 프로세스 실행
     return _ExecuteRestClientProcess(wcCommandLine);
 }
 
+
+BOOL RestClient::RequestOTPVerification(WCHAR* user, WCHAR* sys_id, WCHAR* otp)
+{
+    WCHAR wcCommandLine[2048] = { 0, };
+
+    // Rest Client 프로그램 인자 초기화: --verify-otp [user] [sys_id] [otp]
+    wcscpy_s(wcCommandLine, 2048, L" --verify-otp ");
+    wcscat_s(wcCommandLine, 2048, user);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, sys_id);
+    wcscat_s(wcCommandLine, 2048, L" ");
+    wcscat_s(wcCommandLine, 2048, otp);
+
+    // Client 프로세스 실행
+    return _ExecuteRestClientProcess(wcCommandLine);
+}
 
 
 BOOL RestClient::_ExecuteRestClientProcess(WCHAR* wcCommandLine)

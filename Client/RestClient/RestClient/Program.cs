@@ -11,42 +11,6 @@ namespace RestClient
 {
     class Program
     {
-        /*
-         *   옵션			        설명
-         *   -------------------------------------------------------------------
-         *   --is-server-alive	    --is-server-alive
-		 *	                        서버가 살아 있는지 체크
-		 *	                        서버가 살아 있다면, Hello 문자열 반환
-		 *	                        그 외의 경우 Denied 문자열 반환
-         *
-         *   --get-auth-factor	    --get-auth-factor [UID]
-		 *	                        [UID]와 연동된 사용자의 인증 요소(플래그 변수)를 가져옴
-		 *	                        해당 인증 요소를 읽어 인증 윈도우 클래스 준비
-		 *	                        반환 값: 0 이상의 양수, 0일 경우 에러
-         *
-         *   --verify-usb		    --verify-usb [사용자ID] [SID값] [USB식별값]
-		 *	                        USB 인증 옵션
-		 *	                        반환 문자열: Verified / Denied
-         *
-         *   --request-pattern      --request-pattern [사용자ID]
-         *                          서버에게 패턴 인증 요청
-         *                          반환 문자열: Verified / Denied
-         *   
-         *   --request-face         --request-face [사용자ID]
-         *                          서버에게 안면 인증 요청
-         *                          반환 문자열: Verified / Denied
-         *                          
-         *   
-         *   --request-otp
-         *   
-         *   --verify-otp
-         *   
-         *   --request-fingerprint  
-         *   
-         *
-         *
-         */
-
         static int Main(string[] args)
         {
             int retCode = (int)ReturnCode.RESULT_UNKNOWN_ERROR;
@@ -54,18 +18,12 @@ namespace RestClient
             // 인자 체크
             if(!CheckArgumentByOption(args))
             {
-                /*
-                 * TODO: 로그 기록
-                 */
                 retCode = (int)ReturnCode.RESULT_UNKNOWN_ERROR;
             }
 
             // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
             if(Config.InitAuthServerByConfigFile())
             {
-                /*
-                 * TODO: 로그 기록
-                 */
                 retCode = (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
             }
             
@@ -122,15 +80,6 @@ namespace RestClient
                     }
                     break;
 
-                case "--request-otp":
-                    {
-                        string user = args[1];
-                        string sid = args[2];
-
-                        retCode = (int)handler.RequestOTP(user, sid);
-                    }
-                    break;
-
                 case "--verify-otp":
                     {
                         string user = args[1];
@@ -152,9 +101,10 @@ namespace RestClient
 
                 case "--issue-qrcode":
                     {
-                        Application.EnableVisualStyles();
-                        Application.Run(new QRForm());
-                        retCode = (int)ReturnCode.RESULT_CONNECTION_SUCCESS;
+                        string user = args[1];
+                        string sid = args[2];
+
+                        retCode = (int)handler.RequestAndVerifyQR(user, sid);
                     }
                     break;
 
@@ -244,17 +194,6 @@ namespace RestClient
                         return false;
                     }
 
-                case "--request-otp":
-                    // 포맷: --request-otp [사용자ID] [SID값]
-                    if (parameters.Length == 3)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
                 case "--verify-otp":
                     // 포맷: --verify-otp [사용자ID] [SID값] [OTP입력값]
                     if (parameters.Length == 4)
@@ -278,8 +217,8 @@ namespace RestClient
                     }
 
                 case "--issue-qrcode":
-                    // 포맷: --issue-qrcode
-                    if (parameters.Length == 1)
+                    // 포맷: --issue-qrcode [사용자ID] [SID값]
+                    if (parameters.Length == 3)
                     {
                         return true;
                     }

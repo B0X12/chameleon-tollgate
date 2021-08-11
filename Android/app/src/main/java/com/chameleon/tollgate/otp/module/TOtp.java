@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.chameleon.tollgate.define.LogTag;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
+import com.chameleon.tollgate.otp.OtpConfig;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -78,7 +79,10 @@ public class TOtp{
     private String CalculateOtp(final long input)
     {
         //Math.Pow = involution
-        long truncatedValue = ((int)input % (int)Math.pow(10, this.totpSize)); //EX:) 2116646656 % 1000000(DigitCount) = 646656 -> OTP VALUE
-        return String.valueOf(truncatedValue);
+        //long truncatedValue = ((int)input % (int)Math.pow(10, this.totpSize)); //EX:) 2116646656 % 1000000(DigitCount) = 646656 -> OTP VALUE
+        String stringToLong = String.valueOf(input);
+
+        return stringToLong.substring(stringToLong.length()- OtpConfig.otpSize, stringToLong.length());
+        //return String.valueOf(truncatedValue);
     }
 }
