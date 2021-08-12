@@ -109,7 +109,7 @@ namespace RestClient
             return "FAIL";
         }
 
-        private string ResultStandby(string user, string qrData)
+        private string ResultStandby(string user, string sid, string qrData)
         {
             long currentTimestamp = Util.GetCurrentTimestamp();
 
@@ -118,6 +118,7 @@ namespace RestClient
 
             // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);
+            qs.AddQueryString("sid", sid);
             HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.AUTH_QR, qs, authqr);
 
             try
@@ -147,7 +148,7 @@ namespace RestClient
 
         private void WaitForQRVerification()
         {
-            string result = ResultStandby(this.user, qrData);
+            string result = ResultStandby(this.user, this.sid, this.qrData);
 
             if (result == "true")
             {
