@@ -37,7 +37,9 @@ public class OtpActivity extends AppCompatActivity {
     private long timerOtpCycleTime = 0;
 
     //function Conntect
-    private TextView textview_OtpText,textview_CycleTimeText;
+    private TextView textView_centerOtpValue1,textView_centerOtpValue2,textView_centerOtpValue3,
+            textView_centerOtpValue4,textView_centerOtpValue5,textView_centerOtpValue6,
+            textView_topOtpShowCount;
 
     //SecretKey
     String secretKey = null;
@@ -70,8 +72,14 @@ public class OtpActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
-        textview_OtpText = findViewById(R.id.textView_Otp);
-        textview_CycleTimeText = findViewById(R.id.textview_TimeCount);
+
+        textView_centerOtpValue1 = findViewById(R.id.textView_centerOtpValue1);
+        textView_centerOtpValue2 = findViewById(R.id.textView_centerOtpValue2);
+        textView_centerOtpValue3 = findViewById(R.id.textView_centerOtpValue3);
+        textView_centerOtpValue4 = findViewById(R.id.textView_centerOtpValue4);
+        textView_centerOtpValue5 = findViewById(R.id.textView_centerOtpValue5);
+        textView_centerOtpValue6 = findViewById(R.id.textView_centerOtpValue6);
+        textView_topOtpShowCount = findViewById(R.id.textView_topOtpShowCount);
 
         if(DEBUGOTP)
         {
@@ -133,7 +141,7 @@ public class OtpActivity extends AppCompatActivity {
                 GetCurrentTimeTicks = System.currentTimeMillis();
                 int currentSeconds = Integer.parseInt(new SimpleDateFormat("ss").format(GetCurrentTimeTicks));
                 timerOtpCycleTime = (OtpConfig.createCycle) - ((currentSeconds < OtpConfig.createCycle) ? currentSeconds : currentSeconds-(OtpConfig.createCycle));
-                textview_CycleTimeText.setText(String.format(Locale.getDefault(),"%d",timerOtpCycleTime));
+                textView_topOtpShowCount.setText(String.format(Locale.getDefault(),"%d초",timerOtpCycleTime));
 
                 if(DEBUGOTP)
                 {
@@ -145,7 +153,15 @@ public class OtpActivity extends AppCompatActivity {
                 }
 
                 TOtp totp = new TOtp(secretKey, OtpConfig.createCycle, OtpConfig.otpSize, OtpConfig.hashType);
-                textview_OtpText.setText(String.format(Locale.getDefault(), "%s", totp.ComputeTotp(GetCurrentTimeTicks)));
+                String otpValue = totp.ComputeTotp(GetCurrentTimeTicks);
+                try {
+                    textView_centerOtpValue1.setText(String.format(Locale.getDefault(), "%c", otpValue.charAt(0)));
+                    textView_centerOtpValue2.setText(String.format(Locale.getDefault(), "%c", otpValue.charAt(1)));
+                    textView_centerOtpValue3.setText(String.format(Locale.getDefault(), "%s", otpValue.charAt(2)));
+                    textView_centerOtpValue4.setText(String.format(Locale.getDefault(), "%s", otpValue.charAt(3)));
+                    textView_centerOtpValue5.setText(String.format(Locale.getDefault(), "%s", otpValue.charAt(4)));
+                    textView_centerOtpValue6.setText(String.format(Locale.getDefault(), "%s", otpValue.charAt(5)));
+                }catch(Exception e){};
             }
             @Override
             public void onFinish() {

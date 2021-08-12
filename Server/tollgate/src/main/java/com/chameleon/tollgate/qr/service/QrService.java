@@ -32,10 +32,10 @@ public class QrService implements IQrService
 		String result = ReturnMessage.SUCCESS;
 		
 		if(serverData == null || adData == null)
-			result = ReturnMessage.VERIFY_INFORMATION;
+			result = ReturnMessage.FAIL_VERIFY_INFORMATION;
 			
 		if(!serverData.equals(adData))
-			result = ReturnMessage.VERIFY_FAIL;
+			result = ReturnMessage.FAIL_VERIFY;
 			
 		return result;
 	}

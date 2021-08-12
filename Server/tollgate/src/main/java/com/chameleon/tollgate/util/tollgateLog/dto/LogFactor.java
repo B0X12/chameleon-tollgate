@@ -12,7 +12,8 @@ public enum LogFactor {
     FACE("Face", 6000),
     OTP("OTP", 7000),
 	CONFIG("Config", 8000),
-	COMMON("Common", 9000);
+	COMMON("Common", 9000),
+	QR("QR",10000);
 
     private final String factor;
     private final int code;

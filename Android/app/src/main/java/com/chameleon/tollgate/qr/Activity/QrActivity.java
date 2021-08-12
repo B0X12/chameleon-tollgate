@@ -56,6 +56,7 @@ public class QrActivity extends AppCompatActivity { //AppCompatActivity
             if(intentResult.getContents() == null) // Cancel
             {
                 Toast.makeText(this, "취소하였습니다.", Toast.LENGTH_LONG).show();
+                onBackPressed();
             } else {
                 try
                 {
