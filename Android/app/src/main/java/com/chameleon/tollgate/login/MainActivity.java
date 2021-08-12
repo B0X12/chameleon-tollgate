@@ -29,6 +29,7 @@ import com.chameleon.tollgate.Activities.HistoryActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
 import com.chameleon.tollgate.faceauth.FaceVar;
+import com.chameleon.tollgate.pattern.SetPatternActivity;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
 import com.chameleon.tollgate.qr.Activity.QrActivity;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity(){
     }
-
 
     private RecyclerView authRecyclerView, regRecyclerView, etcRecyclerView;
     private ArrayList<authItem> authList, regList, etcList;
@@ -190,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
             regList.add(new authItem(R.drawable.main_register_pattern_group, new authItem.OnItemClickListener(){
                 @Override
                 public void onClick(){
-                    // 패턴 등록 기능
-                    Toast.makeText(getApplicationContext(), "reg test3", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), SetPatternActivity.class);
+                    startActivity(intent);
                 }
             }));
             regRecyclerView.setAdapter(new regAdapter(regList));
