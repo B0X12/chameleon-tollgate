@@ -26,22 +26,13 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.CAMERA;
 
 public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
-
-    int mSec = 0;
-    Context context = this;
-
 
     private FaceAuthService mFaceAS;
     private CameraBridgeViewBase mCameraView;
@@ -191,21 +182,23 @@ public class AuthFaceActivity extends AppCompatActivity implements CameraBridgeV
 
     @Override
     public void onBackPressed(){
-
-        if(timeout == true) {
             FaceRestTask faceRest = null;
-            if (mode.compareTo(FaceVar.ActivationMode.AUTH) == 0)
+            if (mode.compareTo(FaceVar.ActivationMode.AUTH) == 0) {
                 faceRest = new FaceRestTask(new FacePack(hashValue, "auth", false, Long.parseLong(timestamp)), this, handler);
 
-            boolean result = false;
-            try {
-                if (faceRest != null)
-                    result = faceRest.execute().get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+                boolean result = false;
+                try {
+                    if (faceRest != null)
+                        result = faceRest.execute().get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(!result)
+                    finish();
             }
-        }
-        super.onBackPressed();
+            else{
+                finish();
+            }
     }
 
     @Override

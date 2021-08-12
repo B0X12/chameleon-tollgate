@@ -30,6 +30,8 @@ import com.chameleon.tollgate.util.tollgateLog.TollgateLog;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.FaceCode;
 import com.chameleon.tollgate.util.userHistory.UserHistory;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
 
 @RestController
 public class AuthFaceController {	
@@ -63,7 +65,7 @@ public class AuthFaceController {
 	
 	// 인증 시작 요청
 	@GetMapping(path=Path.AUTH_FACEID+"{id}")
-	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, long timestamp) throws Exception {
+	public ResponseEntity<Response<Boolean>> SendSignal(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, HttpServletRequest req, long timestamp, String sid) throws Exception {
 		if (!userAgent.equals(Property.USER_AGENT)) {
 			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
@@ -83,11 +85,13 @@ public class AuthFaceController {
 
 		if(result == null) {
 			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
+			history.write(id, HistoryFactor.FACE, sid, HistoryResult.FAIL);
 			return new ResponseEntity<>(
 					new Response<Boolean>(HttpStatus.REQUEST_TIMEOUT, false, timestamp),
 					HttpStatus.REQUEST_TIMEOUT);
 		}
-			
+
+		history.write(id, HistoryFactor.FACE, sid, HistoryResult.SUCCESS);
 		return new ResponseEntity<>(
 				new Response<Boolean>(HttpStatus.OK, result, timestamp),
 				HttpStatus.OK);
@@ -103,11 +107,10 @@ public class AuthFaceController {
 			TollgateLog.w(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.NO_PRIVILEGE, "User-Agent value of request packet mismatched");
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
-			
+		
 		if(!this.sessions.isExist(new SessionTime(id, entry.getTimestamp())))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 			
-		TollgateLog.i(req.getRemoteAddr(), id, LogFactor.FACE, FaceCode.TIMEOUT, "Mobile device not responded within time limit");
 		boolean result = service.VerifyFace(id, entry);
 		
 		this.status.verify(id, result);

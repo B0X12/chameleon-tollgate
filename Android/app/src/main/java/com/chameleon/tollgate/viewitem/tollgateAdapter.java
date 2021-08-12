@@ -1,6 +1,7 @@
 package com.chameleon.tollgate.viewitem;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class tollgateAdapter extends RecyclerView.Adapter<tollgateAdapter.ViewHo
 
         holder.historyIcon.setImageResource(item.getAuthIcon().getAuthResource());
         holder.historyResultIcon.setImageResource(item.getResultIcon().getResultResource());
+        holder.historyLayout.setBackgroundColor(item.getResultIcon().isResult() ? Color.parseColor("#ffffff") : Color.parseColor("#f8f8f8"));
         holder.historyTitle.setText(item.getTitle().getText());
         holder.historySubTitle.setText(item.getAlias());
         holder.historyTime.setText(item.getTimestamp());
@@ -67,6 +69,7 @@ public class tollgateAdapter extends RecyclerView.Adapter<tollgateAdapter.ViewHo
         ImageView historyIcon, historyResultIcon;
         TextView historyTitle, historyTime, historySubTitle;
         ConstraintLayout historyLayout;
+
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 

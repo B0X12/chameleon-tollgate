@@ -46,6 +46,8 @@ public class AdAccountService implements IAdAccountService {
 		try {
 			this.dao.open();
 			int result = this.dao.removeToken(id);
+			this.dao.removeInitFactor(id);
+			this.dao.removeFactorInfos(id);
 			this.dao.commit();
 			this.dao.close();
 			

@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -22,13 +23,15 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chameleon.tollgate.Activities.HistoryActivity;
+import com.chameleon.tollgate.Activities.ServerActivity;
 import com.chameleon.tollgate.R;
+import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
-import com.chameleon.tollgate.faceauth.FaceVar;
 import com.chameleon.tollgate.pattern.SetPatternActivity;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
 import com.chameleon.tollgate.qr.Activity.QrActivity;
@@ -43,7 +46,7 @@ import com.chameleon.tollgate.viewitem.regAdapter;
 import com.chameleon.tollgate.define.LogTag;
 
 import org.jetbrains.annotations.NotNull;
-
+import java.io.File;
 import java.util.ArrayList;
 
 import static android.Manifest.permission.CAMERA;
@@ -53,6 +56,31 @@ public class MainActivity extends AppCompatActivity {
     public static String USER_ID = null;
     public static String SERVER_IP = null; //10.0.2.2
     static final int PERMISSIONS_REQUEST = 0x0000001;
+
+    private final MainActivity.LoginHandler handler = new MainActivity.LoginHandler(this);
+
+    private static class LoginHandler extends Handler {
+        //private final WeakReference<MainActivity> reference;
+        MainActivity activity;
+
+        public LoginHandler(MainActivity activity) {
+            super(Looper.getMainLooper());
+            this.activity = activity;
+            //this.reference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what){
+                case PatternMsg.TOAST_MSG:
+                    Toast.makeText(activity, (String)msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
+                case PatternMsg.TOAST_ERROR:
+                    Toast.makeText(activity, "Exception : " + msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
 
     public MainActivity(){
     }
@@ -105,6 +133,60 @@ public class MainActivity extends AppCompatActivity {
                 Intent historyIntent = new Intent(getApplicationContext(), HistoryActivity.class);
                 historyIntent.putExtra("userID", MainActivity.USER_ID);
                 startActivity(historyIntent);
+            }
+        });
+
+
+        ((ImageButton)findViewById(R.id.logout_button)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                alertDialogBuilder.setTitle("로그아웃");
+                alertDialogBuilder.setMessage("정말로 로그아웃 하시겠십니까?")
+                        .setCancelable(false)
+                        .setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        try {
+                                            LogoutTask rest = new LogoutTask(activity, handler, MainActivity.USER_ID, Util.getTimestamp());
+                                            Boolean result = rest.execute().get();
+                                            if(result == null)
+                                                return;
+                                            else if(!result) {
+                                                Toast.makeText(getApplicationContext(), "로그아웃에 실패했습니다.", Toast.LENGTH_LONG).show();
+                                                return;
+                                            }
+                                            else{
+                                                File faceauthDir = getApplicationContext().getDir("faceauth", Context.MODE_PRIVATE);
+                                                File mFaceModel = new File(faceauthDir, "trainedFace.fa");
+                                                if(mFaceModel.exists())
+                                                    mFaceModel.delete();
+
+                                                new File(getApplicationContext().getFilesDir(), MainActivity.CFGFIlE).delete();
+
+                                                Intent beginIntent = new Intent(getApplicationContext(), ServerActivity.class);
+                                                beginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(beginIntent);
+                                            }
+                                        } catch (Exception ex) {
+                                            Log.d(LogTag.ACCOUNT, "Exception : " + ex.getMessage());
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // 다이얼로그를 취소한다
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // 다이얼로그 생성
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // 다이얼로그 보여주기
+                alertDialog.show();
+
             }
         });
     }
@@ -204,14 +286,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void StartFaceRegisterActivity(){
-
         Intent setFace = new Intent(getApplicationContext(), AuthFaceActivity.class);
         setFace.putExtra("mode", "train");
         startActivity(setFace);
     }
 
     public void StartFingerRegisterActivity(){
-
         Intent FingerEnroll = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
         startActivity(FingerEnroll);
     }

@@ -25,13 +25,13 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 {
                     System.loadLibrary("opencv_java4");
-                    System.loadLibrary("native-lib");
+//                    System.loadLibrary("native-lib");
                 }
 
                 startActivity(intent);
                 finish();
             }
-        }, 500);
+        }, 10);
     }
 
 
