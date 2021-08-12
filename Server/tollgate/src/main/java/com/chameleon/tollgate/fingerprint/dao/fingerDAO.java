@@ -43,7 +43,6 @@ public class fingerDAO extends SQLiteManager implements IfingerDAO
 				System.out.println("#GetToken Exception : " + e);
 			}
 		}
-		super.close();
 		return result;
 	}
 }

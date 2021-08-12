@@ -16,7 +16,9 @@ public class fingerService implements IfingerService {
 	// 푸시 팝업 전송
 	public boolean SendMessage(String id, long timestamp)
 	{
+		dao.open();
 		String token = dao.GetToken(id); // getToken: id를 이용해 db에서 token을 얻어오는 함수 
+		dao.close();
 		final String title = id + "님!";
 		final String body = "등록하신 기기에서 지문 인증 요청이 발생했어요.";
 		final String click_action = "android.intent.action.AUTH_FINGERPRINT"; // 동작할 액티비티명

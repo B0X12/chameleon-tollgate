@@ -54,7 +54,7 @@ public class fingerController
 	// 인증 시작 요청
 	@GetMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> SendMessage(@PathVariable("id") String id
-			, long timestamp,  @RequestHeader(value = "User-Agent") String userAgent) throws Exception
+			, long timestamp, String sid,  @RequestHeader(value = "User-Agent") String userAgent) throws Exception
 	{
 		if (userAgent.equals("Tollgate-client")) // 접근 제어
 		{
@@ -75,6 +75,11 @@ public class fingerController
 						new Response<Boolean>(HttpStatus.PARTIAL_CONTENT, false, timestamp),
 						HttpStatus.PARTIAL_CONTENT);
 			}
+			else if(result == true)
+				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.SUCCESS);
+			else
+				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
+				
 			
 			Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, result, timestamp);
 			return new ResponseEntity<>(respon, HttpStatus.OK); // client로 결과 전송 - true / false
@@ -89,7 +94,7 @@ public class fingerController
 	// 안드로이드 -> 서버로 값을 전송할 때
 	@PostMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> AuthResult(@PathVariable("id") String id
-			, long timestamp, int restResult, String sid
+			, long timestamp, int restResult
 			, @RequestHeader(value = "User-Agent") String userAgent) throws NoUserException, InvalidRequestException, UnauthorizedUserAgentException
 	{
 		if(!this.sessions.isExist(new SessionTime(id, timestamp)))
@@ -97,23 +102,22 @@ public class fingerController
 		
 		if (userAgent.equals("Tollgate-client")) // 접근제어
 		{
-			this.status.verify(id, true); // 해당 사용자의 인증 결과를 설정
 					
 			if (restResult == AuthResult.AUTH_SUCCESSFUL)
 			{
-				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.SUCCESS);
+				this.status.verify(id, true); // 해당 사용자의 인증 결과를 설정
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, true, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.OK);
 			}
 			else if (restResult == AuthResult.AUTH_FAILED)
 			{
-				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
+				this.status.verify(id, false); // 해당 사용자의 인증 결과를 설정
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
 			}
 			else if (restResult == AuthResult.AUTH_ERROR)
 			{
-				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
+				this.status.verify(id, false); // 해당 사용자의 인증 결과를 설정
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
 			}

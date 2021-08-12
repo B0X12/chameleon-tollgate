@@ -50,40 +50,42 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_fingerprint);
 
-        btn_fingerprint = findViewById(R.id.btn_fingerprintAuth);
-        btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);
+//        btn_fingerprint = findViewById(R.id.btn_fingerprintAuth);
+//        btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);
 
         manager_fingerprint = FingerPrintManager.getInstance(this);
 
+
+//        btn_fingerprint.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override public void onClick(View v)
+//            {
+//            }
+//        });
+//
+//        btn_fingerprintEnroll.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override public void onClick(View v)
+//            {
+//                Intent finger_enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+//                startActivity(finger_enrollIntent);
+//            }
+//        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         Intent intent = getIntent();
         Context context = this;
-
-        btn_fingerprint.setOnClickListener(new View.OnClickListener()
+        // 생체 인식 기능을 사용할 수 있는 상태인지 확인함
+        if (manager_fingerprint.checkIfBiometricFeatureAvailable())
         {
-            @Override public void onClick(View v)
-            {
-                // 생체 인식 기능을 사용할 수 있는 상태인지 확인함
-                if (manager_fingerprint.checkIfBiometricFeatureAvailable())
-                {
-                    // 인증이 가능한 상태면 인증 수행
-                    manager_fingerprint.authenticate();
-
-                    // 서버로 인증 가능한 상태임을 전송
-                    RestTask rest = new RestTask(Long.parseLong(intent.getStringExtra("timestamp"))
-                            , AUTH_FINGER_ENROLLED, context, handler);
-                    rest.execute();
-                }
-            }
-        });
-
-        btn_fingerprintEnroll.setOnClickListener(new View.OnClickListener()
-        {
-            @Override public void onClick(View v)
-            {
-                Intent finger_enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-                startActivity(finger_enrollIntent);
-            }
-        });
+            // 인증이 가능한 상태면 인증 수행
+            manager_fingerprint.authenticate();
+            finish();
+        }
     }
 
     @Override public void onBiometricAuthenticationResult(String result, CharSequence errString) throws ExecutionException, InterruptedException {
