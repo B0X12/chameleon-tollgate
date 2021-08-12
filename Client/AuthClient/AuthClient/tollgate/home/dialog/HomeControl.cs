@@ -1,6 +1,7 @@
 ﻿using AuthClient.tollgate.account.service;
 using AuthClient.tollgate.home.history;
 using AuthClient.tollgate.home.main.dialog;
+using AuthClient.tollgate.util;
 using System;
 using System.Windows.Forms;
 using static AuthClient.tollgate.define.Define;
@@ -70,12 +71,18 @@ namespace AuthClient.tollgate.home.dialog
 
             if (dr == DialogResult.Yes)
             {
+                if (CredentialUtil.LogOutCredentialFile())
+                {
+                    if (!CredentialUtil.LogOutCredentialReg())
+                    {
+                        MessageBox.Show("Credential Provider 해제에 실패하였습니다");
+                        return;
+                    }
+                }
+
                 // --------------- PC와 인증 서버와의 연동 해제 ---------------
                 AccountService accountService = new AccountService();
                 accountService.UnmapSIDWithUser(Config.GetCurrentUser());
-
-                // --------------- 시스템에 적용된 Credential Provider 해제 ---------------
-                // TODO
 
                 Application.Restart();
             }
