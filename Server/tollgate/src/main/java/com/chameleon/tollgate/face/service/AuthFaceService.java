@@ -33,9 +33,9 @@ public class AuthFaceService implements IAuthFaceService{
 		String token = dao.getToken(id);
 		String hashValue = dao.getFace(id);
 		dao.close();
-		
-		final String title = "얼굴 인증";
-		final String body = "얼굴 인증 요청이 발생했습니다.";
+
+		final String title = id + "님!";
+		final String body = "등록하신 기기에서 얼굴 인증 요청이 발생했어요.";
 		final String click_action = "android.intent.action.AUTH_FACE";
 		final String mode = "auth";
 		

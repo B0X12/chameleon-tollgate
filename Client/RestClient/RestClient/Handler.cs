@@ -371,6 +371,7 @@ namespace RestClient
 
             // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);
+            qs.AddQueryString("sid", sid);
             HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.VERIFY_OTP, qs, authotp);
 
             try
@@ -416,6 +417,7 @@ namespace RestClient
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
+            qs.AddQueryString("sid", sid);
             HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_FINGERPRINT + user, qs);
 
             try

@@ -21,8 +21,8 @@ public class AuthService implements IAuthService {
 			dao.open(true);
 			String token = dao.getToken(id);
 			dao.close();
-			final String title = "패턴 인증";
-			final String body = "패턴 인증 요청이 발생했습니다.";
+			final String title = id + "님!";
+			final String body = "등록하신 기기에서 패턴 인증 요청이 발생했어요.";
 			final String click_action = "android.intent.action.AUTH_PATTERN";
 			
 			FCMSender fcm = new FCMSender();
