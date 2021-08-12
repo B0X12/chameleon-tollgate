@@ -246,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(){
                     // 지문 등록 기능
-                    Toast.makeText(getApplicationContext(), "reg test1", Toast.LENGTH_SHORT).show();
                     StartFingerRegisterActivity();
                 }
             }));
