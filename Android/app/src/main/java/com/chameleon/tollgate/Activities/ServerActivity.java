@@ -11,15 +11,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;

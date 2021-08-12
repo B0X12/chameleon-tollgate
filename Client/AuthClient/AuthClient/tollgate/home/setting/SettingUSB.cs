@@ -27,12 +27,11 @@ namespace AuthClient.tollgate.home.setting
             // Visible 속성이 False일 경우
             if (!Visible)
             {
-
-                lastRecognizedUSBCount = 0;
                 usbRecognitionTimer.Enabled = false;
                 return;
             }
 
+            lastRecognizedUSBCount = 0;
             usbList.Clear();
             panel_list.Controls.Clear();
 
@@ -65,9 +64,20 @@ namespace AuthClient.tollgate.home.setting
         private void UsbEntry_ButtonClick(USBEntry sender)
         {
             USBService us = new USBService();
+
             // 등록된 USB일 경우 (-일 경우) : USB 등록 해제
             if (sender.IsRegistered)
             {
+                if ((MainControl.FACTOR & define.Define.Factor.USB) != 0)
+                {
+                    // 등록된 마지막 USB일 경우 등록 해제 불가
+                    if(usbList.Count == 1)
+                    {
+                        MessageBox.Show("현재 USB 인증 요소를 사용하고 있으므로 등록 해제할 수 없습니다");
+                        return;
+                    }
+                }
+
                 if (us.UnregisterUSBInfo(sender.UsbInfo))
                 {
                     MessageBox.Show(sender.UsbInfo.alias + " USB의 등록 해제가 완료되었습니다");
@@ -83,11 +93,6 @@ namespace AuthClient.tollgate.home.setting
             // 등록되지 않은 USB일 경우 (+일 경우) : USB 등록
             else
             {
-                if((MainControl.FACTOR & define.Define.Factor.USB) != 0)
-                {
-                    //등록된 마지막 usb이면 메시지박스 띄우고 못지우게 하기
-                }
-
                 if (us.RegisterUSBInfo(sender.UsbInfo))
                 {
                     MessageBox.Show(sender.UsbInfo.alias + " USB가 " + Config.GetCurrentUser() + " 사용자에 등록되었습니다");

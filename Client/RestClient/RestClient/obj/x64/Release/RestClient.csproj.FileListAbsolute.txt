@@ -21,3 +21,4 @@ C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxi
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.xml
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\zxing.presentation.xml
 C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\obj\x64\Release\RestClient.csprojAssemblyReference.cache
+C:\Users\bjj73\Desktop\Tollgate\Client\RestClient\RestClient\bin\x64\Release\System.Net.Json.dll

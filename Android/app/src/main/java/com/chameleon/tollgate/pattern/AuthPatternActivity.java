@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
-import com.chameleon.tollgate.HomeActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.define.LogTag;
@@ -56,7 +55,7 @@ public class AuthPatternActivity extends AppCompatActivity {
 
         Context context = this;
         TextView label = findViewById(R.id.text_label_auth);
-        label.setText("패턴을 입력하세요.");
+        label.setText("등록된 패턴을 입력해 잠금을 해제하세요.");
         PatternLockView patternView = findViewById(R.id.pattern_auth);
         PatternLockViewListener patternListener = new PatternLockViewListener() {
             int count = 0;
@@ -81,11 +80,12 @@ public class AuthPatternActivity extends AppCompatActivity {
                     if(!result) {
                         if(count < 3) {
                             label.setText("패턴이 잘못되었습니다.\n다시 입력해주세요.");
-                            patternView.clearPattern();
+                            patternView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                             return;
                         }
                         Toast.makeText(getApplicationContext(), "패턴이 잘못되었습니다.", Toast.LENGTH_LONG).show();
                     }
+                    patternView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
                     finish();
                 } catch (Exception ex) {
                     Log.d(LogTag.AUTH_PATTERN, "Exception : " + ex.getMessage());

@@ -19,6 +19,9 @@ import com.chameleon.tollgate.rest.exception.InvalidRequestException;
 import com.chameleon.tollgate.rest.exception.NoUserException;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
+import com.chameleon.tollgate.util.userHistory.UserHistory;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
+import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
 import com.chameleon.tollgate.fingerprint.service.fingerService;
 import com.chameleon.tollgate.fingerprint.AuthResult;
 import com.chameleon.tollgate.define.Path;
@@ -36,6 +39,8 @@ public class fingerController
 	
 	@Autowired
 	fingerService service;
+	@Autowired
+	UserHistory history;
 
 	SessionList sessions; //아이디와 timestamp를 저장
 	AuthList status; //아이디별로 인증 완료 여부 저장
@@ -84,7 +89,7 @@ public class fingerController
 	// 안드로이드 -> 서버로 값을 전송할 때
 	@PostMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> AuthResult(@PathVariable("id") String id
-			, long timestamp, int restResult
+			, long timestamp, int restResult, String sid
 			, @RequestHeader(value = "User-Agent") String userAgent) throws NoUserException, InvalidRequestException, UnauthorizedUserAgentException
 	{
 		if(!this.sessions.isExist(new SessionTime(id, timestamp)))
@@ -96,16 +101,19 @@ public class fingerController
 					
 			if (restResult == AuthResult.AUTH_SUCCESSFUL)
 			{
+				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.SUCCESS);
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.OK, true, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.OK);
 			}
 			else if (restResult == AuthResult.AUTH_FAILED)
 			{
+				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
 			}
 			else if (restResult == AuthResult.AUTH_ERROR)
 			{
+				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
 			}

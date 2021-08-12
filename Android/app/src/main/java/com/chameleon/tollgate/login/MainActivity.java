@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,9 @@ import com.chameleon.tollgate.Activities.ServerActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
+import com.chameleon.tollgate.pattern.SetPatternActivity;
+import com.chameleon.tollgate.otp.Activity.OtpActivity;
+import com.chameleon.tollgate.qr.Activity.QrActivity;
 import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
 import com.chameleon.tollgate.util.tollgateLog.dto.code.faceCode;
 import com.chameleon.tollgate.util.tollgateLog.tollgateLog;
@@ -80,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity(){
     }
-
 
     private RecyclerView authRecyclerView, regRecyclerView, etcRecyclerView;
     private ArrayList<authItem> authList, regList, etcList;
@@ -219,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
                     new authItem.OnItemClickListener() {
                         @Override
                         public void onClick() {
-                            // otp 기능 실행
-                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                            startActivity(intent);
                         }
                     })
             );
@@ -229,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
                     new authItem.OnItemClickListener() {
                         @Override
                         public void onClick() {
-                            // qr 기능 실행
-                            Toast.makeText(getApplicationContext(), "test Toast", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), QrActivity.class);
+                            startActivity(intent);
                         }
                     })
             );
@@ -244,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(){
                     // 지문 등록 기능
                     Toast.makeText(getApplicationContext(), "reg test1", Toast.LENGTH_SHORT).show();
+                    StartFingerRegisterActivity();
                 }
             }));
             regList.add(new authItem(R.drawable.main_register_faceid_group, new authItem.OnItemClickListener(){
@@ -268,8 +272,8 @@ public class MainActivity extends AppCompatActivity {
             regList.add(new authItem(R.drawable.main_register_pattern_group, new authItem.OnItemClickListener(){
                 @Override
                 public void onClick(){
-                    // 패턴 등록 기능
-                    Toast.makeText(getApplicationContext(), "reg test3", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), SetPatternActivity.class);
+                    startActivity(intent);
                 }
             }));
             regRecyclerView.setAdapter(new regAdapter(regList));
@@ -287,8 +291,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(setFace);
     }
 
-    public void LogoutUser(){
-
+    public void StartFingerRegisterActivity(){
+        Intent FingerEnroll = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+        startActivity(FingerEnroll);
     }
 
     @Override

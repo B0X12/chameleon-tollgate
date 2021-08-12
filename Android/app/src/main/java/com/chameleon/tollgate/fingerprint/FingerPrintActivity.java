@@ -45,11 +45,10 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        cnt = 0;
+        this.cnt = 0;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_fingerprint);
-
 
         btn_fingerprint = findViewById(R.id.btn_fingerprintAuth);
         btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);

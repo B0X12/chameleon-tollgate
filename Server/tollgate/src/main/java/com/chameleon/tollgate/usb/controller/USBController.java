@@ -42,20 +42,19 @@ public class USBController {
 			@PathVariable("usb_info") String usb_info, long timestamp, String sid)
 			throws UnauthorizedUserAgentException, SQLException {
 
-		history.write(user, HistoryFactor.USB, sid, HistoryResult.SUCCESS);
 		
 		if (userAgent.equals("Tollgate-client")) {
 			boolean result = service.verifyUSB(user, usb_info);
 			
 			// 등록된 USB일 경우
 			if (result == true) {
-				System.out.println(usb_info + " registered by " + user); // 디버그용
+				history.write(user, HistoryFactor.USB, sid, HistoryResult.SUCCESS);
 				Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
 				return new ResponseEntity<>(resp, HttpStatus.OK);
 			}
 			// 등록되지 않은 USB일 경우
 			else {
-				System.out.println(usb_info + " not registered to " + user); // 디버그용
+				history.write(user, HistoryFactor.USB, sid, HistoryResult.FAIL);
 				Response<Boolean> resp = new Response<Boolean>(HttpStatus.OK, result, timestamp);
 				return new ResponseEntity<>(resp, HttpStatus.OK);
 			}

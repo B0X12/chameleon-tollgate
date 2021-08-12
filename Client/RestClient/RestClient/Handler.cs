@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RestClient
 {
@@ -358,72 +359,17 @@ namespace RestClient
             }
         }
 
-        internal ReturnCode RequestOTP(string user, string sid)
-        {
-            // 통신 세팅
-            long currentTimestamp = Util.GetCurrentTimestamp();
-            QueryString qs = new QueryString("timestamp", currentTimestamp);
-            OTPInfo otpInfo = new OTPInfo(user, null);
-            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.REQUEST_OTP, qs, otpInfo);
-
-            try
-            {
-                RestResult result = hc.SendRequest();
-
-                // 서버 응답 코드가 200일 경우
-                if (result.statusCode == HttpStatusCode.OK)
-                {
-                    ResponseData<string> rd = JsonConvert.DeserializeObject<ResponseData<string>>(result.jsonResult);
-
-                    // 타임 스탬프 일치 / otp DB 저장 성공
-                    if (rd.getTimestamp().Equals(currentTimestamp))
-                    {
-                        switch (rd.getResult())
-                        {
-                            case OTPReturnMessage.SUCCESS:
-                                SetRestClientMessage("Success");
-                                return ReturnCode.RESULT_CONNECTION_SUCCESS;
-
-                            case OTPReturnMessage.REGISTER_DATABASE:
-                            case OTPReturnMessage.REGISTER_INFORMATION:
-                            default:
-                                return ReturnCode.RESULT_UNKNOWN_ERROR;
-                        }
-                    }
-                    // 타임 스탬프 불일치
-                    else
-                    {
-                        return ReturnCode.RESULT_TIMESTAMP_MISMATCH;
-                    }
-                }
-
-                // 서버 응답 코드가 400(Bad Request)일 경우
-                else if (result.statusCode == HttpStatusCode.BadRequest)
-                {
-                    return ReturnCode.RESULT_UNAUTHORIZED_ACCESS;
-                }
-
-                // 기타 서버 응답 코드 처리
-                else
-                {
-                    return ReturnCode.RESULT_UNKNOWN_ERROR;
-                }
-            }
-
-            // 존재하지 않는 서버로 연결 시도
-            catch (WebException)
-            {
-                return ReturnCode.RESULT_CONNECTION_FAILED;
-            }
-        }
-
         internal ReturnCode VerifyOTP(string user, string sid, string otp)
         {
-            // 통신 세팅
+            // 통신 TimeStamp
             long currentTimestamp = Util.GetCurrentTimestamp();
+
+            // DTO 준비
+            AuthOtp authotp = new AuthOtp(user, currentTimestamp, otp);
+
+            // 통신 세팅
             QueryString qs = new QueryString("timestamp", currentTimestamp);
-            OTPInfo otpInfo = new OTPInfo(user, otp);
-            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.VERIFY_OTP, qs, otpInfo);
+            HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.POST, URLPath.VERIFY_OTP, qs, authotp);
 
             try
             {
@@ -437,52 +383,30 @@ namespace RestClient
                     // 타임 스탬프 일치
                     if (rd.getTimestamp().Equals(currentTimestamp))
                     {
-
-                        switch (rd.getResult())
+                        string rdResult = rd.getResult();
+                        if (rdResult != null)
                         {
-                            case OTPReturnMessage.SUCCESS:
-                                SetRestClientMessage("Verified");
-                                return ReturnCode.RESULT_CONNECTION_SUCCESS;
-
-                            case OTPReturnMessage.VERIFY_FAIL:
-                                SetRestClientMessage("Denied");
-                                return ReturnCode.RESULT_CONNECTION_SUCCESS;
-
-                            case OTPReturnMessage.VERIFY_TIMEOUT:
-                                return ReturnCode.RESULT_CONNECTION_TIMEOUT;
-
-                            case OTPReturnMessage.VERIFY_DATABASE:
-                            case OTPReturnMessage.VERIFY_INFORMATION:
-                            default:
-                                return ReturnCode.RESULT_UNKNOWN_ERROR;
+                            switch (rdResult)
+                            {
+                                case ReturnMessage.SUCCESS:
+                                    SetRestClientMessage("Verified");
+                                    return ReturnCode.RESULT_CONNECTION_SUCCESS;
+                                default:
+                                    SetRestClientMessage("Denied");
+                                    return ReturnCode.RESULT_CONNECTION_SUCCESS;
+                            }
                         }
-
                     }
-                    // 타임 스탬프 불일치
-                    else
-                    {
-                        return ReturnCode.RESULT_TIMESTAMP_MISMATCH;
-                    }
-                }
-
-                // 서버 응답 코드가 400(Bad Request)일 경우
-                else if (result.statusCode == HttpStatusCode.BadRequest)
-                {
-                    return ReturnCode.RESULT_UNAUTHORIZED_ACCESS;
-                }
-
-                // 기타 서버 응답 코드 처리
-                else
-                {
-                    return ReturnCode.RESULT_UNKNOWN_ERROR;
                 }
             }
 
-            // 존재하지 않는 서버로 연결 시도
+            // 실패시
             catch (WebException)
             {
-                return ReturnCode.RESULT_CONNECTION_FAILED;
+                return ReturnCode.RESULT_UNKNOWN_ERROR;
             }
+
+            return ReturnCode.RESULT_UNKNOWN_ERROR;
         }
 
         internal ReturnCode RequestFingerprint(string user, string sid)
@@ -547,6 +471,28 @@ namespace RestClient
             catch (WebException)
             {
                 return ReturnCode.RESULT_CONNECTION_FAILED;
+            }
+        }
+
+        internal ReturnCode RequestAndVerifyQR(string user, string sid)
+        {
+            QRForm qr = new QRForm(user, sid);
+            qr.ShowDialog();
+
+            switch(qr.DialogResult)
+            {
+                case DialogResult.OK:
+                    SetRestClientMessage("Verified");
+                    return ReturnCode.RESULT_CONNECTION_SUCCESS;
+
+                case DialogResult.Cancel:
+                    return ReturnCode.RESULT_CONNECTION_TIMEOUT;
+
+                case DialogResult.Abort:
+                    return ReturnCode.RESULT_CONNECTION_FAILED;
+
+                default:
+                    return ReturnCode.RESULT_UNKNOWN_ERROR;
             }
         }
     }

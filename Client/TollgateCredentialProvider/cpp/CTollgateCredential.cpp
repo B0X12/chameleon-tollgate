@@ -642,7 +642,6 @@ HRESULT CTollgateCredential::CommandLinkClicked(DWORD dwFieldID)
 				_pFingerprintAuth->InitAuthThread(this);
 			}
 
-			//GoToNextAuthStage();
 			break;
 
 
@@ -684,17 +683,77 @@ HRESULT CTollgateCredential::GetSerialization(_Out_ CREDENTIAL_PROVIDER_GET_SERI
 	ZeroMemory(pcpcs, sizeof(*pcpcs));
 
 
+	// OTP 인증 요소 사용의 경우 OTP 먼저 처리
 	if (_bAuthFactorFlag & AUTH_FACTOR_OTP)
 	{
-		if (wcscmp(_rgFieldStrings[SFI_OTP_INPUT], L"test"))
+		if (wcslen(_rgFieldStrings[SFI_OTP_INPUT]) == 0)
 		{
-			SetAuthMessage(SFI_OTP_MESSAGE, L"OTP 값이 일치하지 않습니다");
+			return hr;
+		}
+
+		RestClient* rc = new RestClient();
+
+		// --------------- 서버로부터 패턴 정보 요청 ---------------
+		if (rc->RequestOTPVerification(this->wszUserName, this->wszSystemIdentifier, _rgFieldStrings[SFI_OTP_INPUT]))
+		{
+			// --------------- 인증 서버로부터 검증 결과 값 비교하여 인증 성공 여부 판단 ---------------
+			DWORD retCode = rc->GetRestClientExitCode();
+			wchar_t wcMessageFromServer[2048] = { 0, };
+
+			switch (retCode)
+			{
+				// 서버와 연결 성공
+			case rc->RESULT_CONNECTION_SUCCESS:
+				rc->GetRestClientMessage(wcMessageFromServer, 2048);
+
+				// OTP 인증 성공 - OTP 값 일치
+				if (!wcscmp(wcMessageFromServer, L"Verified"))
+				{
+					hr = S_OK;
+				}
+				// OTP 인증 실패 - OTP 값 불일치
+				else
+				{
+					SetAuthMessage(SFI_OTP_MESSAGE, L"OTP 값이 일치하지 않습니다");
+				}
+				break;
+
+				// 연결 실패
+			case rc->RESULT_CONNECTION_TIMEOUT:
+			case rc->RESULT_CONNECTION_FAILED:
+				SetAuthMessage(SFI_OTP_MESSAGE, L"서버로부터 응답이 없습니다");
+				break;
+
+				// 설정 파일이 존재하지 않음
+			case rc->RESULT_CONFIG_FILE_COMPROMISED:
+				SetAuthMessage(SFI_OTP_MESSAGE, L"설정 파일이 손상되어 서버로 연결할 수 없습니다");
+				break;
+
+				// 정상적인 클라이언트 프로그램이 아님 / 타임 스탬프 일치하지 않음
+			case rc->RESULT_UNAUTHORIZED_ACCESS:
+			case rc->RESULT_TIMESTAMP_MISMATCH:
+				SetAuthMessage(SFI_OTP_MESSAGE, L"서버에서 비정상적인 응답이 반환되었습니다");
+				break;
+
+			case rc->RESULT_UNKNOWN_ERROR:
+				SetAuthMessage(SFI_OTP_MESSAGE, L"알 수 없는 오류가 발생하였습니다");
+				break;
+			}
+		}
+
+		delete rc;
+
+		// 인증 결과 실패하면 OTP, 패스워드 입력 창 비움
+		if (!SUCCEEDED(hr))
+		{
 			SetAuthMessage(SFI_OTP_INPUT, L"");
+			SetAuthMessage(SFI_PASSWORD_INPUT, L"");
 			return hr;
 		}
 	}
 	
-	
+	hr = E_UNEXPECTED;
+
 	// For local user, the domain and user name can be split from _pszQualifiedUserName (domain\username).
 	// CredPackAuthenticationBuffer() cannot be used because it won't work with unlock scenario.
 	if (_fIsLocalUser)

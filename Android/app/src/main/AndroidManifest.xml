@@ -67,7 +67,7 @@
         </activity>
 
         <activity
-            android:name=".HomeActivity"
+            android:name=".util.HomeActivity"
             android:theme="@style/Theme.Tollgate">
             <intent-filter>
 
@@ -78,7 +78,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        
         <activity android:name=".login.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>

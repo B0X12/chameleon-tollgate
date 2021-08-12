@@ -288,7 +288,7 @@ DWORD WINAPI CFaceAuth::_AuthThreadProc(LPVOID lpParameter)
 
 			// 서버와 연결 실패
 		case rc->RESULT_CONNECTION_FAILED:
-			pThis->_pCred->SetAuthMessage(SFI_FACE_MESSAGE, L"서버에서 응답이 없습니다");
+			pThis->_pCred->SetAuthMessage(SFI_FACE_MESSAGE, L"서버로부터 응답이 없습니다");
 			pThis->_pCred->EnableAuthStartButton(SFI_FACE_REQUEST, TRUE);
 			break;
 

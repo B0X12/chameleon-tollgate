@@ -28,7 +28,8 @@ public class HistoryController {
 	UserHistory history;
 
 	@PostMapping(path=Path.HISTORY+"{id}")
-	public ResponseEntity<Response<ArrayList<HistoryRecord>>> GetHistory(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, @RequestBody HistoryPack entry) throws Exception{
+	public ResponseEntity<Response<ArrayList<HistoryRecord>>> GetHistory(@RequestHeader(value = "User-Agent") String userAgent, @PathVariable("id") String id, 
+			@RequestBody HistoryPack entry) throws Exception{
 		if (!userAgent.equals(Property.USER_AGENT)) {
 			throw new UnauthorizedUserAgentException(UnauthorizedUserAgentError.UNAUTHERIZED_USER_AGENT);
 		}
