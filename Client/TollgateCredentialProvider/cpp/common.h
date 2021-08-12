@@ -76,23 +76,23 @@ static const FIELD_STATE_PAIR s_rgFieldStatePairs[] =
 
     /* --------------- USB 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_USB_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_USB_VERIFY
+    { CPFS_HIDDEN,            CPFIS_DISABLED   },      // SFI_USB_VERIFY
 
     /* --------------- 패턴 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_PATTERN_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_PATTERN_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED   },      // SFI_PATTERN_REQUEST
 
     /* --------------- QR 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_QR_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_QR_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED   },      // SFI_QR_REQUEST
 
     /* --------------- 지문 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FINGERPRINT_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_FINGERPRINT_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED   },      // SFI_FINGERPRINT_REQUEST
 
     /* --------------- 안면 인증 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_FACE_MESSAGE
-    { CPFS_HIDDEN,            CPFIS_DISABLED       },      // SFI_FACE_REQUEST
+    { CPFS_HIDDEN,            CPFIS_DISABLED   },      // SFI_FACE_REQUEST
 
     /* --------------- 패스워드 인증 및 OTP 관련 --------------- */
     { CPFS_HIDDEN,            CPFIS_NONE       },      // SFI_OTP_MESSAGE

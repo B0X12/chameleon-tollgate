@@ -70,6 +70,15 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -293,6 +302,9 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
+    <Compile Include="tollgate\util\CredentialUtil.cs" />
+    <Compile Include="tollgate\util\RegisterList.cs" />
+    <Compile Include="tollgate\util\SystemIoUtil.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
@@ -396,6 +408,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
