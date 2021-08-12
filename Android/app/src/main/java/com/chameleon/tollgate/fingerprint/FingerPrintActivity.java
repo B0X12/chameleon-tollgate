@@ -50,7 +50,6 @@ public class FingerPrintActivity extends AppCompatActivity implements FingerPrin
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth_fingerprint);
 
-        this.count = 0;
 
         btn_fingerprint = findViewById(R.id.btn_fingerprintAuth);
         btn_fingerprintEnroll = findViewById(R.id.btn_fingerprintEnroll);

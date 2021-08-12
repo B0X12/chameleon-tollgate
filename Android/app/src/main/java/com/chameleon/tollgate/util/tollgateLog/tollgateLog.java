@@ -57,7 +57,7 @@ public class tollgateLog {
                     .append(MainActivity.SERVER_IP).append(separator)
                     .append(LogLevel.INFO.getLevel()).append(separator)   	// priority (info)
                     .append(factor.getFactor()).append(separator)       	// factor (register, authenticate)
-                    .append(codeNum).append(separator)       				// auth type (pattern, face, fingerprint, otp)
+                    .append(codeNum)       				// auth type (pattern, face, fingerprint, otp)
                     .append("\n");
 
             try {

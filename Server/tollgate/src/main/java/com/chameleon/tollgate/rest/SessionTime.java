@@ -19,6 +19,7 @@ public class SessionTime {
 		if(!(obj instanceof SessionTime))
 			return false;
 		SessionTime st = (SessionTime)obj;
+		
 		if(st.id.equals(this.id) && st.timestamp == this.timestamp)
 			return true;
 		return false;

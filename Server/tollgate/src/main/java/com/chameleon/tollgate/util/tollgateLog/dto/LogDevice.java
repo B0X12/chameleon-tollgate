@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum LogDevice {
-	SERVER("Server", 10000),
-	PC("PC", 20000),
-	ANDROID("Android", 30000);
+	SERVER("Server", 100000),
+	PC("PC", 200000),
+	ANDROID("Android", 300000);
 	
 	
 	private final String device;
