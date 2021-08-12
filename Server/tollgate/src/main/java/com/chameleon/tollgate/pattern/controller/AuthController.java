@@ -82,8 +82,12 @@ public class AuthController {
 		Boolean result = status.waitVerify(id);
 		this.status.remove(id);
 		this.sessions.remove(id);
-
-		history.write(id, HistoryFactor.PATTERN, pc, result ? HistoryResult.SUCCESS : HistoryResult.FAIL);
+		
+		if(result)
+			history.write(id, HistoryFactor.PATTERN, pc, HistoryResult.SUCCESS);
+		else
+			history.write(id, HistoryFactor.PATTERN, pc, HistoryResult.FAIL);
+		
 		if(result == null) {
 			return new ResponseEntity<>(
 					new Response<Boolean>(HttpStatus.PARTIAL_CONTENT, false, timestamp),

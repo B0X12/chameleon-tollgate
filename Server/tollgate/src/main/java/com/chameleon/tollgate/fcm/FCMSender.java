@@ -115,7 +115,8 @@ public class FCMSender {
 			AndroidNotification.Builder andNotiBuilder = AndroidNotification.builder();
 			andNotiBuilder.setChannelId(FCMSender.CHANNEL_ID)
 				.setTitle(title)
-				.setBody(body);
+				.setBody(body)
+				.setImage("");
 			if(this.click_action != null)
 				andNotiBuilder.setClickAction(this.click_action);
 			

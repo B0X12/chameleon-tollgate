@@ -1,4 +1,5 @@
 ﻿using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.otp.service;
 using System.Windows.Forms;
 using static AuthClient.tollgate.define.Define;
 
@@ -85,6 +86,18 @@ namespace AuthClient.tollgate.home.main.dialog
             // 토글 버튼 Off -> On 상태 시 이벤트
             if (card_otp.On)
             {
+                string registerResult = OtpService.PostOtpRegister(Config.GetCurrentUser());
+
+                //switch (registerResult)
+                //{
+                //    case ReturnMessage.FAIL_REGISTER_INFORMATION:
+                //        MessageBox.Show("실패 : 핸드폰 앱의 최초 로그인이 필요합니다.");
+                //        return;
+                //    case ReturnMessage.FAIL_REGISTER_UNKNOWN:
+                //        MessageBox.Show("실패 : 이미 OTP가 등록되어 있습니다.");
+                //        return;
+                //}
+                
                 CheckDialog checker = new CheckDialog(CheckFlag.MOBILE);
                 if (checker.ShowDialog(this) != DialogResult.OK)
                     card_otp.On = false;

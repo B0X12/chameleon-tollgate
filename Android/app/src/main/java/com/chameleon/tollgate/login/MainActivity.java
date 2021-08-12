@@ -3,6 +3,7 @@ package com.chameleon.tollgate.login;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ import com.chameleon.tollgate.Activities.ServerActivity;
 import com.chameleon.tollgate.R;
 import com.chameleon.tollgate.Util;
 import com.chameleon.tollgate.faceauth.AuthFaceActivity;
+import com.chameleon.tollgate.fingerprint.RestTask;
 import com.chameleon.tollgate.pattern.SetPatternActivity;
 import com.chameleon.tollgate.otp.Activity.OtpActivity;
 import com.chameleon.tollgate.qr.Activity.QrActivity;
@@ -241,12 +243,28 @@ public class MainActivity extends AppCompatActivity {
             authRecyclerView.setLayoutManager(new LinearLayoutManager(activities[0], RecyclerView.HORIZONTAL, false));
             authRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
+
+            //////////////지문 등록----------------------------------------------
+
+
             regList = new ArrayList<>();
             regList.add(new authItem(R.drawable.main_register_fingerprint_group, new authItem.OnItemClickListener(){
                 @Override
                 public void onClick(){
                     // 지문 등록 기능
-                    StartFingerRegisterActivity();
+                    BiometricManager biometricManager = BiometricManager.from(getApplicationContext());
+
+                    switch (biometricManager.canAuthenticate())
+                    {
+                        case BiometricManager.BIOMETRIC_SUCCESS:
+                            Log.d(LogTag.AUTH_FINGERPRINT, "App can authenticate using biometrics.");
+                            //Toast.makeText(context, "App can authenticate using biometrics.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "이미 지문이 등록되어 있습니다.",Toast.LENGTH_LONG).show();
+                            setFingerInitFactor();
+                            return;
+                        default:
+                            StartFingerRegisterActivity();
+                    }
                 }
             }));
             regList.add(new authItem(R.drawable.main_register_faceid_group, new authItem.OnItemClickListener(){
@@ -293,6 +311,16 @@ public class MainActivity extends AppCompatActivity {
     public void StartFingerRegisterActivity(){
         Intent FingerEnroll = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
         startActivity(FingerEnroll);
+        setFingerInitFactor();
+    }
+
+    private void setFingerInitFactor() {
+        BiometricManager biometricManager = BiometricManager.from(getApplicationContext());
+        if(biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
+            RestTask rest = new RestTask(Util.getTimestamp()
+                    , 131, getApplicationContext(), handler);
+            rest.execute();
+        }
     }
 
     @Override

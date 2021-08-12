@@ -70,7 +70,7 @@ public class HistoryDAO extends SQLiteManager {
 
 		int count = getCountOf(Table.HISTORY, "id", id);
 		if(count < 1) 
-			throw new HistoryResultException(HistoryError.NO_HISTORY);
+			return new ArrayList<HistoryRecord>();
 
 		ArrayList<HistoryRecord> recordList = new ArrayList<HistoryRecord>();
 		PreparedStatement state = super.connection.prepareStatement("select * from " + Table.HISTORY + " where id = ?");
