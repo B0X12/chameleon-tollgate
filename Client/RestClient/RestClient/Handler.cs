@@ -227,7 +227,8 @@ namespace RestClient
         {
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
-            QueryString qs = new QueryString("timestamp", currentTimestamp);
+            QueryString qs = new QueryString("pc", sid);
+            qs.AddQueryString("timestamp", currentTimestamp);
             HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_PATTERN + user, qs);
 
             try
@@ -293,6 +294,7 @@ namespace RestClient
             // 통신 세팅
             long currentTimestamp = Util.GetCurrentTimestamp();
             QueryString qs = new QueryString("timestamp", currentTimestamp);
+            qs.AddQueryString("sid", sid);
             HttpCommunication hc = new HttpCommunication(Config.GetServerURL(), Method.GET, URLPath.REQUEST_FACE + user, qs);
 
             try

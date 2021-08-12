@@ -1,5 +1,7 @@
 ﻿using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.home.history;
 using AuthClient.tollgate.home.main.dialog;
+using AuthClient.tollgate.util;
 using System;
 using System.Windows.Forms;
 using static AuthClient.tollgate.define.Define;
@@ -10,6 +12,7 @@ namespace AuthClient.tollgate.home.dialog
     {
         MainControl mainControl;
         SettingControl settingControl;
+        HistoryControl historyControl;
 
         public string User
         {
@@ -26,19 +29,24 @@ namespace AuthClient.tollgate.home.dialog
 
             btn_side_main.setOn();
             btn_side_setting.setOff();
+            btn_side_history.setOff();
 
             mainControl = new MainControl();
             settingControl = new SettingControl();
+            historyControl = new HistoryControl();
             panel_content.Controls.Add(mainControl);
             panel_content.Controls.Add(settingControl);
+            panel_content.Controls.Add(historyControl);
         }
 
         private void btn_side_main_Click(object sender, EventArgs e)
         {
             btn_side_main.setOn();
             btn_side_setting.setOff();
+            btn_side_history.setOff();
             BackgroundImage = Properties.Resources.mainWallpaper;
             settingControl.Hide();
+            historyControl.Hide();
             mainControl.Show();
         }
 
@@ -46,8 +54,10 @@ namespace AuthClient.tollgate.home.dialog
         {
             btn_side_main.setOff();
             btn_side_setting.setOn();
+            btn_side_history.setOff();
             BackgroundImage = Properties.Resources.settingWallpaper;
             mainControl.Hide();
+            historyControl.Hide();
             settingControl.Show();
         }
 
@@ -61,12 +71,18 @@ namespace AuthClient.tollgate.home.dialog
 
             if (dr == DialogResult.Yes)
             {
+                if (CredentialUtil.LogOutCredentialFile())
+                {
+                    if (!CredentialUtil.LogOutCredentialReg())
+                    {
+                        MessageBox.Show("Credential Provider 해제에 실패하였습니다");
+                        return;
+                    }
+                }
+
                 // --------------- PC와 인증 서버와의 연동 해제 ---------------
                 AccountService accountService = new AccountService();
                 accountService.UnmapSIDWithUser(Config.GetCurrentUser());
-
-                // --------------- 시스템에 적용된 Credential Provider 해제 ---------------
-                // TODO
 
                 Application.Restart();
             }
@@ -75,6 +91,17 @@ namespace AuthClient.tollgate.home.dialog
         public void InitFactor(Factor factor)
         {
             mainControl.InitFactor(factor);
+        }
+
+        private void btn_side_history_Click(object sender, EventArgs e)
+        {
+            btn_side_main.setOff();
+            btn_side_setting.setOff();
+            btn_side_history.setOn();
+            BackgroundImage = Properties.Resources.mainWallpaper;
+            mainControl.Hide();
+            settingControl.Hide();
+            historyControl.Show();
         }
     }
 }

@@ -186,5 +186,7 @@ namespace AuthClient.tollgate.rest
         public const string DATA_QR = DATA + "qr/";
 
         public const string CONF_INIT = "init/";
+
+        public const string HISTORY = "history/";
     }
 }

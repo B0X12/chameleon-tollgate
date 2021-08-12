@@ -4,30 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pattern.SetPatternActivity">
+    tools:context=".pattern.SetPatternActivity"
+    android:background="@drawable/pattern_bg">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/notosans_bold"
+        android:gravity="center_horizontal"
+        android:text="패턴 등록"
+        android:textColor="#111111"
+        android:textSize="20dp"
+        app:layout_constraintVertical_bias="0.24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/pattern_set"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fontFamily="@font/notosans_medium"
+        android:text="등록할 패턴을 그려주세요."
+        android:textColor="#111111"
+        android:layout_marginTop="42dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_title"
+        app:layout_constraintStart_toStartOf="@+id/text_title"
+        app:layout_constraintTop_toTopOf="@+id/text_title"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.andrognito.patternlockview.PatternLockView
         android:id="@+id/pattern_set"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="286dp"
+        android:layout_height="286dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        app:dotSelectedSize="24dp"
         app:normalStateColor="@color/black"
-        app:correctStateColor="@color/purple_700"/>
-
+        app:correctStateColor="#ffd05d"
+        app:wrongStateColor="#ff0000"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

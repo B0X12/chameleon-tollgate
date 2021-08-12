@@ -28,7 +28,7 @@ public class SetPatternActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_pattern);
 
         TextView label = findViewById(R.id.text_label);
-        label.setText("패턴을 그려주세요");
+        label.setText("등록할 패턴을 그려주세요.");
 
         Context context = this;
         Handler handler = new Handler();
@@ -50,10 +50,12 @@ public class SetPatternActivity extends AppCompatActivity {
                     if(firstPattern.length() < 4) {
                         label.setText("최소 4개의 점을 연결해야 합니다.");
                         firstPattern = "";
+                        patternView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     }
-                    else
+                    else {
                         label.setText("다시 패턴을 그려주세요");
-                    patternView.clearPattern();
+                        patternView.clearPattern();
+                    }
                     return;
                 }
 
@@ -67,10 +69,11 @@ public class SetPatternActivity extends AppCompatActivity {
 
                     TextView label = findViewById(R.id.text_label);
                     label.setText("패턴이 일치하지 않습니다.\n다시 패턴을 그려주세요");
-                    patternView.clearPattern();
+                    patternView.setViewMode(PatternLockView.PatternViewMode.WRONG);
                     return;
                 }
 
+                patternView.setViewMode(PatternLockView.PatternViewMode.CORRECT);
                 try {
                     SetPatternTask rest = new SetPatternTask(Util.getHash(lastPattern), Util.getTimestamp(), context, handler);
                     boolean result = rest.execute().get();

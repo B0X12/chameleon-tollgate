@@ -58,6 +58,37 @@ public class AdAccountDAO extends SQLiteManager implements IAdAccountDAO {
 		return state.executeUpdate();
 	}
 	
+	public int removeInitFactor(String id) throws SQLException, DatabaseConnectException{
+		if(!super.isOpen())
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		
+		PreparedStatement state = super.connection.prepareStatement("update " + Table.INIT_FACTOR + " set pattern = 0, finger_print = 0, face = 0 where id = ?");
+		state.setString(1,  id);
+		return state.executeUpdate();
+	}
+	
+	public void removeFactorInfos(String id) throws DatabaseConnectException, SQLException {
+		this.removeFaceInfo(id);
+		this.removePatternInfo(id);
+	}
+	
+	public int removeFaceInfo(String id) throws SQLException, DatabaseConnectException{
+		if(!super.isOpen())
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		
+		PreparedStatement state = super.connection.prepareStatement("delete from " + Table.AUTH_FACE + " where id = ?");
+		state.setString(1,  id);
+		return state.executeUpdate();
+	}
+	public int removePatternInfo(String id) throws SQLException, DatabaseConnectException{
+		if(!super.isOpen())
+			throw new DatabaseConnectException(DBError.NO_CONNECTION);
+		
+		PreparedStatement state = super.connection.prepareStatement("delete from " + Table.AUTH_PATTERN + " where id = ?");
+		state.setString(1,  id);
+		return state.executeUpdate();
+	}
+	
 	public String getID(String token) throws DatabaseConnectException, SQLException {
 		if(!super.isOpen())
 			throw new DatabaseConnectException(DBError.NO_CONNECTION);

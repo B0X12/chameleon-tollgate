@@ -57,8 +57,7 @@ CREATE TABLE "auth_otp" (
 "secretkey" TEXT NOT NULL,
 "registertime" INTEGER NOT NULL,
 PRIMARY KEY("id"),
-CONSTRAINT "auth_otp_fk_id" FOREIGN KEY("id") REFERENCES "account"("id")
-);
+CONSTRAINT "auth_otp_fk_id" FOREIGN KEY("id") REFERENCES "account"("id"));
 
 CREATE TABLE history(
 id TEXT NOT NULL,
@@ -67,4 +66,4 @@ factor TEXT NOT NULL,
 pc TEXT NOT NULL,
 result INTEGER NOT NULL CHECK(result=0 or result=1),
 CONSTRAINT history_fk_id FOREIGN KEY(id)
-REFERENCES account(id);
+REFERENCES account(id));

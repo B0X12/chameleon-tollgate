@@ -70,6 +70,15 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -154,6 +163,26 @@
     <Compile Include="tollgate\define\Define.cs" />
     <Compile Include="tollgate\DoubleBufferPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\history\dialog\HistoryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\history\dialog\HistoryControl.Designer.cs">
+      <DependentUpon>HistoryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\history\dialog\HistoryEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\history\dialog\HistoryEntry.Designer.cs">
+      <DependentUpon>HistoryEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tollgate\home\history\HistoryPack.cs" />
+    <Compile Include="tollgate\home\history\HistoryRecord.cs" />
+    <Compile Include="tollgate\home\main\dialog\SidebarHistory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="tollgate\home\main\dialog\SidebarHistory.Designer.cs">
+      <DependentUpon>SidebarHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="tollgate\home\setting\Menu.cs">
       <SubType>UserControl</SubType>
@@ -293,6 +322,9 @@
     <Compile Include="tollgate\account\service\AccountService.cs" />
     <Compile Include="tollgate\usb\service\USBService.cs" />
     <Compile Include="tollgate\Util.cs" />
+    <Compile Include="tollgate\util\CredentialUtil.cs" />
+    <Compile Include="tollgate\util\RegisterList.cs" />
+    <Compile Include="tollgate\util\SystemIoUtil.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\code\FaceCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\code\LogCode.cs" />
     <Compile Include="tollgate\util\tollgateLog\dto\LogDevice.cs" />
@@ -330,6 +362,12 @@
     <EmbeddedResource Include="tollgate\home\dialog\HomeControl.resx">
       <DependentUpon>HomeControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\history\dialog\HistoryControl.resx">
+      <DependentUpon>HistoryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\history\dialog\HistoryEntry.resx">
+      <DependentUpon>HistoryEntry.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\CheckDialog.resx">
       <DependentUpon>CheckDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -347,6 +385,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\SidebarMain.resx">
       <DependentUpon>SidebarMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tollgate\home\main\dialog\SidebarHistory.resx">
+      <DependentUpon>SidebarHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="tollgate\home\main\dialog\SidebarSetting.resx">
       <DependentUpon>SidebarSetting.cs</DependentUpon>
@@ -396,6 +437,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -668,7 +710,22 @@
     <None Include="Resources\check.png" />
     <Content Include="icon.ico" />
     <None Include="Resources\main\checkButton.png" />
+    <None Include="Resources\history\historyPatternLabel.png" />
+    <None Include="Resources\history\historyOtpLabel.png" />
+    <None Include="Resources\history\historyUsbLabel.png" />
+    <None Include="Resources\history\historyPipeline.png" />
+    <None Include="Resources\history\historyBottomLine.png" />
+    <None Include="Resources\history\historyBtnFail.png" />
+    <None Include="Resources\history\historyBtnSuccess.png" />
+    <None Include="Resources\history\historyFaceidLabel.png" />
+    <None Include="Resources\history\historyFingerLabel.png" />
+    <None Include="Resources\history\historyQrLabel.png" />
+    <None Include="Resources\history\historyTitle.png" />
+    <None Include="Resources\history\historyListBg.png" />
     <Content Include="Resources\icon.ico" />
+    <None Include="Resources\main\mainSideHistoryOff.png" />
+    <None Include="Resources\main\mainSideHistoryOn.png" />
+    <None Include="Resources\main\mainSideLabel.png" />
     <Content Include="Resources\main\mainLogout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

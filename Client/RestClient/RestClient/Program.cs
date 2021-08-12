@@ -19,12 +19,14 @@ namespace RestClient
             if(!CheckArgumentByOption(args))
             {
                 retCode = (int)ReturnCode.RESULT_UNKNOWN_ERROR;
+                return retCode;
             }
 
             // C:\Tollgate\server.cfg 파일을 읽어 인증 서버 정보를 세팅
-            if(Config.InitAuthServerByConfigFile())
+            if(!Config.InitAuthServerByConfigFile())
             {
                 retCode = (int)ReturnCode.RESULT_CONFIG_FILE_COMPROMISED;
+                return retCode;
             }
             
 

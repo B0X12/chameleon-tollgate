@@ -1,4 +1,5 @@
 ﻿using AuthClient.tollgate.account.service;
+using AuthClient.tollgate.util;
 using System;
 using System.Net;
 using System.Windows.Forms;
@@ -212,6 +213,20 @@ namespace AuthClient.tollgate.account.dialog
                     {
                         ac.MappingSIDWithUser(loginCon.ID);
                     }
+
+                    // Credential Provider 활성화, Credential Provider 타임아웃 세팅, 기본 Credential Provider 비활성화
+                    if (CredentialUtil.LoginCredentialFile())
+                    {
+                        if (CredentialUtil.RegisterCredentialReg())
+                        {
+                            if (!CredentialUtil.LoginCredentialReg())
+                                MessageBox.Show("Credential Provider 적용에 실패하였습니다");
+                        }
+                        else
+                            MessageBox.Show("등록 실패");
+                    }
+                    else
+                        MessageBox.Show("파일 복사 실패");
 
                     if (Login != null)
                         Login();
