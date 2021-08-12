@@ -1,11 +1,14 @@
 package com.chameleon.tollgate.fingerprint.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,12 +22,17 @@ import com.chameleon.tollgate.rest.exception.InvalidRequestException;
 import com.chameleon.tollgate.rest.exception.NoUserException;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentError;
 import com.chameleon.tollgate.rest.exception.UnauthorizedUserAgentException;
+import com.chameleon.tollgate.util.tollgateLog.TollgateLog;
+import com.chameleon.tollgate.util.tollgateLog.dto.LogFactor;
+import com.chameleon.tollgate.util.tollgateLog.dto.code.FaceCode;
 import com.chameleon.tollgate.util.userHistory.UserHistory;
 import com.chameleon.tollgate.util.userHistory.dto.HistoryFactor;
 import com.chameleon.tollgate.util.userHistory.dto.HistoryResult;
 import com.chameleon.tollgate.fingerprint.service.fingerService;
 import com.chameleon.tollgate.fingerprint.AuthResult;
 import com.chameleon.tollgate.define.Path;
+import com.chameleon.tollgate.define.Property;
+import com.chameleon.tollgate.face.dto.FacePack;
 
 /*
  * 반환해주는 값을 좀 더 다양화
@@ -50,7 +58,7 @@ public class fingerController
 		this.sessions = new SessionList();
 	}
 	
-	
+
 	// 인증 시작 요청
 	@GetMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> SendMessage(@PathVariable("id") String id
@@ -89,9 +97,19 @@ public class fingerController
 	// 안드로이드 -> 서버로 값을 전송할 때
 	@PostMapping(Path.AUTH_FINGERPRINT + "{id}")
 	public ResponseEntity<Response<Boolean>> AuthResult(@PathVariable("id") String id
-			, long timestamp, int restResult, String sid
+			, long timestamp, String sid, int restResult
 			, @RequestHeader(value = "User-Agent") String userAgent) throws NoUserException, InvalidRequestException, UnauthorizedUserAgentException
 	{
+		if (restResult == AuthResult.AUTH_FINGER_ENROLLED)
+		{
+			try {
+				service.SetFingerEnrolled(id, timestamp);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
 		if(!this.sessions.isExist(new SessionTime(id, timestamp)))
 			throw new InvalidRequestException(AuthError.NO_SESSION);
 		
@@ -116,14 +134,6 @@ public class fingerController
 				history.write(id, HistoryFactor.FINGERPRINT, sid, HistoryResult.FAIL);
 				Response<Boolean> respon = new Response<Boolean>(HttpStatus.BAD_REQUEST, false, timestamp);
 				return new ResponseEntity<>(respon, HttpStatus.BAD_REQUEST);
-			}
-			else if (restResult == AuthResult.AUTH_FINGER_ENROLLED)
-			{
-				try {
-					service.SetFingerEnrolled(id, timestamp);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		else // 다른 곳에서 접속했을 때
